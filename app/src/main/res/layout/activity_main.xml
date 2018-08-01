@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:layout_centerVertical="true">
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:layout_centerHorizontal="true"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:layout_below="@id/emailInput"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:text="Log in"
+            android:id="@+id/loginButton"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/passwordInput"
+            android:layout_toStartOf="@+id/signupButton" />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:text="Sign up"
+            android:id="@+id/signupButton"
+            android:textAllCaps="false"
+            android:layout_alignTop="@+id/loginButton"
+            android:layout_alignEnd="@+id/passwordInput" />
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:text="Find Password Here!"
+            android:textSize="20dp"
+            android:background="#00ff0000"
+            android:id="@+id/findPassword"
+            android:layout_below="@id/loginButton"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\648ebf6d44f42d4abf5f9b260dc4185b9f300ab6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_208b4ef3cf03287bb6fbcc103b91a0569aa754fb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_7205baea99fc015c871a03a1c6e5684c025d7c66.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\processing-core.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1f360d7b4ddc78f37beb5fc503f3e49f3f229c6c">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\2\processing-core_d2e88bd4cca965d27557dbf719282532e7577577\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\dd91162b4581c2c2bba0bbbb65cf09a5b9b4843a\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="eb0d830e3eabb9deb9ec44869cf7ac7ea1ad794c">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_0063fe569d72dc361f8e186036bed8a15c8ba4cd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\05d4cb5bf9a66e56393201ed2e1aea5c57c21125\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="486371f97baad8e607f332f20fee1d3dd00a731a">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_da869fb2e0d5f4f0b903265baadc7e2ab43769ce.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\ef82e912f1ab45f43d27b2126298c632cf8f4a2c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_5e1e0172b53aa4656e0fc68ed9e185d5398c714c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\96c36ca1a2e605788abd18ec8292cd1c50cae0c4\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_0fb259ce5d351670829542387f711339c5d93490.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\2f1f0ce23ee88c5bee4822fe48270aea25c81896\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_7a825a4c71737d7c82ad6524057d74cbbc175040.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\566ed342f776938e440927fc3c7e5bd1d9b1b0ee\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_80efeecd93eaa58e5b3cfb4bf90d204941fd4a81.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\16de51a79d2e9508fe9f56cd821b01f0bf48ee12\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8010ae6ed32828a145b25ec97bc07b7a83c6318f">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_3362bdc00fb7c436f73379180f3641aa5ad8e909.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\processing-core.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1f360d7b4ddc78f37beb5fc503f3e49f3f229c6c">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\processing-core_d2e88bd4cca965d27557dbf719282532e7577577.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\50bcac8b545cbf7b81b4e374a1347a9ccd9f6da9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_4826ad061c1525fe9c662d92a218d5f9ad8be3bb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\cd4cf95b9fe2ca390943d9c9895b155dc3c82e8c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="433f4d6aa5f21f19552afe0e6c5eff0fedba73ad">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_b23eaae9f7722820cc457707ce419562a703b605.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\7ba003f6e67ab6db1c38ae2581f2b0dc3a784924\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_2c8f4ce542fcfe78e7734a864e190423220bc909.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\96c36ca1a2e605788abd18ec8292cd1c50cae0c4\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_076174e319dc5d97178a21069d4d14c76edf25af.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\f8c25205c3ecd4aead7296c955a8a0da4cd690ef\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_46e548a8a4ced4f3a660a2f62a9973da774cb38b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\f8c25205c3ecd4aead7296c955a8a0da4cd690ef\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_0187048180b7d88aaa589d20b276d3ab6346aafe.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\achartengine-0.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="726c7bd0ef0ca4ffe04367f8c81f50d5d68a438d">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\achartengine-0.6.0_9318e9e2f528a933370baa82f7355f4a6026f897.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_7620dbde4d42d565b4bdefc83ff16f5a2011d0d7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\NskAlgoSdk.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="10137dee3cb168bb82e4ccbe76fe0d6107ea90b5">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\NskAlgoSdk_becae20a852277506dc51892457bf56d001a9d1b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\libStreamSDK.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="466ab0e857b95e19ec5d2cb723c9a676e25c2787">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\libStreamSDK_f64255ff76621c7b8013ebc0c70b6090337e8afa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\6208223a7437e9a2a1c00dade2adfbde05c99b4d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6116e0e7069de7fc259aac8e08b84f32c2038231">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_1944827458ddafc09de2c476d303f23020843086.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\libStreamSDK.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="466ab0e857b95e19ec5d2cb723c9a676e25c2787">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\2\libStreamSDK_f64255ff76621c7b8013ebc0c70b6090337e8afa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\NskAlgoSdk.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="10137dee3cb168bb82e4ccbe76fe0d6107ea90b5">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\2\NskAlgoSdk_becae20a852277506dc51892457bf56d001a9d1b\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\7ba003f6e67ab6db1c38ae2581f2b0dc3a784924\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_9c8310341d5e1ee2a934c0425cfaf73b496ddf00.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\1a63f87e6ef09c8cba33a97c47f7e0180e383c77\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_5504c45578b7cf7f1dfa8a88bd4629dd87f1e68b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\648ebf6d44f42d4abf5f9b260dc4185b9f300ab6\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_b0e99f0d3626d2d2e1933cd64b9c84fc6403322f.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_e86a86d9ee36635ebd0df76c18888b33a892ba1c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\achartengine-0.6.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="726c7bd0ef0ca4ffe04367f8c81f50d5d68a438d">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\2\achartengine-0.6.0_9318e9e2f528a933370baa82f7355f4a6026f897\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\50bcac8b545cbf7b81b4e374a1347a9ccd9f6da9\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_528b24e8393184760c1111d72a9797b941e794e8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\be89bf76636fff237d64fcd9efa006e47d9c3871\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6addaba208e21c6da776d0ca75b6b23a6ccd5499">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_1044547d76e97fdf03e318e3a8147f4742468259.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\539a304797eba9d14245e8c68fe4b1bcdd5ef512\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="756f6297eef79784f5e356dcd4f39865028b2bd0">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_a4951ba7337a1ab0c8258885bc72f174b051be59.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="72b26268bd664e8da23f343b26165956f2daada6">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_2e240dbf9c60b8857db534fcb8c5076f57319344\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\5ef6bc4b67ae8323861d915deaf897fd142bc4e6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_144d24583bea4d2fe13c105ebe3a5a5e9b2dc4e9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\androidplot-core-0.6.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3db0daea52375b26bfa61c59b8df93950bdefbbc">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\androidplot-core-0.6.1_21d25248eb7a66713897564d5f7fabaaad30dc64.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\tnals\.android\build-cache\d656e4e2316c4a30e5c13f5386e87ad4b54b3062\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8f128aeeb7e31271b28a7adb9dac1f3a6ed9f5e7">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\pre-dexed\debug\classes_e43a346f3099cf7f54ae12c8fab955ba1e486378.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\libs\androidplot-core-0.6.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3db0daea52375b26bfa61c59b8df93950bdefbbc">
+        <dex dex="C:\Users\tnals\Desktop\Algo_SDK_Sample2\app\build\intermediates\transforms\dex\debug\folders\1000\2\androidplot-core-0.6.1_21d25248eb7a66713897564d5f7fabaaad30dc64\classes.dex" />
+    </item>
+
+</items>
