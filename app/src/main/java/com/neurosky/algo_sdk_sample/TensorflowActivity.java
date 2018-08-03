@@ -35,10 +35,10 @@ public class TensorflowActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tf);
-        textViewResult = (TextView) findViewById(R.id.textViewResult);
-        textViewResult.setMovementMethod(new ScrollingMovementMethod());
-
-        btnDetectObject = (Button) findViewById(R.id.btnDetect);
+//        textViewResult = (TextView) findViewById(R.id.textViewResult);
+//        textViewResult.setMovementMethod(new ScrollingMovementMethod());
+//
+//        btnDetectObject = (Button) findViewById(R.id.btnDetect);
 
         imageView = (ImageView)findViewById(R.id.stateImage);
 
@@ -51,9 +51,9 @@ public class TensorflowActivity extends AppCompatActivity{
 
         }
 
-        btnDetectObject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        btnDetectObject.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Drawable drawable = imageView.getDrawable();
 //                Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
 //
@@ -62,21 +62,10 @@ public class TensorflowActivity extends AppCompatActivity{
 //                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
 //
 //                textViewResult.setText(results.toString());
-            }
-        });
+//            }
+//        });
 
         initTensorFlowAndLoadModel();
-    }
-
-    private void screenshot(){
-        try {
-            View v1 = getWindow().getDecorView().getRootView();
-            v1.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-            imageView.setImageBitmap(bitmap);
-        }catch (Throwable e){
-            e.printStackTrace();
-        }
     }
 
     private void initTensorFlowAndLoadModel() {

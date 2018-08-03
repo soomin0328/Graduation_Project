@@ -9,6 +9,8 @@ import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -77,6 +80,7 @@ public class EEG extends Activity {
     private NskAlgoSdk nskAlgoSdk;
 
     String n[] = new String[6];
+    String eeg[] = new String[5];
 
     String name = "";
 
@@ -91,7 +95,7 @@ public class EEG extends Activity {
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
 
-        Toast.makeText(this,"현재로그인: "+email,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "현재로그인: " + email, Toast.LENGTH_LONG).show();
 
         int idx = email.indexOf("@");
         name = email.substring(0, idx);
@@ -223,8 +227,10 @@ public class EEG extends Activity {
             public void onClick(View v) {
                 if (bRunning == false) {
                     nskAlgoSdk.NskAlgoStart(false);
+
                     Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
                     startActivity(graphIntent);
+
                 } else {
                     nskAlgoSdk.NskAlgoPause();
 
@@ -396,7 +402,7 @@ public class EEG extends Activity {
 
         nskAlgoSdk.setOnBPAlgoIndexListener(new NskAlgoSdk.OnBPAlgoIndexListener() {
             @Override
-            public void onBPAlgoIndex(float delta, float theta, float alpha, float beta, float gamma) {
+            public void onBPAlgoIndex(final float delta, final float theta, final float alpha, final float beta, final float gamma) {
 
                 final float fDelta = delta, fTheta = theta, fAlpha = alpha, fBeta = beta, fGamma = gamma;
                 runOnUiThread(new Runnable() {
@@ -404,6 +410,22 @@ public class EEG extends Activity {
                     public void run() {
 
                         getNow();
+
+                        eeg[0] = String.valueOf(alpha);  //alpha
+                        eeg[1] = String.valueOf(theta);  //low_beta
+                        eeg[2] = String.valueOf(delta);  //delta
+                        eeg[3] = String.valueOf(gamma);  //gamma
+                        eeg[4] = String.valueOf(beta);  //theta
+
+                        final Nomalization nz = new Nomalization(eeg[0], eeg[1], eeg[2], eeg[3], eeg[4]);
+
+//                        Handler m = new Handler(Looper.getMainLooper());
+//                        m.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                String d = nz.getData();
+//                            }
+//                        }, 3000);
 
                         databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
                                 .child(n[1] + "월")
@@ -528,6 +550,7 @@ public class EEG extends Activity {
 
         @Override
         public void onStatesChanged(int connectionStates) {
+            // TODO Auto-generated method stub
             Log.d(TAG, "connectionStates change to: " + connectionStates);
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTING:
