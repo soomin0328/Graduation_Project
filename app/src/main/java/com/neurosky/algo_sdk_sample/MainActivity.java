@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 currentUser = mAuth.getCurrentUser();
                                 int idx = email.indexOf("@");
-                                Toast.makeText(MainActivity.this, currentUser+"님 로그인!", Toast.LENGTH_SHORT).show();
                                 Intent goEEG = new Intent(MainActivity.this, EEG.class);
                                 finish();
                                 startActivity(goEEG);

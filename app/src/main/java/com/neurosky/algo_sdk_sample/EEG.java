@@ -64,18 +64,11 @@ public class EEG extends Activity {
     private int output_data_count = 0;
     private int raw_data_sec_len = 85;
 
-    private Button headsetButton;
-    private Button cannedButton;
-    private Button setAlgosButton;
-    private Button startButton;
-    private Button stopButton;
+    private Button headsetButton, cannedButton, setAlgosButton, startButton, stopButton, logoutButton;
 
-    private CheckBox attCheckBox;
-    private CheckBox medCheckBox;
-    private CheckBox bpCheckBox;
+    private CheckBox attCheckBox, medCheckBox, bpCheckBox;
 
-    private TextView stateText;
-    private TextView sqText;
+    private TextView stateText, sqText;
 
     private NskAlgoSdk nskAlgoSdk;
 
@@ -95,7 +88,7 @@ public class EEG extends Activity {
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
 
-        Toast.makeText(this, "현재로그인: " + email, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Your id: " + email, Toast.LENGTH_LONG).show();
 
         int idx = email.indexOf("@");
         name = email.substring(0, idx);
@@ -104,10 +97,10 @@ public class EEG extends Activity {
             // (1) Make sure that the device supports Bluetooth and Bluetooth is on
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-                Toast.makeText(
-                        this,
-                        "Please enable your Bluetooth and re-run this program !",
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(
+//                        this,
+//                        "Please enable your Bluetooth and re-run this program !",
+//                        Toast.LENGTH_LONG).show();
                 //finish();
             }
         } catch (Exception e) {
@@ -121,6 +114,7 @@ public class EEG extends Activity {
         setAlgosButton = (Button) this.findViewById(R.id.setAlgosButton);
         startButton = (Button) this.findViewById(R.id.startButton);
         stopButton = (Button) this.findViewById(R.id.stopButton);
+        logoutButton = (Button) this.findViewById(R.id.logoutBtn);
 
         attCheckBox = (CheckBox) this.findViewById(R.id.attCheckBox);
         medCheckBox = (CheckBox) this.findViewById(R.id.medCheckBox);
@@ -297,6 +291,16 @@ public class EEG extends Activity {
                     }
                     showToast(sdkVersion, Toast.LENGTH_LONG);
                 }
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(EEG.this,MainActivity.class));
+                finish();
+                Toast.makeText(getApplicationContext(),"Logout Success!",Toast.LENGTH_LONG).show();
             }
         });
 
