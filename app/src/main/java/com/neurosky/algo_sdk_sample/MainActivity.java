@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Login Fail", Toast.LENGTH_SHORT).show();
                                 idText.setText("");
                                 pwText.setText("");
                             } else {
