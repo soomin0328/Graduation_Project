@@ -51,11 +51,14 @@ public class GraphActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-//                stateBitmap = screenshot();
+
+                stateBitmap = screenshot();
+
                 Intent meditation = new Intent(getApplicationContext(), TensorflowActivity.class);
-//                ByteArrayOutputStream bs = new ByteArrayOutputStream();
-//                stateBitmap.compress(Bitmap.CompressFormat.PNG,50,bs);
-//                meditation.putExtra("byteArray", bs.toByteArray());
+                ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                stateBitmap.compress(Bitmap.CompressFormat.PNG,50,bs);
+                meditation.putExtra("byteArray", bs.toByteArray());
+
                 startActivity(meditation);
             }
         });
