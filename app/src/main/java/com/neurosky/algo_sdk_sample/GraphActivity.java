@@ -52,22 +52,15 @@ public class GraphActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
-                View v = getWindow().getDecorView();
-                screenshot(v);
                 Intent meditation = new Intent(getApplicationContext(), TensorflowActivity.class);
-                ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                stateBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
-                meditation.putExtra("byteArray", bs.toByteArray());
+//                ByteArrayOutputStream bs = new ByteArrayOutputStream();
+//                stateBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+//                meditation.putExtra("byteArray", bs.toByteArray());
 
                 startActivity(meditation);
             }
         });
         th.start();
-    }
-
-    public void screenshot(View view) {
-        stateBitmap = ScreenShott.getInstance().takeScreenShotOfRootView(view);
     }
 }
 
