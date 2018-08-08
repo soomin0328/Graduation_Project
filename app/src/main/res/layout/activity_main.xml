@@ -30,33 +30,32 @@
             android:layout_below="@id/emailInput"/>
 
         <Button
-            android:layout_width="150dp"
-            android:layout_height="55dp"
-            android:text="Log in"
             android:id="@+id/loginButton"
-            android:textAllCaps="false"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/passwordInput"
-            android:layout_toStartOf="@+id/signupButton" />
-
-        <Button
             android:layout_width="150dp"
-            android:layout_height="55dp"
-            android:text="Sign up"
-            android:id="@+id/signupButton"
-            android:textAllCaps="false"
-            android:layout_alignTop="@+id/loginButton"
-            android:layout_alignEnd="@+id/passwordInput" />
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/emailInput"
+            android:layout_below="@+id/passwordInput"
+            android:text="Log in"
+            android:textAllCaps="false"/>
 
         <Button
+            android:id="@+id/signupButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/emailInput"
+            android:layout_below="@+id/passwordInput"
+            android:text="Sign up"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/findPassword"
             android:layout_width="300dp"
             android:layout_height="30dp"
-            android:text="Find Password Here!"
-            android:textSize="20dp"
+            android:layout_below="@+id/signupButton"
+            android:layout_centerHorizontal="true"
             android:background="#00ff0000"
-            android:id="@+id/findPassword"
-            android:layout_below="@id/loginButton"
-            android:layout_centerHorizontal="true"/>
+            android:text="Find Password Here!"
+            android:textSize="20dp" />
     </RelativeLayout>
 
 </RelativeLayout>

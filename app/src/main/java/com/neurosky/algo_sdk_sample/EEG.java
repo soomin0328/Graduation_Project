@@ -42,7 +42,7 @@ import java.util.Locale;
 
 public class EEG extends Activity {
 
-    final String TAG = "MainActivityTag";
+    final String TAG = "EEGTag";
 
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -94,7 +94,6 @@ public class EEG extends Activity {
         name = email.substring(0, idx);
 
         try {
-            // (1) Make sure that the device supports Bluetooth and Bluetooth is on
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
 //                Toast.makeText(

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,7 +26,7 @@ public class GraphActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FrameLayout frame = new FrameLayout(this);
+        final FrameLayout frame = new FrameLayout(this);
         frame.setId(CompatUtils.getUniqueViewId());
 
         int width = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
@@ -37,13 +38,13 @@ public class GraphActivity extends AppCompatActivity {
         sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height);
 
         final PFragment fragment = new PFragment(sketch);
-        fragment.setView(frame,this);
+        fragment.setView(frame, this);
 
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
                 int count = 0;
-                while (count < 2) {
+                while (count < 3) {
                     count++;
                     try {
                         Thread.sleep(1000);
@@ -52,11 +53,11 @@ public class GraphActivity extends AppCompatActivity {
                     }
                 }
 
-                stateBitmap = screenshot();
-
+                View v = getWindow().getDecorView();
+                screenshot(v);
                 Intent meditation = new Intent(getApplicationContext(), TensorflowActivity.class);
                 ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                stateBitmap.compress(Bitmap.CompressFormat.PNG,50,bs);
+                stateBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
                 meditation.putExtra("byteArray", bs.toByteArray());
 
                 startActivity(meditation);
@@ -65,25 +66,8 @@ public class GraphActivity extends AppCompatActivity {
         th.start();
     }
 
-    public Bitmap screenshot(){
-        View v1 = getWindow().getDecorView().getRootView();
-        v1.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-        return  bitmap;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResult) {
-        if (sketch != null) {
-            sketch.onRequestPermissionsResult(requestCode, permissions, grantResult);
-        }
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        if (sketch != null) {
-            sketch.onNewIntent(intent);
-        }
+    public void screenshot(View view) {
+        stateBitmap = ScreenShott.getInstance().takeScreenShotOfRootView(view);
     }
 }
 

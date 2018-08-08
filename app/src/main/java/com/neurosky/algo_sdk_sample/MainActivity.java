@@ -1,6 +1,8 @@
 package com.neurosky.algo_sdk_sample;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +17,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
+
+    private final static String[] requestWritePermission =
+            {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     EditText idText, pwText;
     Button signup, login, findPw;
@@ -32,17 +39,14 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
 
-//        if(mAuth.getCurrentUser() != null){
-//            finish();
-//            startActivity(new Intent(MainActivity.this,EEG.class));
-//        }
-
         idText = (EditText) findViewById(R.id.emailInput);
         pwText = (EditText) findViewById(R.id.passwordInput);
 
         login = (Button) findViewById(R.id.loginButton);
         signup = (Button) findViewById(R.id.signupButton);
         findPw = (Button) findViewById(R.id.findPassword);
+
+        getPermission();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +74,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getPermission(){
+        final boolean hasWritePermission = RuntimePermissionUtil.checkPermissonGranted(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (hasWritePermission) {
+
+        } else {
+            RuntimePermissionUtil.requestPermission(MainActivity.this, requestWritePermission, 100);
+        }
+
+    }
+
     private void userLogin(final String email, String password) {
         Intent intent = new Intent(MainActivity.this, Dialog.class);
 
@@ -91,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 currentUser = mAuth.getCurrentUser();
                                 int idx = email.indexOf("@");
+
                                 Intent goEEG = new Intent(MainActivity.this, EEG.class);
                                 finish();
                                 startActivity(goEEG);
@@ -108,6 +124,31 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser!=null){
             startActivity(new Intent(MainActivity.this,EEG.class));
             finish();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        switch (requestCode) {
+            case 100: {
+
+                RuntimePermissionUtil.onRequestPermissionsResult(grantResults, new RPResultListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(MainActivity.this,"Permission Success!!",Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        Toast.makeText(MainActivity.this, "Permission Denied! You cannot save image!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
         }
     }
 }

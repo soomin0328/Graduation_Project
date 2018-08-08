@@ -2,7 +2,8 @@ package com.neurosky.algo_sdk_sample;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -11,10 +12,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class TensorflowActivity extends AppCompatActivity{
+public class TensorflowActivity extends AppCompatActivity {
+
     private static final int INPUT_SIZE = 300;
     private static final int IMAGE_MEAN = 128;
     private static final float IMAGE_STD = 128f;
@@ -31,39 +34,43 @@ public class TensorflowActivity extends AppCompatActivity{
     private Button btnDetectObject;
     private ImageView imageView;
 
+    Bitmap b;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tf);
-//        textViewResult = (TextView) findViewById(R.id.textViewResult);
-//        textViewResult.setMovementMethod(new ScrollingMovementMethod());
-//
-//        btnDetectObject = (Button) findViewById(R.id.btnDetect);
+        textViewResult = (TextView) findViewById(R.id.textViewResult);
+        textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
-        imageView = (ImageView)findViewById(R.id.stateImage);
+        btnDetectObject = (Button) findViewById(R.id.btnDetect);
 
-        if (getIntent().hasExtra("byteArray")){
-            Bitmap b = BitmapFactory.decodeByteArray(
-                    getIntent().getByteArrayExtra("byteArray"),0,getIntent().getByteArrayExtra("byteArray").length
+        imageView = (ImageView) findViewById(R.id.stateImage);
+
+
+        if (getIntent().hasExtra("byteArray")) {
+            b = BitmapFactory.decodeByteArray(
+                    getIntent().getByteArrayExtra("byteArray"), 0, getIntent().getByteArrayExtra("byteArray").length
             );
 
             imageView.setImageBitmap(b);
 
         }
 
-//        btnDetectObject.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Drawable drawable = imageView.getDrawable();
-//                Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-//
-//                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE,INPUT_SIZE, false);
-//
-//                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-//
-//                textViewResult.setText(results.toString());
-//            }
-//        });
+        btnDetectObject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable drawable = imageView.getDrawable();
+                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+
+                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+
+                textViewResult.setText(results.toString());
+
+            }
+        });
 
         initTensorFlowAndLoadModel();
     }
