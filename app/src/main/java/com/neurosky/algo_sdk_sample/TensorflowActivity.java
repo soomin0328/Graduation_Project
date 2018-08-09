@@ -1,17 +1,22 @@
 package com.neurosky.algo_sdk_sample;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -34,12 +39,17 @@ public class TensorflowActivity extends AppCompatActivity {
     private Button btnDetectObject;
     private ImageView imageView;
 
+    private Context mContext;
+
     Bitmap b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tf);
+
+        mContext = this;
+
         textViewResult = (TextView) findViewById(R.id.textViewResult);
         textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
@@ -47,32 +57,37 @@ public class TensorflowActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.stateImage);
 
-
-        if (getIntent().hasExtra("byteArray")) {
-            b = BitmapFactory.decodeByteArray(
-                    getIntent().getByteArrayExtra("byteArray"), 0, getIntent().getByteArrayExtra("byteArray").length
-            );
-
-            imageView.setImageBitmap(b);
-
-        }
+        importImage();
 
         btnDetectObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Drawable drawable = imageView.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-
                 bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
 
-                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-
-                textViewResult.setText(results.toString());
+                if (bitmap != null) {
+                    final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+                    textViewResult.setText(results.toString());
+                } else {
+                    Toast.makeText(TensorflowActivity.this, "not null", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
 
         initTensorFlowAndLoadModel();
+    }
+
+    private void importImage() {
+        File imgFile = new File(Environment.
+                getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
+                + "/test.jpg");
+
+        if (imgFile.exists()) {
+            Bitmap imgBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            imageView.setImageBitmap(imgBitmap);
+        }
     }
 
     private void initTensorFlowAndLoadModel() {
