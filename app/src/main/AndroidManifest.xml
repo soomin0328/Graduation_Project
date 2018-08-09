@@ -29,6 +29,8 @@
         <activity android:name=".FindPw"/>
         <activity android:name=".SignUp"/>
         <activity android:name=".TensorflowActivity"/>
+        <activity android:name=".CustomDialog"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>
