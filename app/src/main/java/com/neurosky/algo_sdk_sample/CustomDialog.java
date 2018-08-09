@@ -9,7 +9,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Dialog extends AppCompatActivity {
+public class CustomDialog extends AppCompatActivity {
 
     TextView tv;
     Button bt;
@@ -18,7 +18,7 @@ public class Dialog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.setContentView(R.layout.dialog);
+        this.setContentView(R.layout.activity_dialog);
 
         tv = (TextView) findViewById(R.id.message);
         bt = (Button) findViewById(R.id.okButton);
