@@ -1,11 +1,6 @@
 package com.neurosky.algo_sdk_sample;
 
-import android.Manifest;
 import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
