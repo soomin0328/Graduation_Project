@@ -62,7 +62,7 @@ public class SignUp extends AppCompatActivity {
         String pw2 = pw2Text.getText().toString();
         String nick = nickname.getText().toString();
 
-        Intent intent = new Intent(SignUp.this, Dialog.class);
+        Intent intent = new Intent(SignUp.this, CustomDialog.class);
 
         if (id.equals("")) {
             intent.putExtra("activity", "enterEmail");

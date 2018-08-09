@@ -17,8 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.File;
-
 public class MainActivity extends AppCompatActivity {
 
     private final static String[] requestWritePermission =
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void userLogin(final String email, String password) {
-        Intent intent = new Intent(MainActivity.this, Dialog.class);
+        Intent intent = new Intent(MainActivity.this, CustomDialog.class);
 
         if (idText.getText().toString().equals("")) {
             intent.putExtra("activity", "enterEmail");
@@ -105,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                                 pwText.setText("");
                             } else {
                                 currentUser = mAuth.getCurrentUser();
-                                int idx = email.indexOf("@");
 
                                 Intent goEEG = new Intent(MainActivity.this, EEG.class);
                                 finish();
