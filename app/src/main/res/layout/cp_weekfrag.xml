@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <Button
+        android:id="@+id/w_previous_calendar"
+        android:layout_width="45dp"
+        android:layout_height="33dp"
+        android:layout_alignBottom="@+id/w_next_calendar"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="76dp"
+        android:layout_weight="1"
+        android:background="@drawable/left"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/w_calendar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="2018년 몇월"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/w_next_calendar"
+        android:layout_width="45dp"
+        android:layout_height="33dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="76dp"
+        android:layout_weight="1"
+        android:background="@drawable/right"
+        android:text="" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="99dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="일"
+            android:textColor="#ff0000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="월"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="화"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="수"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="목"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="금"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="토"
+            android:textColor="#0000ff"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/w_gv_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="130dp"
+        android:columnWidth="90dp"
+        android:horizontalSpacing="0dp"
+        android:numColumns="7"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp" />
+
+    <TextView
+        android:id="@+id/wtv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="-80dp"
+        android:layout_marginTop="45dp"
+        android:layout_toStartOf="@+id/w_previous_calendar"
+        android:text="주 총 시간:"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/wtv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wtv1"
+        android:layout_marginEnd="-80dp"
+        android:layout_toStartOf="@+id/w_previous_calendar"
+        android:text="달성율:"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/wcptoday"
+        android:layout_width="63dp"
+        android:layout_height="33dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="today"
+        android:textSize="9sp" />
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="54dp"
+        android:layout_marginStart="20dp"
+        android:text="하루공부시간: "
+        android:textSize="19sp"
+        android:textColor="@color/black"/>
+
+    <ProgressBar
+        android:id="@+id/wprogressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="268dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+
+        android:layout_marginEnd="43dp"
+        android:layout_marginTop="65dp"
+        android:max="100"
+        android:progress="50" />
+
+    <TextView
+        android:id="@+id/ws_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/w_calendar_title"
+        android:layout_alignTop="@+id/tv4"
+        android:layout_marginStart="0dp"
+        android:text="day click"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textV3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/tv4"
+        android:layout_marginBottom="27dp"
+        android:text="하루달성률:"
+        android:textColor="@color/black"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/wbarPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wtv1"
+        android:layout_marginStart="-28dp"
+        android:layout_toEndOf="@+id/wprogressBar"
+        android:text="20"
+        android:textColor="@color/black"
+        android:textSize="17sp" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/wChart"
+        android:layout_width="match_parent"
+        android:layout_height="303dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/w_gv_calendar"
+        android:layout_marginTop="-18dp" />
+
+    <TextView
+        android:id="@+id/wconper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textV3"
+        android:layout_toEndOf="@+id/tv4"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="17sp"/>
+</RelativeLayout>

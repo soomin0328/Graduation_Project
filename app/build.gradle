@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.neurosky.algo_sdk_sample"
         minSdkVersion 24
-        targetSdkVersion 26
+        targetSdkVersion 23
         versionCode 1
         versionName '1.0'
     }
@@ -32,11 +32,12 @@ dependencies {
     implementation files('libs/NskAlgoSdk.jar')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
     testImplementation 'junit:junit:4.12'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation files('libs/processing-core.jar')
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'org.tensorflow:tensorflow-android:1.5.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 apply plugin: 'com.google.gms.google-services'

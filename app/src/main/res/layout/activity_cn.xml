@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="391dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/nowday" />
+
+    <TextView
+        android:id="@+id/nowday"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/aimtime"
+        android:layout_width="344dp"
+        android:layout_height="36dp"
+        android:layout_below="@+id/chart"
+        android:layout_centerHorizontal="true"
+        android:text="목표시간:"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+
+    <TextView
+
+        android:id="@+id/cellapse"
+
+        android:layout_width="170dp"
+
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/aimtime"
+        android:gravity="center"
+        android:text="00:00:00"
+        android:textSize="30sp"
+        android:textColor="@color/black"/>
+
+
+    <Button
+
+        android:id="@+id/cbtnstart"
+
+        android:layout_width="70dp"
+
+        android:layout_height="40dp"
+
+        android:layout_below="@+id/aimtime"
+        android:layout_toStartOf="@+id/cbtnsplit"
+
+        android:onClick="mOnClick"
+        android:text="시작" />
+
+    <Button
+
+        android:id="@+id/cbtnsplit"
+
+        android:layout_width="75dp"
+
+        android:layout_height="40dp"
+
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/aimtime"
+
+        android:enabled="false"
+        android:onClick="mOnClick"
+        android:text="끝내기" />
+
+    <TextView
+
+        android:id="@+id/percent"
+
+        android:layout_width="354dp"
+
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+</RelativeLayout>
