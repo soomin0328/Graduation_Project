@@ -104,9 +104,10 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 currentUser = mAuth.getCurrentUser();
 
-                                Intent goEEG = new Intent(MainActivity.this, EEG.class);
+                                Toast.makeText(MainActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
+                                Intent goSelect = new Intent(MainActivity.this, SelectActivity.class);
                                 finish();
-                                startActivity(goEEG);
+                                startActivity(goSelect);
                             }
                         }
                     });
@@ -119,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser = mAuth.getCurrentUser();
         if (currentUser!=null){
-            startActivity(new Intent(MainActivity.this,EEG.class));
+            Toast.makeText(getApplicationContext(),"You're already Login!",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(MainActivity.this,SelectActivity.class));
             finish();
         }
     }

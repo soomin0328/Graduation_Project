@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +39,11 @@
         <activity android:name=".FindPw" />
         <activity android:name=".SignUp" />
         <activity android:name=".TensorflowActivity" />
+        <activity android:name=".CpActivity"/>
+        <activity android:name=".SelectActivity"/>
+        <activity android:name=".CnActivity"/>
+        <activity android:name=".MnActivity"/>
+        <activity android:name=".MpActivity"/>
         <activity
             android:name=".CustomDialog"
             android:theme="@style/Theme.AppCompat.Dialog" />

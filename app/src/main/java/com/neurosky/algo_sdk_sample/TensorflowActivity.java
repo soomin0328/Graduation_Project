@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,7 +37,7 @@ public class TensorflowActivity extends AppCompatActivity {
     private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
     private TextView textViewResult;
-    private Button btnDetectObject;
+    private Button btnDetectObject,btnNext;
     private ImageView imageView;
 
     private Context mContext;
@@ -54,6 +55,7 @@ public class TensorflowActivity extends AppCompatActivity {
         textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
         btnDetectObject = (Button) findViewById(R.id.btnDetect);
+        btnNext = (Button)findViewById(R.id.btnNext);
 
         imageView = (ImageView) findViewById(R.id.stateImage);
 
@@ -73,6 +75,15 @@ public class TensorflowActivity extends AppCompatActivity {
                     Toast.makeText(TensorflowActivity.this, "not null", Toast.LENGTH_LONG).show();
                 }
 
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goMn = new Intent(TensorflowActivity.this, MnActivity.class);
+                startActivity(goMn);
+                finish();
             }
         });
 

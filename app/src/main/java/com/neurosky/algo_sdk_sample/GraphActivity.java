@@ -52,8 +52,9 @@ public class GraphActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                Intent meditation = new Intent(getApplicationContext(), TensorflowActivity.class);
-                startActivity(meditation);
+                Intent goTensorflow = new Intent(getApplicationContext(), TensorflowActivity.class);
+                startActivity(goTensorflow);
+                finish();
             }
         });
         th.start();

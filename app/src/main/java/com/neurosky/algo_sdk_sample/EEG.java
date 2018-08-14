@@ -85,8 +85,6 @@ public class EEG extends Activity {
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
 
-        Toast.makeText(this, "Your id: " + email, Toast.LENGTH_LONG).show();
-
         int idx = email.indexOf("@");
         name = email.substring(0, idx);
 
@@ -216,7 +214,7 @@ public class EEG extends Activity {
             @Override
             public void onClick(View v) {
                 if (bRunning == false) {
-                    nskAlgoSdk.NskAlgoStart(false);
+//                    nskAlgoSdk.NskAlgoStart(false);
 
                     Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
                     startActivity(graphIntent);

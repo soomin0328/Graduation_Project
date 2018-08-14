@@ -1,6 +1,25 @@
 <resources>
-    <string name="app_name">EEG Data</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Checking Your State</string>
+    <string name="startname">시작</string>
+    <string name="ccheck">집중</string>
+    <string name="mcheck">명상</string>
+    <string name="past">과거</string>
+    <string name="now">현재</string>
+    <string name="aimtext">목표시간</string>
+    <string name="textView2">시간                                분</string>
+    <string name="cellapse">00:00:00</string>
+    <string name="mtext">명상한시간</string>
+    <string name="gipjung">집중하세요!!</string>
+    <string name="cbtnstart">시작</string>
+    <string name="cbtnsplit">끝내기</string>
+    <string name="btnday">일별</string>
+    <string name="btnweek">주별</string>
+    <string name="btnmonth">월별</string>
+    <string name="tv1">월 총 시간:</string>
+    <string name="tv2">달성율:</string>
+    <string name="textView3">하루달성률:</string>
+    <string name="ellapse">00:00:00</string>
+    <string name="btnstart">시작</string>
+    <string name="tv4">하루공부시간: </string>
+    <string name="cptoday">today</string>
 </resources>
