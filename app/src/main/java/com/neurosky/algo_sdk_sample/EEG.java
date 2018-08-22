@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,7 +60,7 @@ public class EEG extends Activity {
     private int output_data_count = 0;
     private int raw_data_sec_len = 85;
 
-    private Button headsetButton, cannedButton, setAlgosButton, startButton, stopButton, logoutButton;
+    private Button headsetButton, setAlgosButton, startButton, stopButton, logoutButton;
 
     private CheckBox attCheckBox, medCheckBox, bpCheckBox;
 
@@ -104,7 +103,7 @@ public class EEG extends Activity {
         }
 
         headsetButton = (Button) this.findViewById(R.id.headsetButton);
-        cannedButton = (Button) this.findViewById(R.id.cannedDatabutton);
+//        cannedButton = (Button) this.findViewById(R.id.cannedDatabutton);
         setAlgosButton = (Button) this.findViewById(R.id.setAlgosButton);
         startButton = (Button) this.findViewById(R.id.startButton);
         stopButton = (Button) this.findViewById(R.id.stopButton);
@@ -126,7 +125,7 @@ public class EEG extends Activity {
                 raw_data = new short[512];
                 raw_data_index = 0;
 
-                cannedButton.setEnabled(false);
+//                cannedButton.setEnabled(false);
                 headsetButton.setEnabled(false);
 
                 startButton.setEnabled(false);
@@ -145,80 +144,93 @@ public class EEG extends Activity {
             }
         });
 
-        cannedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                output_data_count = 0;
-                output_data = null;
-
-                System.gc();
-
-                headsetButton.setEnabled(false);
-                cannedButton.setEnabled(false);
-
-                AssetManager assetManager = getAssets();
-                InputStream inputStream = null;
-
-                try {
-                    int j;
-                    // check the output count first
-                    inputStream = assetManager.open("output_data.bin");
-                    output_data_count = 0;
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                    try {
-                        String line = reader.readLine();
-                        while (!(line == null || line.isEmpty())) {
-                            output_data_count++;
-                            line = reader.readLine();
-                        }
-                    } catch (IOException e) {
-
-                    }
-                    inputStream.close();
-
-                    if (output_data_count > 0) {
-                        inputStream = assetManager.open("output_data.bin");
-                        output_data = new float[output_data_count];
-                        //ap = new float[output_data_count];
-                        j = 0;
-                        reader = new BufferedReader(new InputStreamReader(inputStream));
-                        try {
-                            String line = reader.readLine();
-                            while (j < output_data_count) {
-                                output_data[j++] = Float.parseFloat(line);
-                                line = reader.readLine();
-                            }
-                        } catch (IOException e) {
-
-                        }
-                        inputStream.close();
-                    }
-                } catch (IOException e) {
-                }
-
-                Log.d(TAG, "Reading raw data");
-                try {
-                    inputStream = assetManager.open("raw_data_em.bin");
-                    raw_data = readData(inputStream, 512 * raw_data_sec_len);
-                    raw_data_index = 512 * raw_data_sec_len;
-                    inputStream.close();
-                    nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_BULK_EEG.value, raw_data, 512 * raw_data_sec_len);
-                } catch (IOException e) {
-
-                }
-                Log.d(TAG, "Finished reading data");
-            }
-        });
+//        cannedButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                output_data_count = 0;
+//                output_data = null;
+//
+//                System.gc();
+//
+//                headsetButton.setEnabled(false);
+//                cannedButton.setEnabled(false);
+//
+//                AssetManager assetManager = getAssets();
+//                InputStream inputStream = null;
+//
+//                try {
+//                    int j;
+//                    // check the output count first
+//                    inputStream = assetManager.open("output_data.bin");
+//                    output_data_count = 0;
+//                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//                    try {
+//                        String line = reader.readLine();
+//                        while (!(line == null || line.isEmpty())) {
+//                            output_data_count++;
+//                            line = reader.readLine();
+//                        }
+//                    } catch (IOException e) {
+//
+//                    }
+//                    inputStream.close();
+//
+//                    if (output_data_count > 0) {
+//                        inputStream = assetManager.open("output_data.bin");
+//                        output_data = new float[output_data_count];
+//                        //ap = new float[output_data_count];
+//                        j = 0;
+//                        reader = new BufferedReader(new InputStreamReader(inputStream));
+//                        try {
+//                            String line = reader.readLine();
+//                            while (j < output_data_count) {
+//                                output_data[j++] = Float.parseFloat(line);
+//                                line = reader.readLine();
+//                            }
+//                        } catch (IOException e) {
+//
+//                        }
+//                        inputStream.close();
+//                    }
+//                } catch (IOException e) {
+//                }
+//
+//                Log.d(TAG, "Reading raw data");
+//                try {
+//                    inputStream = assetManager.open("raw_data_em.bin");
+//                    raw_data = readData(inputStream, 512 * raw_data_sec_len);
+//                    raw_data_index = 512 * raw_data_sec_len;
+//                    inputStream.close();
+//                    nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_BULK_EEG.value, raw_data, 512 * raw_data_sec_len);
+//                } catch (IOException e) {
+//
+//                }
+//                Log.d(TAG, "Finished reading data");
+//            }
+//        });
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (bRunning == false) {
-//                    nskAlgoSdk.NskAlgoStart(false);
+                    nskAlgoSdk.NskAlgoStart(false);
 
                     Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
                     startActivity(graphIntent);
 
+//                    Thread t = new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try{
+//                                Thread.sleep(3000);
+//                            }catch (InterruptedException e){
+//
+//                            }
+//                            Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
+//                            startActivity(graphIntent);
+//                        }
+//                    });
+//                    t.start();
                 } else {
                     nskAlgoSdk.NskAlgoPause();
 
@@ -292,9 +304,9 @@ public class EEG extends Activity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                startActivity(new Intent(EEG.this,MainActivity.class));
+                startActivity(new Intent(EEG.this, MainActivity.class));
                 finish();
-                Toast.makeText(getApplicationContext(),"Logout Success!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Logout Success!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -351,7 +363,7 @@ public class EEG extends Activity {
                             stopButton.setEnabled(false);
 
                             headsetButton.setEnabled(true);
-                            cannedButton.setEnabled(true);
+//                            cannedButton.setEnabled(true);
 
                             if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
 
