@@ -314,8 +314,8 @@ public class MmonthFrag extends Fragment {
             calendar.add(Calendar.DATE, +1);
         }
 
-        mCalendarAdapter = new CalendarAdapter(arrayListDayInfo, selectedDate);
-        gvCalendar.setAdapter(mCalendarAdapter);
+//        mCalendarAdapter = new CalendarAdapter(arrayListDayInfo, selectedDate);
+//        gvCalendar.setAdapter(mCalendarAdapter);
 
         // tvSelectedDate.setText(sdf.format(selectedDate));
     }
