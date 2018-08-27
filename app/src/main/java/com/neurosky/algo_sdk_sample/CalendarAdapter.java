@@ -76,7 +76,6 @@ public class CalendarAdapter extends BaseAdapter {
                 c_hour.setText("");
             } else {
                 if (day.isInMonth()) {
-                    Log.e("size2", String.valueOf(day_hours.size()));
                     c_hour.setText(day_hours.get(Integer.parseInt(tvDay.getText().toString()) - 1));
                 } else {
                     c_hour.setText("");
