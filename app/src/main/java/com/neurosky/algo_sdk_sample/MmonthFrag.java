@@ -2,6 +2,8 @@ package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,30 +27,26 @@ import java.util.Date;
 
 public class MmonthFrag extends Fragment {
 
-    private TextView tvCalendarTitle;
-    //private TextView tvSelectedDate;
-    private GridView gvCalendar;
-    //디비
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS");
 
-    String i;
-    long mediTime;
-    long mediHour;
-    long allTime;
-    int thisMonthLastDay;
-    private ArrayList<DayInfo> arrayListDayInfo;
-    Calendar mThisMonthCalendar;
+    private TextView tvCalendarTitle;
+    private GridView gvCalendar;
+    TextView barPercent, mpm_all, mp_day;
 
-    CalendarAdapter mCalendarAdapter;
-    // TextView mpm_all;
+    Calendar mThisMonthCalendar;
+    CalendarAdapter mCalendarAdapter, mCalendarAdapter2;
     Date selectedDate;
 
-    TextView barPercent;
+    View view;
 
-    public MmonthFrag() {
-    }
+    String i, h = "";
+    long mediTime, mediHour, allTime, day_allTime;
+    int thisMonthLastDay;
+
+    private ArrayList<DayInfo> arrayListDayInfo;
+    private ArrayList<String> mHours = new ArrayList<>();
 
     public void setSelectedDate(Date date) {
         selectedDate = date;
@@ -58,36 +56,28 @@ public class MmonthFrag extends Fragment {
         }
     }
 
-    View view;
-    TextView mpm_all;
-    TextView mp_day;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        //inflater를 사용해 프래그먼트에 사용할 레이아웃 불러오고 리턴
-        //해당 프래그먼트에 대한 기능적코드 여기에 넣으래
-//..?
-        // GridView gridview=(GridView)view.findViewById(R.id.gridview);
 
         view = inflater.inflate(R.layout.mp_monthfrag, container, false);
         mp_day = view.findViewById(R.id.mp_day);
         mpm_all = view.findViewById(R.id.mpm_all);
-        //final TextView mpm_all=view.findViewById(R.id.mpm_all);
 
         Button btnPreviousCalendar = view.findViewById(R.id.mbtn_previous_calendar);
         Button btnNextCalendar = view.findViewById(R.id.mbtn_next_calendar);
         Button goToday = view.findViewById(R.id.mptoday1);
+
         tvCalendarTitle = view.findViewById(R.id.mtv_calendar_title);
-        // tvSelectedDate = findViewById(R.id.tv_selected_date);
         gvCalendar = view.findViewById(R.id.mgv_calendar);
-        // TextView c_hour=view.findViewById(R.id.c_hour); //몇시간 했는지 띄우는거 즉, 디비에서 불러온값을 달력하나에 띄우겟다는거임...어케하지?ㅠ;
-        //final TextView s_hour=view.findViewById(R.id.s_hour);
-        /////   bar=(ProgressBar)view.findViewById(R.id.mprogressBar);//달성율을 프로그레스바로 표현해주려고
-        ////// barPercent=view.findViewById(R.id.mbarPercent);//달성률 프로그레스바의 구체적 수치표현해주는거
+
+        databaseReference.addValueEventListener(valueEventListener);
+
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mHours.clear();
+
                 mThisMonthCalendar = Calendar.getInstance();
                 getCalendar(mThisMonthCalendar.getTime());
                 databaseReference.addValueEventListener(valueEventListener);
@@ -97,6 +87,8 @@ public class MmonthFrag extends Fragment {
         btnPreviousCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mHours.clear();
+
                 mThisMonthCalendar.add(Calendar.MONTH, -1);
 
                 getCalendar(mThisMonthCalendar.getTime());
@@ -107,6 +99,8 @@ public class MmonthFrag extends Fragment {
         btnNextCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mHours.clear();
+
                 mThisMonthCalendar.add(Calendar.MONTH, +1);
 
                 getCalendar(mThisMonthCalendar.getTime());
@@ -126,17 +120,9 @@ public class MmonthFrag extends Fragment {
 
                 if (day.isInMonth()) {
                     databaseReferences.addValueEventListener(pListener);
-
-                    //누른 날짜가 2018/ 7/ 13이면 이거가져와서 디비에서 찾고 거기값 가져와야할듯 여긴 포지션만 되지않나 아닌가..흠
-
-
-                    final long a = mThisMonthCalendar.get(Calendar.YEAR);
-                    final long b = (mThisMonthCalendar.get(Calendar.MONTH) + 1);
-                    Log.d("mmonth test", a + "년" + b + "월" + i + "일");
                 }
             }
         });
-
 
         arrayListDayInfo = new ArrayList<>();
         return view;
@@ -145,11 +131,11 @@ public class MmonthFrag extends Fragment {
     ValueEventListener pListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년").child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일")).child("명상시간").getChildren()) {
-                Log.d("값오니", "" + snapshot.getValue());
+            for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                    .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
+                    .child("명상시간").getChildren()) {
                 long test = Long.parseLong(snapshot.getValue().toString());
                 mediTime += test;
-                Log.d("값 합보기", "" + mediTime);
             }
             mediHour = mediTime / 1000 / 3600;
             long mediMin = (mediTime / 1000) / 60;
@@ -172,28 +158,33 @@ public class MmonthFrag extends Fragment {
         }
     };
 
-    ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+    ValueEventListener valueEventListener = new ValueEventListener() {
 
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
             long test2;
-            for (int z = 1; z < thisMonthLastDay; z++) {
-                for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년").child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(z + "일")).child("명상시간").getChildren()) {
-                    Log.d("test22", snapshot.getValue().toString() + "");
+
+            for (int z = 1; z < thisMonthLastDay + 1; z++) {
+                for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                        .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(z + "일"))
+                        .child("명상시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {
                         test2 = 0;
                     } else {
                         test2 = Long.parseLong(snapshot.getValue().toString());
                     }
-
+                    day_allTime += test2;
                     allTime += test2;
-                    Log.d("시간값 합친거", allTime + "");
                 }
+                divide(day_allTime);
+                day_allTime = 0;
             }
+
             long mediHour2 = allTime / 1000 / 3600;
             long mediMin2 = (allTime / 1000) / 60;
             long mediSec2 = ((allTime) / 1000) % 60;
-            Log.d("시간값", mediHour2 + "시간 " + mediMin2 + "분 " + mediSec2 + "초");
+
             if (mediHour2 == 0) {
                 mpm_all.setText(mediMin2 + "분 " + mediSec2 + "초");
                 allTime = 0;
@@ -210,61 +201,17 @@ public class MmonthFrag extends Fragment {
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
         }
-    });
+    };
 
     public void onResume() {
         super.onResume();
 
         mThisMonthCalendar = Calendar.getInstance();
         getCalendar(mThisMonthCalendar.getTime());
-        databaseReference.addValueEventListener(valueEventListener);
-        /*ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            TextView mpm_all=view.findViewById(R.id.mpm_all);
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long test2;
-                for (int z = 1; z < thisMonthLastDay; z++) {
-                    for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년").child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(z + "일")).child("명상시간").getChildren()) {
-                        Log.d("test22",snapshot.getValue().toString()+"");
-                        if(snapshot.getValue().toString()==null){
-                            test2=0;
-                        }
-                        else {
-                            test2 = Long.parseLong(snapshot.getValue().toString());
-                        }
-
-                        allTime+=test2;
-                        Log.d("시간값 합친거",allTime+"");
-                    }
-                }
-                long mediHour2=allTime/1000/3600;
-                long mediMin2=(allTime/1000)/60;
-                long mediSec2=((allTime)/1000)%60;
-                Log.d("시간값",mediHour2+"시간 "+mediMin2+"분 "+mediSec2+"초");
-                if(mediHour2==0){
-                    mpm_all.setText(mediMin2+"분 "+mediSec2+"초");
-                    allTime=0;
-                }
-                else if(mediHour2!=0 && mediMin2==0){
-                    mpm_all.setText(mediHour2+"시간"+mediMin2+"분 "+mediSec2+"초");
-                    allTime=0;
-                }
-                else
-                    mpm_all.setText(mediSec2+"초");
-                allTime=0;
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-
     }
 
     private void getCalendar(Date dateForCurrentMonth) {
         int dayOfWeek;
-
 
         arrayListDayInfo.clear();
 
@@ -273,10 +220,8 @@ public class MmonthFrag extends Fragment {
 
         calendar.set(Calendar.DATE, 1);//1일로 변경
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);//1일의 요일 구하기
-        Log.d("CalendarTest", "dayOfWeek = " + dayOfWeek + "");
 
         if (dayOfWeek == Calendar.SUNDAY) {//현재 달의 1일이 무슨 요일인지 검사
-            Log.d("현재 달 1일 무슨 요일", dayOfWeek + "");
             dayOfWeek += 7;
         }
 
@@ -314,10 +259,20 @@ public class MmonthFrag extends Fragment {
             calendar.add(Calendar.DATE, +1);
         }
 
-//        mCalendarAdapter = new CalendarAdapter(arrayListDayInfo, selectedDate);
-//        gvCalendar.setAdapter(mCalendarAdapter);
+        mCalendarAdapter2 = new CalendarAdapter(arrayListDayInfo, selectedDate);
+        gvCalendar.setAdapter(mCalendarAdapter2);
 
-        // tvSelectedDate.setText(sdf.format(selectedDate));
+        Handler m = new Handler(Looper.getMainLooper());
+        m.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("size", String.valueOf(mHours.size()));
+                mCalendarAdapter = new CalendarAdapter(arrayListDayInfo, selectedDate);
+                gvCalendar.setAdapter(mCalendarAdapter);
+                mCalendarAdapter.setData(mHours);
+            }
+        }, 4000);
+
     }
 
     private void setCalendarTitle() {
@@ -328,6 +283,22 @@ public class MmonthFrag extends Fragment {
                 .append((mThisMonthCalendar.get(Calendar.MONTH) + 1))
                 .append("월");
         tvCalendarTitle.setText(sb.toString());
+    }
+
+    private void divide(Long time) {
+
+        long hour = time / 1000 / 3600;
+        long min = (time / 1000) / 60;
+        long sec = ((time) / 1000) % 60;
+
+        if (hour == 0) {
+            h = min + "분 " + sec + "초";
+        } else if (hour != 0 && min == 0) {
+            h = hour + "시간" + min + "분 " + sec + "초";
+        } else
+            h = sec + "초";
+
+        mHours.add(h);
     }
 }
 
