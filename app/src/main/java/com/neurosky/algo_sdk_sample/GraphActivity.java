@@ -1,17 +1,19 @@
 package com.neurosky.algo_sdk_sample;
 
+
+/**
+ * 프로세싱 화면을 지정한 시간동안 띄워주는 코드.
+ * thread를 이용해서 구현했음.
+ * **/
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-
-import java.io.ByteArrayOutputStream;
 
 import processing.android.CompatUtils;
 import processing.android.PFragment;

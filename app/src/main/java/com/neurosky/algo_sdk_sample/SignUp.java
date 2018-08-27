@@ -1,5 +1,10 @@
 package com.neurosky.algo_sdk_sample;
 
+/**
+ * 파이어베이스를 이용한 회원가입 구현.
+ * **/
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

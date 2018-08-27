@@ -1,5 +1,12 @@
 package com.neurosky.algo_sdk_sample;
 
+/**
+ * 주로 봐야 할 부분
+ * 1. nskAlgoSdk.setOnBPAlgoIndexListener -> 측정된 뇌파 값이 파이어베이스에 저장됨.
+ * 2. startButton.setOnClickListener -> start버튼을 누르면 실행됨. 뇌파 측정이 시작되고 그래프 그리는 화면으로 넘어감.
+ * **/
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -213,8 +220,9 @@ public class EEG extends Activity {
             @Override
             public void onClick(View v) {
                 if (bRunning == false) {
-                    nskAlgoSdk.NskAlgoStart(false);
+                    nskAlgoSdk.NskAlgoStart(false);     //Start EEG data measurement.
 
+                    //Start drawing the graph.
                     Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
                     startActivity(graphIntent);
 

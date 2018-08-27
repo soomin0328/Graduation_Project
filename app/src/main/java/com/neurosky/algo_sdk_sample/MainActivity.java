@@ -1,5 +1,10 @@
 package com.neurosky.algo_sdk_sample;
 
+/**
+ * 사진첩 권한 수락여부와 파이어베이스를 이용한 로그인 구현.
+ **/
+
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     Button signup, login, findPw;
 
     private FirebaseAuth mAuth;
-
     private FirebaseUser currentUser;
 
     String name = "";
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getPermission(){
+    private void getPermission() {
         final boolean hasWritePermission = RuntimePermissionUtil.checkPermissonGranted(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (hasWritePermission) {
@@ -115,13 +119,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
 
         currentUser = mAuth.getCurrentUser();
-        if (currentUser!=null){
-            Toast.makeText(getApplicationContext(),"You're already Login!",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(MainActivity.this,SelectActivity.class));
+        if (currentUser != null) {
+            Toast.makeText(getApplicationContext(), "You're already Login!", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(MainActivity.this, SelectActivity.class));
             finish();
         }
     }
@@ -136,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionGranted() {
                         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(MainActivity.this,"Permission Success!!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Permission Success!!", Toast.LENGTH_LONG).show();
                         }
                     }
 

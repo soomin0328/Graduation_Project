@@ -42,8 +42,6 @@ public class TensorflowActivity extends AppCompatActivity {
 
     private Context mContext;
 
-    Bitmap b;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +62,13 @@ public class TensorflowActivity extends AppCompatActivity {
         btnDetectObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //image -> bitmap
                 Drawable drawable = imageView.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
 
+                //Classifier
                 if (bitmap != null) {
                     final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
                     textViewResult.setText(results.toString());
@@ -78,6 +79,7 @@ public class TensorflowActivity extends AppCompatActivity {
             }
         });
 
+        //Go to the next screen.
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +92,7 @@ public class TensorflowActivity extends AppCompatActivity {
         initTensorFlowAndLoadModel();
     }
 
+    //Import a captured image from the phone.
     private void importImage() {
         File imgFile = new File(Environment.
                 getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
