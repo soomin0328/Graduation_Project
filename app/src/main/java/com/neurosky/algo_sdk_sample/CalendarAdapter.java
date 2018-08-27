@@ -1,11 +1,12 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.graphics.Color;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,12 +16,22 @@ import java.util.Date;
 
 
 public class CalendarAdapter extends BaseAdapter {
+
     private ArrayList<DayInfo> arrayListDayInfo;
+    private ArrayList<String> day_hours = new ArrayList<>();
+
     public Date selectedDate;
+    DayInfo day;
+
+    TextView tvDay, c_hour;
 
     public CalendarAdapter(ArrayList<DayInfo> arrayLIstDayInfo, Date date) {
         this.arrayListDayInfo = arrayLIstDayInfo;
         this.selectedDate = date;
+    }
+
+    public void setData(ArrayList<String> arr) {
+        this.day_hours = arr;
     }
 
     @Override
@@ -42,14 +53,16 @@ public class CalendarAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DayInfo day = arrayListDayInfo.get(position);
+        day = arrayListDayInfo.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.day, parent, false);
         }
 
         if (day != null) {
-            TextView tvDay = convertView.findViewById(R.id.day_cell_tv_day); //몇일인지 표시
+            tvDay = convertView.findViewById(R.id.day_cell_tv_day); //몇일인지 표시
+            c_hour = convertView.findViewById(R.id.c_hour);
+
             tvDay.setText(day.getDay());
 
             ImageView ivSelected = convertView.findViewById(R.id.iv_selected);
@@ -57,6 +70,17 @@ public class CalendarAdapter extends BaseAdapter {
                 ivSelected.setVisibility(View.VISIBLE); //오늘 날짜표시하기
             } else {
                 ivSelected.setVisibility(View.INVISIBLE);
+            }
+
+            if (day_hours.size() == 0) {
+                c_hour.setText("");
+            } else {
+                if (day.isInMonth()) {
+                    Log.e("size2", String.valueOf(day_hours.size()));
+                    c_hour.setText(day_hours.get(Integer.parseInt(tvDay.getText().toString()) - 1));
+                } else {
+                    c_hour.setText("");
+                }
             }
 
             if (day.isInMonth()) {
