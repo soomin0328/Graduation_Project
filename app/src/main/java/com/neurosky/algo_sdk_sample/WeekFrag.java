@@ -7,6 +7,8 @@ import java.util.Calendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -44,8 +46,8 @@ public class WeekFrag extends Fragment {
     private DatabaseReference database = firebaseDatabase.getReference("USERS");
     private DatabaseReference databasePercent = firebaseDatabase.getReference("USERS");
 
-    String i, wconper;
-    long wconTime, wconHour, conTime, cmigrate;
+    String i, wconper, h = "";
+    long wconTime, wconHour, conTime, cmigrate, day_allTime;
     int weekAim, z;
 
     DayInfo day;
@@ -55,8 +57,10 @@ public class WeekFrag extends Fragment {
     private LineChart mChart;           //mChart 라는 LineChart를 선언해준다.
 
     private ArrayList<DayInfo> arrayListDayInfo;
+    private ArrayList<String> hours = new ArrayList<>();
+
     Calendar mThisMonthCalendar;
-    WeekCalendarAdapter mCalendarAdapter;
+    WeekCalendarAdapter mCalendarAdapter, mCalendarAdapter2;
 
     Date selectedDate;
     ProgressBar bar;
@@ -77,6 +81,8 @@ public class WeekFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        hours.clear();
 
         view = inflater.inflate(R.layout.cp_weekfrag, container, false);
 
@@ -132,6 +138,8 @@ public class WeekFrag extends Fragment {
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hours.clear();
+
                 mThisMonthCalendar = Calendar.getInstance();
 
                 database.addValueEventListener(weekListener);
@@ -143,6 +151,8 @@ public class WeekFrag extends Fragment {
         btnPreviousCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hours.clear();
+
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, -1);
 
                 database.addValueEventListener(weekListener);
@@ -153,6 +163,7 @@ public class WeekFrag extends Fragment {
         btnNextCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hours.clear();
 
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, +1);
 
@@ -280,10 +291,19 @@ public class WeekFrag extends Fragment {
 
         }
 
+        mCalendarAdapter2 = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
+        gvCalendar.setAdapter(mCalendarAdapter2);
 
-        mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
-        gvCalendar.setAdapter(mCalendarAdapter);
-
+        Handler m = new Handler(Looper.getMainLooper());
+        m.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("week size", String.valueOf(hours.size()));
+                mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
+                gvCalendar.setAdapter(mCalendarAdapter);
+                mCalendarAdapter.setData(hours);
+            }
+        }, 4000);
 
     }
 
@@ -349,9 +369,11 @@ public class WeekFrag extends Fragment {
                     } else {
                         test = Long.parseLong(snapshot.getValue().toString());
                     }
+                    day_allTime += test;
                     conTime += test;
-                    // long test = Long.parseLong(snapshot.getValue().toString());
                 }
+                divide(day_allTime);
+                day_allTime = 0;
                 conTime += 0;
             }
 
@@ -391,6 +413,25 @@ public class WeekFrag extends Fragment {
         tvCalendarTitle.setText(sb.toString());
     }
 
+    private void divide(Long time) {
+
+        if (time != 0) {
+            long hour = time / 1000 / 3600;
+            long min = (time / 1000) / 60;
+            long sec = ((time) / 1000) % 60;
+
+            if (hour != 0) {
+                h = hour + "시간" + min + "분 " + sec + "초";
+            } else if (min != 0) {
+                h = min + "분 " + sec + "초";
+            } else
+                h = sec + "초";
+
+            hours.add(h);
+        } else {
+            hours.add("");
+        }
+    }
 }
 
 

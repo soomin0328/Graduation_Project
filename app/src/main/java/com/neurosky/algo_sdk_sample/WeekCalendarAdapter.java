@@ -1,12 +1,15 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,11 +18,18 @@ import java.util.Date;
 
 public class WeekCalendarAdapter extends BaseAdapter {
     private ArrayList<DayInfo> arrayListDayInfo;
+    private ArrayList<String> day_hours = new ArrayList<>();
+
     public Date selectedDate;
+    TextView tvDay, wc_hour;
 
     public WeekCalendarAdapter(ArrayList<DayInfo> arrayLIstDayInfo, Date date) {
         this.arrayListDayInfo = arrayLIstDayInfo;
         this.selectedDate = date;
+    }
+
+    public void setData(ArrayList<String> arr) {
+        this.day_hours = arr;
     }
 
     @Override
@@ -48,15 +58,26 @@ public class WeekCalendarAdapter extends BaseAdapter {
         }
 
         if (day != null) {
-            TextView tvDay = convertView.findViewById(R.id.week_cell_tv_day); //몇일인지 표시
-            tvDay.setText(day.getDay());
+            tvDay = convertView.findViewById(R.id.week_cell_tv_day); //몇일인지 표시
+            wc_hour = convertView.findViewById(R.id.wc_hour);
 
+            tvDay.setText(day.getDay());
 
             ImageView ivSelected = convertView.findViewById(R.id.wiv_selected);
             if (day.isSameDay(selectedDate)) {
                 ivSelected.setVisibility(View.VISIBLE); //오늘 날짜표시하기
             } else {
                 ivSelected.setVisibility(View.INVISIBLE);
+            }
+
+            if (day_hours.size() == 0) {
+                wc_hour.setText("");
+            } else {
+                if (day.isInMonth()) {
+                    wc_hour.setText(day_hours.get(position));
+                } else {
+                    wc_hour.setText("");
+                }
             }
 
             if (day.isInMonth()) {
