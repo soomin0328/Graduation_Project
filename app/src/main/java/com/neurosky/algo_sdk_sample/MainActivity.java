@@ -4,7 +4,6 @@ package com.neurosky.algo_sdk_sample;
  * 사진첩 권한 수락여부와 파이어베이스를 이용한 로그인 구현.
  **/
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;

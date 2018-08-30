@@ -1,15 +1,10 @@
 package com.neurosky.algo_sdk_sample;
 
-/***
- * valueEventListener 수정.
- * hours라는 ArrayList 만들어서 하루 총 집중시간 저장 -> CalendarAdapter로 넘겨 c_hour 수정.
- * */
-
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -21,7 +16,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,34 +30,27 @@ import java.util.Date;
 public class MonthFrag extends Fragment {
 
     private TextView tvCalendarTitle;
-    //private TextView tvSelectedDate;
     private GridView gvCalendar;
 
     private ArrayList<DayInfo> arrayListDayInfo;
-    private ArrayList<String> hours = new ArrayList<String>();
+    private ArrayList<String> hours = new ArrayList<>();
 
     Calendar mThisMonthCalendar;
-    CalendarAdapter mCalendarAdapter;
-    CalendarAdapter mCalendarAdapter2;
+    CalendarAdapter mCalendarAdapter, mCalendarAdapter2;
 
-    //디비
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS"); //월 전체 계산용
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");//월 전체 계산용
     private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS"); //하루계산용
     private DatabaseReference databaseRefer = firebaseDatabase.getReference("USERS");//달성율
     private DatabaseReference databaseReferences2 = firebaseDatabase.getReference("USERS");
 
-    String dayAim_per, i;
-    String str = "";
-    String h = "";
-    long conTime, conHour, c_allTime, day_allTime;
-    long migrate; //걍 값 이동시켜주는거
-    int thisMonthLastDay;
-    int month_Aim; //한달 전체 달성울
+    private int preSelected = -1;
+    String dayAim_per, i, h = "";
+    long conTime, conHour, c_allTime, day_allTime, migrate;
+    int thisMonthLastDay, month_Aim; //한달 전체 달성울
 
     View view;
-    TextView cpm_all, barPercent, aimPer, c_hour;
-    TextView cp_day; //달력의 하루하루
+    TextView cpm_all, barPercent, aimPer, c_hour, cp_day; //달력의 하루하루
     Date selectedDate;
     ProgressBar bar;
 
@@ -75,7 +62,8 @@ public class MonthFrag extends Fragment {
         }
     }
 
-    ValueEventListener pListener = new ValueEventListener() { //달력에 하루하루 클릭시 databaseReferences꺼
+    //달력에서 특정 날짜 눌렀을 때 하루 집중시간 구하기
+    ValueEventListener pListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -90,11 +78,11 @@ public class MonthFrag extends Fragment {
             long conMin = (conTime / 1000) / 60;
             long conSec = ((conTime) / 1000) % 60;
 
-            if (conHour == 0) {
-                cp_day.setText(conMin + "분 " + conSec + "초");
+            if (conHour != 0) {
+                cp_day.setText(conHour + "시간 " + conMin + "분 " + conSec + "초");
                 conTime = 0;
-            } else if (conHour != 0 && conMin == 0) {
-                cp_day.setText(conHour + "시간" + conMin + "분 " + conSec + "초");
+            } else if (conMin != 0) {
+                cp_day.setText(conMin + "분 " + conSec + "초");
                 conTime = 0;
             } else
                 cp_day.setText(conSec + "초");
@@ -108,6 +96,7 @@ public class MonthFrag extends Fragment {
         }
     };
 
+    //한 달 총 집중시간(c_allTime) & 하루 총 집중시간(day_allTime) 구하기
     ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,11 +125,11 @@ public class MonthFrag extends Fragment {
             long mediMin2 = (c_allTime / 1000) / 60;
             long mediSec2 = ((c_allTime) / 1000) % 60;
 
-            if (mediHour2 == 0) {
-                cpm_all.setText(mediMin2 + "분 " + mediSec2 + "초");
+            if (mediHour2 != 0) {
+                cpm_all.setText(mediHour2 + "시간 " + mediMin2 + "분 " + mediSec2 + "초");
                 c_allTime = 0;
-            } else if (mediHour2 != 0 && mediMin2 == 0) {
-                cpm_all.setText(mediHour2 + "시간" + mediMin2 + "분 " + mediSec2 + "초");
+            } else if (mediMin2 != 0) {
+                cpm_all.setText(mediMin2 + "분 " + mediSec2 + "초");
                 c_allTime = 0;
             } else
                 cpm_all.setText(mediSec2 + "초");
@@ -154,6 +143,7 @@ public class MonthFrag extends Fragment {
         }
     };
 
+    //하루 달성율 구하기
     ValueEventListener dayAimListener = new ValueEventListener() {
 
         @Override
@@ -183,9 +173,10 @@ public class MonthFrag extends Fragment {
         }
     };
 
-    ValueEventListener percentListener = databaseReference.addValueEventListener(new ValueEventListener() { //한달동안의 전체 퍼센트
+    //한달 퍼센트 구하기
+    ValueEventListener percentListener = databaseReference.addValueEventListener(new ValueEventListener() {
         @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) { //c_allTime이 식 위에
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
             int testValue;
 
@@ -199,7 +190,7 @@ public class MonthFrag extends Fragment {
                         testValue = Integer.parseInt(snapshot.getValue().toString());
 
                     }
-                    month_Aim += testValue; //목표했던시간 다 불러와서 더해
+                    month_Aim += testValue;
                 }
             }
 
@@ -233,17 +224,16 @@ public class MonthFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.cp_monthfrag, container, false);
-        cp_day = view.findViewById(R.id.s_hour); //하루에 집중한 시간
-        cpm_all = view.findViewById(R.id.cpm_all); //그달 전체 집중시간
+        cp_day = view.findViewById(R.id.mp_day); //하루에 집중한 시간
+        cpm_all = view.findViewById(R.id.mpm_all); //그달 전체 집중시간
         aimPer = view.findViewById(R.id.aimPer); //하루 달성율
 
-        Button btnPreviousCalendar = view.findViewById(R.id.btn_previous_calendar);
-        Button btnNextCalendar = view.findViewById(R.id.btn_next_calendar);
-        Button goToday = view.findViewById(R.id.cptoday);
+        Button btnPreviousCalendar = view.findViewById(R.id.mbtn_previous_calendar);
+        Button btnNextCalendar = view.findViewById(R.id.mbtn_next_calendar);
+        Button goToday = view.findViewById(R.id.mptoday1);
 
-        tvCalendarTitle = view.findViewById(R.id.tv_calendar_title);
-        // tvSelectedDate = findViewById(R.id.tv_selected_date);
-        gvCalendar = view.findViewById(R.id.gv_calendar);
+        tvCalendarTitle = view.findViewById(R.id.mtv_calendar_title);
+        gvCalendar = view.findViewById(R.id.mgv_calendar);
 
         bar = (ProgressBar) view.findViewById(R.id.progressBar);
         barPercent = view.findViewById(R.id.barPercent);
@@ -296,17 +286,26 @@ public class MonthFrag extends Fragment {
                 setSelectedDate(((DayInfo) view.getTag()).getDate());
                 day = arrayListDayInfo.get(position);
                 i = day.getDay();
-
                 if (day.isInMonth()) {
-                    databaseRefer.addValueEventListener(dayAimListener);
                     databaseReferences.addValueEventListener(pListener);
+                    view.setBackgroundColor(Color.YELLOW);
+                    View prevSelectedView = adapterView.getChildAt(preSelected);
+
+                    if (preSelected != -1) {
+                        //prevSelectedView.setClickable(false);
+                        prevSelectedView.setSelected(false);
+                        prevSelectedView.setBackgroundResource(R.drawable.bg_rect_border);
+                    }
+
+                    preSelected = position;
 
                     final long a = mThisMonthCalendar.get(Calendar.YEAR);
                     final long b = (mThisMonthCalendar.get(Calendar.MONTH) + 1);
                 }
+
+
             }
         });
-
 
         arrayListDayInfo = new ArrayList<>();
         return view;
@@ -384,7 +383,6 @@ public class MonthFrag extends Fragment {
             }
         }, 4000);
 
-        // tvSelectedDate.setText(sdf.format(selectedDate));
     }
 
     private void setCalendarTitle() {
@@ -399,18 +397,22 @@ public class MonthFrag extends Fragment {
 
     private void divide(Long time) {
 
-        long hour = time / 1000 / 3600;
-        long min = (time / 1000) / 60;
-        long sec = ((time) / 1000) % 60;
+        if (time != 0) {
+            long hour = time / 1000 / 3600;
+            long min = (time / 1000) / 60;
+            long sec = ((time) / 1000) % 60;
 
-        if (hour == 0) {
-            h = min + "분 " + sec + "초";
-        } else if (hour != 0 && min == 0) {
-            h = hour + "시간" + min + "분 " + sec + "초";
-        } else
-            h = sec + "초";
+            if (hour != 0) {
+                h = hour + "시간" + min + "분 " + sec + "초";
+            } else if (min != 0) {
+                h = min + "분 " + sec + "초";
+            } else
+                h = sec + "초";
 
-        hours.add(h);
+            hours.add(h);
+        } else {
+            hours.add("");
+        }
     }
 }
 

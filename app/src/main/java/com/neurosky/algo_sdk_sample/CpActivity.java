@@ -2,8 +2,12 @@ package com.neurosky.algo_sdk_sample;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,7 +34,10 @@ public class CpActivity extends AppCompatActivity implements View.OnClickListene
         frag1 = new MonthFrag();
         frag2 = new WeekFrag();
         frag3 = new DayFrag();
+
+        loading();
         setFrag(0);
+
     }
 
     @Override
@@ -38,12 +45,15 @@ public class CpActivity extends AppCompatActivity implements View.OnClickListene
         switch (v.getId()) {
             case R.id.btnMonth:
                 setFrag(0);
+                loading();
                 break;
             case R.id.btnweek:
                 setFrag(1);
+                loading();
                 break;
             case R.id.btnday:
                 setFrag(2);
+                loading();
                 break;
         }
     }
@@ -65,5 +75,16 @@ public class CpActivity extends AppCompatActivity implements View.OnClickListene
                 tran.commit();
                 break;
         }
+    }
+
+    public void loading() {
+        final ProgressDialog dialog = ProgressDialog.show(CpActivity.this, "Loading", "Get calendar data...", true, true);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 4000);
     }
 }

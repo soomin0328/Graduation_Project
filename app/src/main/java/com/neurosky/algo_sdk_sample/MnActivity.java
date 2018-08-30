@@ -28,20 +28,22 @@ import java.io.IOException;
 
 public class MnActivity extends AppCompatActivity {
     Button playbtn; //음악재생
-    Button prev;
-    Button nextbtn; //다음곡
+    Button prev, nextbtn; //다음곡
     SeekBar seekbar;
     MediaPlayer music;
     TextView theDay;
+
     int[] a;
     static int count = 0;
     private LineChart chart2;
     private Thread thread2;
     Calendar cal = Calendar.getInstance();
+
     int myear = cal.get(Calendar.YEAR);
     int mmonth = (cal.get(Calendar.MONTH) + 1);
     int mday = cal.get(Calendar.DAY_OF_MONTH);
     long ell;
+
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
 
@@ -50,24 +52,16 @@ public class MnActivity extends AppCompatActivity {
      */
     TextView mEllapse;
 
-    Button mBtnStart;
-
-    Button mBtnSplit;
+    Button mBtnStart, mBtnSplit;
 
     //스톱워치의 상태를 위한 상수
-
     final static int IDLE = 0;
-
     final static int RUNNING = 1;
-
     final static int PAUSE = 2;
 
     int mStatus = IDLE;//처음 상태는 IDLE
-
     long mBaseTime;
-
     long mPauseTime;
-
 
     private SeekBar.OnSeekBarChangeListener soundcontrollListner = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -91,6 +85,7 @@ public class MnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mn);
+
 /**
  * 타이머
  * */

@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,6 +45,7 @@ public class MmonthFrag extends Fragment {
     String i, h = "";
     long mediTime, mediHour, allTime, day_allTime;
     int thisMonthLastDay;
+    private int preSelected = -1;
 
     private ArrayList<DayInfo> arrayListDayInfo;
     private ArrayList<String> mHours = new ArrayList<>();
@@ -111,7 +113,6 @@ public class MmonthFrag extends Fragment {
         gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             DayInfo day;
 
-            // String i;
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 setSelectedDate(((DayInfo) view.getTag()).getDate());
@@ -120,6 +121,15 @@ public class MmonthFrag extends Fragment {
 
                 if (day.isInMonth()) {
                     databaseReferences.addValueEventListener(pListener);
+                    view.setBackgroundColor(Color.YELLOW);
+                    View prevSelectedView = adapterView.getChildAt(preSelected);
+
+                    if (preSelected != -1) {
+                        prevSelectedView.setSelected(false);
+                        prevSelectedView.setBackgroundResource(R.drawable.bg_rect_border);
+                    }
+
+                    preSelected = position;
                 }
             }
         });
@@ -137,15 +147,16 @@ public class MmonthFrag extends Fragment {
                 long test = Long.parseLong(snapshot.getValue().toString());
                 mediTime += test;
             }
+
             mediHour = mediTime / 1000 / 3600;
             long mediMin = (mediTime / 1000) / 60;
             long mediSec = ((mediTime) / 1000) % 60;
 
-            if (mediHour == 0) {
-                mp_day.setText(mediMin + "분 " + mediSec + "초");
+            if (mediHour != 0) {
+                mp_day.setText(mediHour + "시간 " + mediMin + "분 " + mediSec + "초");
                 mediTime = 0;
-            } else if (mediHour != 0 && mediMin == 0) {
-                mp_day.setText(mediHour + "시간" + mediMin + "분 " + mediSec + "초");
+            } else if (mediMin != 0) {
+                mp_day.setText(mediMin + "분 " + mediSec + "초");
                 mediTime = 0;
             } else
                 mp_day.setText(mediSec + "초");
@@ -185,11 +196,11 @@ public class MmonthFrag extends Fragment {
             long mediMin2 = (allTime / 1000) / 60;
             long mediSec2 = ((allTime) / 1000) % 60;
 
-            if (mediHour2 == 0) {
-                mpm_all.setText(mediMin2 + "분 " + mediSec2 + "초");
+            if (mediHour2 != 0) {
+                mpm_all.setText(mediHour2+"시간 "+mediMin2 + "분 " + mediSec2 + "초");
                 allTime = 0;
-            } else if (mediHour2 != 0 && mediMin2 == 0) {
-                mpm_all.setText(mediHour2 + "시간" + mediMin2 + "분 " + mediSec2 + "초");
+            } else if ( mediMin2 != 0) {
+                mpm_all.setText(mediMin2 + "분 " + mediSec2 + "초");
                 allTime = 0;
             } else
                 mpm_all.setText(mediSec2 + "초");
@@ -286,19 +297,23 @@ public class MmonthFrag extends Fragment {
     }
 
     private void divide(Long time) {
+        if(time!=0){
+            long hour = time / 1000 / 3600;
+            long min = (time / 1000) / 60;
+            long sec = ((time) / 1000) % 60;
 
-        long hour = time / 1000 / 3600;
-        long min = (time / 1000) / 60;
-        long sec = ((time) / 1000) % 60;
+            if (hour != 0) {
+                h = hour+"시간 "+min + "분 " + sec + "초";
+            } else if (min != 0) {
+                h =  min + "분 " + sec + "초";
+            } else
+                h = sec + "초";
 
-        if (hour == 0) {
-            h = min + "분 " + sec + "초";
-        } else if (hour != 0 && min == 0) {
-            h = hour + "시간" + min + "분 " + sec + "초";
-        } else
-            h = sec + "초";
-
-        mHours.add(h);
+            mHours.add(h);
+        }
+        else{
+            mHours.add("");
+        }
     }
 }
 

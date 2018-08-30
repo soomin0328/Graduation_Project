@@ -1,6 +1,5 @@
 package com.neurosky.algo_sdk_sample;
 
-
 /**
  * 프로세싱 화면을 지정한 시간동안 띄워주는 코드.
  * thread를 이용해서 구현했음.

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CnActivity extends AppCompatActivity { //
-    private TextView theDate;
-    private TextView aimTime;
+    private TextView theDate, aimTime;
     public Calendar cal = Calendar.getInstance();
 
     private LineChart chart;
@@ -41,35 +39,21 @@ public class CnActivity extends AppCompatActivity { //
     int cmonth = (cal.get(Calendar.MONTH) + 1);
     int cday = cal.get(Calendar.DAY_OF_MONTH);
 
-    TextView mEllapse;
+    TextView mEllapse, percent;
+    Button mBtnStart, mBtnSplit;
 
-    TextView percent;
-    Button mBtnStart;
-
-    Button mBtnSplit;
-
-    /**
-     * 디비
-     */
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
 
 
     //스톱워치의 상태를 위한 상수
-
     final static int IDLE = 0;
-
     final static int RUNNING = 1;
-
     final static int PAUSE = 2;
 
     int mStatus = IDLE;//처음 상태는 IDLE
-
-    long mBaseTime;
-
-    long mPauseTime;
-    int hour;
-    int min;
+    long mBaseTime, mPauseTime;
+    int hour, min;
 
 
     @Override
@@ -87,30 +71,22 @@ public class CnActivity extends AppCompatActivity { //
         hour = incomingIntent.getIntExtra("hours", 90); //설정한 목표 시간
         min = incomingIntent.getIntExtra("mins", 92); //설정한 목표시간 분
         aimTime.setText(times);
-        Log.d("넘어온 시간들", hour + "랑" + min);
+
         //변수 hour min 을 long으로 바꾸서
         long hourn = hour * 1000 * 3600;
         long minn = min * 1000 * 60;
-        // long sum=hourn+minn;
         long aim = hourn + minn; //ms단위인 목표시간
-        //공부한번 하려할때마다 누른 이 목표시간도(ms단위) 디비에 넣고 나중에 더 더해와서 계산하면....
-        Log.d("넘어온 시간들변환", hourn + "랑" + minn);
 
         /**
          * 타이머 변수
-         * **/
-
+         * */
         mEllapse = (TextView) findViewById(R.id.cellapse);  //초뜨는 텍스트
-
         mBtnStart = (Button) findViewById(R.id.cbtnstart);
-
         mBtnSplit = (Button) findViewById(R.id.cbtnsplit);  //스탑워치 멈추고 달성률뜨게ㅎㅏ는 버튼
-
 
         String text2 = cyear + "년" + cmonth + "월" + cday + "일 현재상태";
 
         theDate.setText(text2);
-
 
         /**
          * 그래프
@@ -134,7 +110,6 @@ public class CnActivity extends AppCompatActivity { //
         feedMultiple();                                         // 쓰레드를 활용하여 실시간으로 데이터
     }
 
-
     private void addEntry() {
         LineData data = chart.getData();                        // onCreate에서 생성한 LineData를 가져옴
         if (data != null)                                        // 데이터가 널값이 아니면(비어있지 않으면) if문 실행
@@ -152,13 +127,10 @@ public class CnActivity extends AppCompatActivity { //
             dia(data_Value);
 
             data.addEntry(new Entry(set.getEntryCount(), data_Value), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
-
-
             data.addEntry(new Entry(set.getEntryCount(), (float) Math.random()), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
             data.notifyDataChanged();                           // data의 값 변동을 감지함
 
             chart.notifyDataSetChanged();                       // chart의 값 변동을 감지함
-
             chart.setVisibleXRangeMaximum(30);                  // chart에서 한 화면에 x좌표를 최대 몇개까지 출력할 것인지 정함
             chart.moveViewToX(data.getEntryCount());
 
@@ -169,15 +141,15 @@ public class CnActivity extends AppCompatActivity { //
 
     private void dia(float data_Value) {
         if (0.2 < data_Value && data_Value < 0.4) {
-            // final AlarmGraph ag=new AlarmGraph();
-            //ag.show(getSupportFragmentManager(),"집중해");
             AlertDialog.Builder ad = new AlertDialog.Builder(CnActivity.this);
             ad.setMessage("집중하세요!!");
 
             final AlertDialog aaa = ad.create();
             aaa.show();
+
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(900);
+
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -374,22 +346,22 @@ public class CnActivity extends AppCompatActivity { //
                         //db에 들어가는 값을 ms로해서 누적?시켜서 해야될거같음..흠...
 
                         sum = (hour_l + min_l) / 100;     ///결국 sum값이 사용자가 설정한 목표 시간!!!!!!!!!
-                        Log.d("사용자의 목표시간", sum + "");
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월")).child(String.valueOf(cday + "일")).child("목표시간").push().setValue(sum); //집중한 시간 long값으로 넣은듯
+                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
+                                .child(String.valueOf(cday + "일")).child("목표시간").push().setValue(sum); //집중한 시간 long값으로 넣은듯
 
                         rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거임
                         //rtime이 공부 (명상) 다해서 끝내기 눌러서 가져오는 최종 집중 밀리세컨즈단위 시간->이걸디비에go.
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월")).child(String.valueOf(cday + "일")).child("집중시간").push().setValue(rtime); //집중한 시간 long값으로 넣은듯
+                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
+                                .child(String.valueOf(cday + "일")).child("집중시간").push().setValue(rtime); //집중한 시간 long값으로 넣은듯
                         result = rtime / sum;
-                        Log.d("시간값들", "시간:" + hour_l + " 분:" + min_l + "합:" + sum + "진행한집중시간:" + rtime);
-                        Log.d("퍼센트", (result) + "랑" + result + "달성율" + rtime / sum);
 
                         //여기 디비에 넣기? 리줄트 값 넣으면돼
 
 
                         // Log.d("명상한 총시간",result+"명상함");
                         percent.setText("달성률:" + result + "%");
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월")).child(String.valueOf(cday + "일")).child("하루달성율").push().setValue(String.valueOf(result)); //집중한 시간 long값
+                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
+                                .child(String.valueOf(cday + "일")).child("하루달성율").push().setValue(String.valueOf(result)); //집중한 시간 long값
 
 
                         mStatus = IDLE;
@@ -446,11 +418,14 @@ public class CnActivity extends AppCompatActivity { //
     String getEllapse() {
 
         long now = SystemClock.elapsedRealtime();
-
+        String sEll;
         long ell = now - mBaseTime;//현재 시간과 지난 시간을 빼서 ell값을 구하고
 
         // String sEll = String.format("%02d:%02d:%02d", ell / 1000 / 60, (ell/1000)%60, (ell %1000)/10);
-        String sEll = String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) / 60, (ell / 1000) % 60);
+        if (ell / 1000 / 60 == 60) {
+            String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) / 600, (ell / 1000) % 60);
+        }
+        sEll = String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) / 60, (ell / 1000) % 60);
         //시간 분 초 로 바꿔준걸 반환해주는거
         Log.d("sEl값", sEll + "");
         return sEll;

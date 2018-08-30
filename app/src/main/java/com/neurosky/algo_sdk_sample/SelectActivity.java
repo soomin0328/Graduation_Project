@@ -1,8 +1,11 @@
 package com.neurosky.algo_sdk_sample;
 
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +15,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class SelectActivity extends AppCompatActivity {
-    CheckBox concent;
-    CheckBox meditate;
-    CheckBox past;
-    CheckBox now;
+    CheckBox concent, meditate, past, now;
     Button next;
 
     TimePickerDialog.OnTimeSetListener tt = new TimePickerDialog.OnTimeSetListener() {
