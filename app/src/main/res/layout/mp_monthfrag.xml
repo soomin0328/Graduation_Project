@@ -1,49 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/mp_day"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/mgv_calendar" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:text="하루명상시간: "
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mgv_calendar" />
+
+    <GridView
+        android:id="@+id/mgv_calendar"
+        android:layout_width="0dp"
+        android:layout_height="393dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:columnWidth="90dp"
+        android:horizontalSpacing="0dp"
+        android:numColumns="7"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/mpm_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/textView8"
+        android:text="waiting"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv"
+        app:layout_constraintTop_toBottomOf="@+id/mtv_calendar_title" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignStart="@+id/tv4"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:text="월 총 시간:"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtv_calendar_title" />
+
+    <Button
+        android:id="@+id/mptoday1"
+        android:layout_width="73dp"
+        android:layout_height="38dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="4dp"
+        android:text="today"
+        android:textSize="9sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/mbtn_next_calendar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="명상"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/mbtn_next_calendar"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/right"
+        android:text=""
+        app:layout_constraintStart_toEndOf="@+id/mtv_calendar_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/mbtn_previous_calendar"
-        android:layout_width="45dp"
+        android:layout_width="35dp"
         android:layout_height="33dp"
-
+        android:layout_alignBottom="@+id/w_next_calendar"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="76dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_weight="1"
         android:background="@drawable/left"
-        android:text="" />
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/mtv_calendar_title"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mtv_calendar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="33dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="2018년 몇월"
         android:textColor="#000"
         android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/mbtn_next_calendar"
-        android:layout_width="45dp"
-        android:layout_height="33dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="76dp"
-        android:layout_weight="1"
-        android:background="@drawable/right"
-        android:text="" />
-
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="99dp"
-        android:orientation="horizontal">
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv">
 
         <TextView
             android:layout_width="0dp"
@@ -109,75 +231,4 @@
             android:textSize="14sp" />
 
     </LinearLayout>
-    <GridView
-        android:id="@+id/mgv_calendar"
-        android:layout_width="match_parent"
-        android:layout_height="392dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:columnWidth="90dp"
-        android:horizontalSpacing="0dp"
-        android:numColumns="7"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="0dp" />
-
-    <TextView
-        android:id="@+id/tag1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="42dp"
-        android:text="월 총 시간:"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-
-    <Button
-        android:id="@+id/mptoday1"
-        android:layout_width="64dp"
-        android:layout_height="33dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:text="today"
-        android:textSize="9sp"/>
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/mbtn_previous_calendar"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="51dp"
-        android:text="하루명상시간:"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="명상" />
-
-    <TextView
-        android:id="@+id/mp_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/mtv_calendar_title"
-        android:layout_alignTop="@+id/textView6"
-        android:text="날짜클릭시변함"
-        android:textSize="17sp"
-        android:textColor="@color/black"/>
-
-    <TextView
-        android:id="@+id/mpm_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tag1"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="93dp"
-        android:text="waiting"
-        android:textColor="@color/black"
-        android:textSize="16sp"/>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
