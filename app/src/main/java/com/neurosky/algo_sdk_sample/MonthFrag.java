@@ -223,6 +223,8 @@ public class MonthFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        hours.clear();
+
         view = inflater.inflate(R.layout.cp_monthfrag, container, false);
         cp_day = view.findViewById(R.id.mp_day); //하루에 집중한 시간
         cpm_all = view.findViewById(R.id.mpm_all); //그달 전체 집중시간
