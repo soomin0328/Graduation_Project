@@ -75,7 +75,7 @@ public class MonthFrag extends Fragment {
             }
 
             conHour = conTime / 1000 / 3600;
-            long conMin = (conTime / 1000) / 60;
+            long conMin = (conTime / 1000) % 3600 / 60;
             long conSec = ((conTime) / 1000) % 60;
 
             if (conHour != 0) {
@@ -122,7 +122,7 @@ public class MonthFrag extends Fragment {
             migrate = c_allTime; //다른데서 쓰려고 옮겨줌 아래에서 0으로해버리거든.
 
             long mediHour2 = c_allTime / 1000 / 3600;
-            long mediMin2 = (c_allTime / 1000) / 60;
+            long mediMin2 = (c_allTime / 1000) % 3600 / 60;
             long mediSec2 = ((c_allTime) / 1000) % 60;
 
             if (mediHour2 != 0) {
@@ -378,7 +378,6 @@ public class MonthFrag extends Fragment {
         m.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.e("size", String.valueOf(hours.size()));
                 mCalendarAdapter = new CalendarAdapter(arrayListDayInfo, selectedDate);
                 gvCalendar.setAdapter(mCalendarAdapter);
                 mCalendarAdapter.setData(hours);
@@ -401,7 +400,7 @@ public class MonthFrag extends Fragment {
 
         if (time != 0) {
             long hour = time / 1000 / 3600;
-            long min = (time / 1000) / 60;
+            long min = (time / 1000) % 3600 / 60;
             long sec = ((time) / 1000) % 60;
 
             if (hour != 0) {
@@ -417,6 +416,3 @@ public class MonthFrag extends Fragment {
         }
     }
 }
-
-
-

@@ -7,6 +7,8 @@ import java.util.Calendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -44,8 +46,8 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     private GridView gvCalendar;
     private LineChart mChart;           //mChart 라는 LineChart를 선언해준다.
 
-    String i;
-    long mediTime;
+    String i, h = "";
+    long mediTime, Mday_allTime;
     private int preSelected = -1;
 
     DayInfo day;
@@ -53,8 +55,10 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     TextView mp_week, mp_weekall;
 
     private ArrayList<DayInfo> arrayListDayInfo;
+    private ArrayList<String> Mhours = new ArrayList<>();
+
     Calendar mThisMonthCalendar;
-    WeekCalendarAdapter mCalendarAdapter;
+    WeekCalendarAdapter mCalendarAdapter, mCalendarAdapter2;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
@@ -75,6 +79,8 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        Mhours.clear();
 
         view = inflater.inflate(R.layout.mp_weekfrag, container, false);
 
@@ -130,10 +136,11 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         data.setDrawValues(true);                  //data의 수치를 그래프 위에 나타내지 않기.
         mChart.setData(data);                       //mChart를 이용하여 data 표시
 
-        ///////////////////////database.addValueEventListener(weekListener);
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Mhours.clear();
+
                 mThisMonthCalendar = Calendar.getInstance();
                 database.addValueEventListener(weekListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -143,6 +150,8 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         btnPreviousCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Mhours.clear();
+
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, -1);
                 database.addValueEventListener(weekListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -151,13 +160,14 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         btnNextCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Mhours.clear();
 
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, +1);
                 database.addValueEventListener(weekListener);
                 getCalendar(mThisMonthCalendar.getTime());
             }
         });
-        database.addValueEventListener(weekListener);
+
         gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             ValueEventListener pListener = new ValueEventListener() {
@@ -174,8 +184,6 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     long mediHour = mediTime / 1000 / 3600;
                     long mediMin = (mediTime / 1000) / 60;
                     long mediSec = ((mediTime) / 1000) % 60;
-
-                    Log.d("아아테스트", mediTime / 1000 / 3600 + "시간" + (mediTime / 1000) / 60 + "분  " + mediTime + "는메디타임" + "medihour은" + mediHour);
 
                     if (mediHour == 0) {
                         mp_week.setText(mediMin + "분 " + mediSec + "초");
@@ -230,9 +238,9 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     }
 
     Calendar calendar = Calendar.getInstance();
+    int dayOfWeek, thisWeekLastDay;
 
     private void getCalendar(Date dateForCurrentMonth) {
-        int dayOfWeek, thisWeekLastDay;
 
         arrayListDayInfo.clear();
 
@@ -255,8 +263,18 @@ public class MweekFrag extends Fragment { //명상 주별 과거
             calendar.add(Calendar.DATE, +1);
         }
 
-        mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
-        gvCalendar.setAdapter(mCalendarAdapter);
+        mCalendarAdapter2 = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
+        gvCalendar.setAdapter(mCalendarAdapter2);
+
+        Handler m = new Handler(Looper.getMainLooper());
+        m.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
+                gvCalendar.setAdapter(mCalendarAdapter);
+                mCalendarAdapter.setData(Mhours);
+            }
+        }, 4000);
 
     }
 
@@ -267,25 +285,85 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             long test;
             int i = Integer.parseInt(day.getDay());
-            int k = i - 7;
+            int k = i - 6;
 
-            for (int j = k; j <= i; j++) {
-                for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                        .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
-                        .child("명상시간").getChildren()) {
-                    if (snapshot.getValue().toString() == null) {
-                        test = 0;
-                    } else {
-                        test = Long.parseLong(snapshot.getValue().toString());
+            if ((i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6) && (dayOfWeek == 4 || dayOfWeek == 5)) {
+                int month = mThisMonthCalendar.get(Calendar.MONTH) + 1;
+                if (month == 1 || month == 3 || month == 5 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                    for (int j = 31 - (6 - i); j <= 31; j++) {
+                        for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                                .child("명상시간").getChildren()) {
+                            if (snapshot.getValue().toString() == null) {
+                                test = 0;
+                            } else {
+                                test = Long.parseLong(snapshot.getValue().toString());
+                            }
+                            Mday_allTime += test;
+                            mediTime += test;
+                        }
+                        divide(Mday_allTime);
+                        Mday_allTime = 0;
+                        mediTime += 0;
                     }
-                    mediTime += test;
+                } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+                    for (int j = 30 - (6 - i); j <= 30; j++) {
+                        for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child("명상시간").getChildren()) {
+                            if (snapshot.getValue().toString() == null) {
+                                test = 0;
+                            } else {
+                                test = Long.parseLong(snapshot.getValue().toString());
+                            }
+                            Mday_allTime += test;
+                            mediTime += test;
+                        }
+                        divide(Mday_allTime);
+                        Mday_allTime = 0;
+                        mediTime += 0;
+                    }
+                } else {
+                    for (int j = 28 - (6 - i); j <= 28; j++) {
+                        for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child("명상시간").getChildren()) {
+                            if (snapshot.getValue().toString() == null) {
+                                test = 0;
+                            } else {
+                                test = Long.parseLong(snapshot.getValue().toString());
+                            }
+                            Mday_allTime += test;
+                            mediTime += test;
+                        }
+                        divide(Mday_allTime);
+                        Mday_allTime = 0;
+                        mediTime += 0;
+                    }
                 }
-                mediTime += 0;
             }
 
+            if ((i != 1 || i != 2 || i != 3 || i != 4 || i != 5 || i != 6) && (dayOfWeek != 4 || dayOfWeek != 5)) {
+                for (int j = k; j <= i; j++) {
+                    for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                            .child("명상시간").getChildren()) {
+                        if (snapshot.getValue().toString() == null) {
+                            test = 0;
+                        } else {
+                            test = Long.parseLong(snapshot.getValue().toString());
+                        }
+                        Mday_allTime += test;
+                        mediTime += test;
+                    }
+                    divide(Mday_allTime);
+                    Mday_allTime = 0;
+                    mediTime += 0;
+                }
+            }
 
             long mediHour2 = mediTime / 1000 / 3600;
-            long mediMin2 = (mediTime / 1000) / 60;
+            long mediMin2 = (mediTime / 1000) % 3600 / 60;
             long mediSec2 = ((mediTime) / 1000) % 60;
 
             if (mediHour2 != 0) {
@@ -317,5 +395,25 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                 .append((mThisMonthCalendar.get(Calendar.WEEK_OF_MONTH)))
                 .append("주차");
         tvCalendarTitle.setText(sb.toString());
+    }
+
+    private void divide(Long time) {
+
+        if (time != 0) {
+            long hour = time / 1000 / 3600;
+            long min = (time / 1000) % 3600 / 60;
+            long sec = ((time) / 1000) % 60;
+
+            if (hour != 0) {
+                h = hour + "시간" + min + "분 " + sec + "초";
+            } else if (min != 0) {
+                h = min + "분 " + sec + "초";
+            } else
+                h = sec + "초";
+
+            Mhours.add(h);
+        } else {
+            Mhours.add("");
+        }
     }
 }

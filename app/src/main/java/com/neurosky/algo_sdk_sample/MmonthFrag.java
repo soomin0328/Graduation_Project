@@ -197,9 +197,9 @@ public class MmonthFrag extends Fragment {
             long mediSec2 = ((allTime) / 1000) % 60;
 
             if (mediHour2 != 0) {
-                mpm_all.setText(mediHour2+"시간 "+mediMin2 + "분 " + mediSec2 + "초");
+                mpm_all.setText(mediHour2 + "시간 " + mediMin2 + "분 " + mediSec2 + "초");
                 allTime = 0;
-            } else if ( mediMin2 != 0) {
+            } else if (mediMin2 != 0) {
                 mpm_all.setText(mediMin2 + "분 " + mediSec2 + "초");
                 allTime = 0;
             } else
@@ -277,7 +277,6 @@ public class MmonthFrag extends Fragment {
         m.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.e("size", String.valueOf(mHours.size()));
                 mCalendarAdapter = new CalendarAdapter(arrayListDayInfo, selectedDate);
                 gvCalendar.setAdapter(mCalendarAdapter);
                 mCalendarAdapter.setData(mHours);
@@ -297,25 +296,21 @@ public class MmonthFrag extends Fragment {
     }
 
     private void divide(Long time) {
-        if(time!=0){
+        if (time != 0) {
             long hour = time / 1000 / 3600;
-            long min = (time / 1000) / 60;
+            long min = (time / 1000) % 3600 / 60;
             long sec = ((time) / 1000) % 60;
 
             if (hour != 0) {
-                h = hour+"시간 "+min + "분 " + sec + "초";
+                h = hour + "시간 " + min + "분 " + sec + "초";
             } else if (min != 0) {
-                h =  min + "분 " + sec + "초";
+                h = min + "분 " + sec + "초";
             } else
                 h = sec + "초";
 
             mHours.add(h);
-        }
-        else{
+        } else {
             mHours.add("");
         }
     }
 }
-
-
-
