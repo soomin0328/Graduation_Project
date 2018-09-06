@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,7 @@ import java.util.Date;
 
 public class MmonthFrag extends Fragment {
 
+    FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS");
@@ -42,7 +45,7 @@ public class MmonthFrag extends Fragment {
 
     View view;
 
-    String i, h = "";
+    String i, h = "", name = "";
     long mediTime, mediHour, allTime, day_allTime;
     int thisMonthLastDay;
     private int preSelected = -1;
@@ -61,6 +64,13 @@ public class MmonthFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
 
         view = inflater.inflate(R.layout.mp_monthfrag, container, false);
         mp_day = view.findViewById(R.id.mp_day);
@@ -141,7 +151,7 @@ public class MmonthFrag extends Fragment {
     ValueEventListener pListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+            for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                     .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
                     .child("명상시간").getChildren()) {
                 long test = Long.parseLong(snapshot.getValue().toString());
@@ -177,7 +187,7 @@ public class MmonthFrag extends Fragment {
             long test2;
 
             for (int z = 1; z < thisMonthLastDay + 1; z++) {
-                for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(z + "일"))
                         .child("명상시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {

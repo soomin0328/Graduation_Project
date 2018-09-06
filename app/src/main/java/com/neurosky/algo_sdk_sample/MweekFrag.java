@@ -31,6 +31,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,7 +48,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     private GridView gvCalendar;
     private LineChart mChart;           //mChart 라는 LineChart를 선언해준다.
 
-    String i, h = "";
+    String i, h = "", name = "";
     long mediTime, Mday_allTime;
     private int preSelected = -1;
 
@@ -60,6 +62,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     Calendar mThisMonthCalendar;
     WeekCalendarAdapter mCalendarAdapter, mCalendarAdapter2;
 
+    FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference database = firebaseDatabase.getReference("USERS"); //주 총시간
@@ -79,6 +82,13 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
 
         Mhours.clear();
 
@@ -174,7 +184,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                    for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                             .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
                             .child("명상시간").getChildren()) {
                         long test = Long.parseLong(snapshot.getValue().toString());
@@ -291,7 +301,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                 int month = mThisMonthCalendar.get(Calendar.MONTH) + 1;
                 if (month == 1 || month == 3 || month == 5 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
                     for (int j = 31 - (6 - i); j <= 31; j++) {
-                        for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                        for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                                 .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
                                 .child("명상시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
@@ -308,7 +318,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     }
                 } else if (month == 4 || month == 6 || month == 9 || month == 11) {
                     for (int j = 30 - (6 - i); j <= 30; j++) {
-                        for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                        for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                                 .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
                                 .child("명상시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
@@ -325,7 +335,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     }
                 } else {
                     for (int j = 28 - (6 - i); j <= 28; j++) {
-                        for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                        for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                                 .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
                                 .child("명상시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
@@ -345,7 +355,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
 
             if ((i != 1 || i != 2 || i != 3 || i != 4 || i != 5 || i != 6) && (dayOfWeek != 4 || dayOfWeek != 5)) {
                 for (int j = k; j <= i; j++) {
-                    for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                    for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                             .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
                             .child("명상시간").getChildren()) {
                         if (snapshot.getValue().toString() == null) {

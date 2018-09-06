@@ -21,6 +21,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -44,6 +46,7 @@ public class MnActivity extends AppCompatActivity {
     int mday = cal.get(Calendar.DAY_OF_MONTH);
     long ell;
 
+    FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
 
@@ -60,8 +63,8 @@ public class MnActivity extends AppCompatActivity {
     final static int PAUSE = 2;
 
     int mStatus = IDLE;//처음 상태는 IDLE
-    long mBaseTime;
-    long mPauseTime;
+    long mBaseTime, mPauseTime;
+    String name = "";
 
     private SeekBar.OnSeekBarChangeListener soundcontrollListner = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -85,6 +88,13 @@ public class MnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mn);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
 
 /**
  * 타이머
@@ -560,7 +570,7 @@ public class MnActivity extends AppCompatActivity {
                         //long realing=getEll2(); //실제 진행한시간  밀리세컨즈
                         result = String.valueOf(ell);   ///result를 디비에 넣으면돼
 
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(myear + "년")).child(String.valueOf(mmonth + "월")).child(String.valueOf(mday + "일")).child("명상시간").push().setValue(String.valueOf(result)); //집중한 시간 long값
+                        databaseReference.child(name).child("EEG DATA").child(String.valueOf(myear + "년")).child(String.valueOf(mmonth + "월")).child(String.valueOf(mday + "일")).child("명상시간").push().setValue(String.valueOf(result)); //집중한 시간 long값
 
                         Log.d("명상한 총시간", result + "명상함");
                         //sSplit = String.format("달성률"+"%s\n", realing);

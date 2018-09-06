@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +28,7 @@ import java.util.List;
 
 public class MdayFrag extends Fragment {
 
+    FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference databaseReference2 = firebaseDatabase.getReference("USERS");
@@ -42,9 +45,18 @@ public class MdayFrag extends Fragment {
     ListView time1List; //명상시간대
     ListView time2List; //측정시간
 
+    String name = "";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
 
         final ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -70,7 +82,7 @@ public class MdayFrag extends Fragment {
                 long totalTime = 0;
 
                 for (DataSnapshot snapshot : dataSnapshot
-                        .child("aa")
+                        .child(name)
                         .child("EEG DATA")
                         .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))
@@ -81,7 +93,7 @@ public class MdayFrag extends Fragment {
 
                     //for문을 이용해 msg라는 long형 변수 저장(하위 목록의 개수:getChildrenCount이용), 이상한 점은 바로직후가 아닌 그 다음 목록이 저장됨.
                     for (DataSnapshot snapshot2 : dataSnapshot
-                            .child("aa")
+                            .child(name)
                             .child("EEG DATA")
                             .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                             .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))

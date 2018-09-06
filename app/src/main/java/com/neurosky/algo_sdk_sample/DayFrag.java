@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ import java.util.List;
 
 public class DayFrag extends Fragment {
 
+    FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference databaseReference2 = firebaseDatabase.getReference("USERS");
@@ -42,6 +45,8 @@ public class DayFrag extends Fragment {
     ProgressBar bar;
     TextView barPercent, ClickHour, ClickPercent, DTT;
     private TextView tvCalendarTitle;
+
+    String name = "";
 
     public void setSelectedDate(Date date) {
         selectedDate = date;
@@ -94,6 +99,13 @@ public class DayFrag extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
+
         final ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -128,7 +140,7 @@ public class DayFrag extends Fragment {
                 long msg5 = 0;
 
                 for (DataSnapshot snapshot : dataSnapshot
-                        .child("aa")
+                        .child(name)
                         .child("EEG DATA")
                         .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))
@@ -138,7 +150,7 @@ public class DayFrag extends Fragment {
                     String msg = snapshot.getKey().toString();
 
                     for (DataSnapshot snapshot2 : dataSnapshot
-                            .child("aa")
+                            .child(name)
                             .child("EEG DATA")
                             .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                             .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))
@@ -170,7 +182,7 @@ public class DayFrag extends Fragment {
                     }
 
                     for (DataSnapshot snapshot3 : dataSnapshot
-                            .child("aa")
+                            .child(name)
                             .child("EEG DATA")
                             .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                             .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))
@@ -216,7 +228,7 @@ public class DayFrag extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snapshot : dataSnapshot
-                                        .child("aa")
+                                        .child(name)
                                         .child("EEG DATA")
                                         .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))
@@ -254,7 +266,7 @@ public class DayFrag extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snapshot : dataSnapshot
-                                        .child("aa")
+                                        .child(name)
                                         .child("EEG DATA")
                                         .child(mThisMonthCalendar.get(Calendar.YEAR) + "년년")
                                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월"))

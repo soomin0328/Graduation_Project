@@ -22,10 +22,17 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class CnActivity extends AppCompatActivity { //
+public class CnActivity extends AppCompatActivity {
+
+    FirebaseAuth mAuth;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
+
     private TextView theDate, aimTime;
     public Calendar cal = Calendar.getInstance();
 
@@ -42,10 +49,6 @@ public class CnActivity extends AppCompatActivity { //
     TextView mEllapse, percent;
     Button mBtnStart, mBtnSplit;
 
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
-
-
     //스톱워치의 상태를 위한 상수
     final static int IDLE = 0;
     final static int RUNNING = 1;
@@ -55,6 +58,7 @@ public class CnActivity extends AppCompatActivity { //
     long mBaseTime, mPauseTime;
     int hour, min;
 
+    String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,12 @@ public class CnActivity extends AppCompatActivity { //
         percent = findViewById(R.id.percent);
         aimTime = (TextView) findViewById(R.id.aimtime);
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
 
         Intent incomingIntent = getIntent(); //aimtime 클래스에서 얻어옴
         String times = incomingIntent.getStringExtra("data");
@@ -123,7 +133,6 @@ public class CnActivity extends AppCompatActivity { //
             }
 
             data_Value = (float) Math.random(); //////랜덤값 대신에 실시간 데이터값 넣기.
-            Log.d("그래프 랜덤값", data_Value + "");
             dia(data_Value);
 
             data.addEntry(new Entry(set.getEntryCount(), data_Value), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
@@ -323,70 +332,48 @@ public class CnActivity extends AppCompatActivity { //
                     case RUNNING: //진행되고있으면
                         mTimer.removeMessages(0);
 
-                        // String sSplit = mSplit.getText().toString();
-                        long hour_l;
-                        long min_l;
-                        long sum;
-                        long rtime;
+                        long hour_l, min_l, sum, rtime, result;
+
                         hour_l = hour * 1000 * 3600; //설정한시간을 ms으로 바꾼거
                         min_l = min * 1000 * 60; //설정한 분을 ms로바꾼거
-                        long result; //퍼센트 결과 값 (달성률)
-                        /*
-                         *
-                         */
-                        //db에 들어가는 값을 ms로해서 누적?시켜서 해야될거같음..흠...
 
-                        sum = (hour_l + min_l) / 100;     ///결국 sum값이 사용자가 설정한 목표 시간!!!!!!!!!
-                        Log.d("sum test", sum + "is sum/100    " + hour_l + min_l + "is 100안한값  " + sum + 100);
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일")).child("목표시간").push().setValue(sum * 100); //집중한 시간 long값으로 넣은듯
+                        sum = (hour_l + min_l) / 100;
+
+                        databaseReference.child(name).child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
+                                .child(String.valueOf(cday + "일")).child("목표시간").push().setValue(sum * 100);
 
                         rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거임
                         //rtime이 공부 (명상) 다해서 끝내기 눌러서 가져오는 최종 집중 밀리세컨즈단위 시간->이걸디비에go.
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일")).child("집중시간").push().setValue(rtime); //집중한 시간 long값으로 넣은듯
+                        databaseReference.child(name).child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
+                                .child(String.valueOf(cday + "일")).child("집중시간").push().setValue(rtime);
+
                         result = rtime / sum;
 
-                        //여기 디비에 넣기? 리줄트 값 넣으면돼
-
-
-                        // Log.d("명상한 총시간",result+"명상함");
                         percent.setText("달성률:" + result + "%");
-                        databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일")).child("하루달성율").push().setValue(String.valueOf(result)); //집중한 시간 long값
+
+                        databaseReference.child(name).child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
+                                .child(String.valueOf(cday + "일")).child("하루달성율").push().setValue(String.valueOf(result));
 
                         mStatus = IDLE;
                         mBtnStart.setText("시작");
                         mBtnStart.setEnabled(false);
 
                         mBtnSplit.setEnabled(false);
-                        //텍스트뷰의 값을 바꿔줌
-
-                        //mSplit.setText(sSplit);  //텅 비어있다가 값 뜰거임
-
                         break;
-
                     case PAUSE://여기서는 초기화버튼이 됨
 
                         //핸들러를 없애고
-
                         mTimer.removeMessages(0);
 
-
                         //처음상태로 원상복귀시킴
-
                         mBtnStart.setText("시작");
-
                         mBtnSplit.setText("끝내기");
 
                         mEllapse.setText("00:00:00");
 
                         mStatus = IDLE;
 
-                        //mSplit.setText("");
-
                         mBtnSplit.setEnabled(false);
-
                         break;
                 }
                 break;
@@ -397,7 +384,7 @@ public class CnActivity extends AppCompatActivity { //
     Long getEll2() {
         long now = SystemClock.elapsedRealtime();
         long ell2 = now - mBaseTime;
-        //밀리세컨즈로 보내서 위에서 계산할거임
+
         return ell2;
     }
 
@@ -407,11 +394,8 @@ public class CnActivity extends AppCompatActivity { //
         String sEll;
         long ell = now - mBaseTime;//현재 시간과 지난 시간을 빼서 ell값을 구하고
 
-        // String sEll = String.format("%02d:%02d:%02d", ell / 1000 / 60, (ell/1000)%60, (ell %1000)/10);
-
         sEll = String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) % 3600 / 60, (ell / 1000) % 60);
         //시간 분 초 로 바꿔준걸 반환해주는거
-        Log.d("sEl값", sEll + "");
         return sEll;
 
     }

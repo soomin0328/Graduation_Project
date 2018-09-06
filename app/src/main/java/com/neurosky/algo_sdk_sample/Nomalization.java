@@ -2,6 +2,8 @@ package com.neurosky.algo_sdk_sample;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,8 +14,14 @@ import java.util.ArrayList;
 
 public class Nomalization extends AppCompatActivity{
 
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mAuth.getCurrentUser();
+    String email = user.getEmail();
+    int idx = email.indexOf("@");
+    String name = email.substring(0, idx);
+
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS").child("aa").child("EEG DATA");
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS").child(name).child("EEG DATA");
 
     final private ArrayList<String> result_alpha = new ArrayList<>();
     private ArrayList<String> result_low_beta = new ArrayList<>();

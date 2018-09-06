@@ -17,6 +17,8 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,7 @@ public class MonthFrag extends Fragment {
     Calendar mThisMonthCalendar;
     CalendarAdapter mCalendarAdapter, mCalendarAdapter2;
 
+    FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");//월 전체 계산용
     private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS"); //하루계산용
@@ -45,7 +48,7 @@ public class MonthFrag extends Fragment {
     private DatabaseReference databaseReferences2 = firebaseDatabase.getReference("USERS");
 
     private int preSelected = -1;
-    String dayAim_per, i, h = "";
+    String dayAim_per, i, h = "", name = "";
     long conTime, conHour, c_allTime, day_allTime, migrate, migrate2, month_Aim2;
     int thisMonthLastDay, month_Aim; //한달 전체 달성울
 
@@ -67,7 +70,7 @@ public class MonthFrag extends Fragment {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+            for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                     .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
                     .child("집중시간").getChildren()) {
                 long test = Long.parseLong(snapshot.getValue().toString());
@@ -104,7 +107,7 @@ public class MonthFrag extends Fragment {
             long test2;
 
             for (int z = 1; z < thisMonthLastDay + 1; z++) {
-                for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(z + "일"))
                         .child("집중시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {
@@ -149,7 +152,7 @@ public class MonthFrag extends Fragment {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+            for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                     .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
                     .child("하루달성율").getChildren()) {
                 dayAim_per = (snapshot.getValue().toString());
@@ -181,7 +184,7 @@ public class MonthFrag extends Fragment {
             int testValue = 0;
 
             for (int k = 1; k < thisMonthLastDay + 1; k++) {
-                for (DataSnapshot snapshot : dataSnapshot.child("aa").child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
+                for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
                         .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(k + "일"))
                         .child("목표시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {
@@ -202,7 +205,6 @@ public class MonthFrag extends Fragment {
                 barPercent.setText("0");
             } else {
                 double imValue = ((double) migrate2 / (double) month_Aim2) * 100;
-                Log.d("testt2", migrate2 + "는 마이그래이트2   " + month_Aim2 + "");
                 bar.setProgress((int) imValue);
                 if ((int) imValue > 100) {
                     barPercent.setText("100%");
@@ -228,6 +230,13 @@ public class MonthFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
 
         hours.clear();
 
