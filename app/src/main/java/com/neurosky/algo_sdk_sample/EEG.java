@@ -4,7 +4,7 @@ package com.neurosky.algo_sdk_sample;
  * 주로 봐야 할 부분
  * 1. nskAlgoSdk.setOnBPAlgoIndexListener -> 측정된 뇌파 값이 파이어베이스에 저장됨.
  * 2. startButton.setOnClickListener -> start버튼을 누르면 실행됨. 뇌파 측정이 시작되고 그래프 그리는 화면으로 넘어감.
- * **/
+ **/
 
 
 import android.app.Activity;
@@ -79,6 +79,8 @@ public class EEG extends Activity {
     String eeg[] = new String[5];
 
     String name = "";
+
+    Nomalization nz = new Nomalization();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,19 +228,6 @@ public class EEG extends Activity {
                     Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
                     startActivity(graphIntent);
 
-//                    Thread t = new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try{
-//                                Thread.sleep(3000);
-//                            }catch (InterruptedException e){
-//
-//                            }
-//                            Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
-//                            startActivity(graphIntent);
-//                        }
-//                    });
-//                    t.start();
                 } else {
                     nskAlgoSdk.NskAlgoPause();
 
@@ -266,14 +255,10 @@ public class EEG extends Activity {
                 stateText.setText("");
                 sqText.setText("");
 
-                if (medCheckBox.isChecked()) {
-                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_MED.value;
-                }
-                if (attCheckBox.isChecked()) {
-                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_ATT.value;
-                }
                 if (bpCheckBox.isChecked()) {
+                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_MED.value;
                     algoTypes += NskAlgoType.NSK_ALGO_TYPE_BP.value;
+                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_ATT.value;
                 }
 
                 if (algoTypes == 0) {
@@ -288,18 +273,14 @@ public class EEG extends Activity {
                         bInited = true;
                     }
 
-                    Log.d(TAG, "NSK_ALGO_Init() " + ret);
                     String sdkVersion = "SDK ver.: " + nskAlgoSdk.NskAlgoSdkVersion();
 
-                    if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_ATT.value) != 0) {
-                        sdkVersion += "\nATT ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_ATT.value);
-                    }
-                    if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_MED.value) != 0) {
-                        sdkVersion += "\nMED ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_MED.value);
-                    }
-                    if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_BLINK.value) != 0) {
-                        sdkVersion += "\nBlink ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_BLINK.value);
-                    }
+//                    if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_ATT.value) != 0) {
+//                        sdkVersion += "\nATT ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_ATT.value);
+//                    }
+//                    if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_MED.value) != 0) {
+//                        sdkVersion += "\nMED ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_MED.value);
+//                    }
                     if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_BP.value) != 0) {
                         sdkVersion += "\nEEG Bandpower ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_BP.value);
                     }
@@ -435,15 +416,19 @@ public class EEG extends Activity {
                         eeg[3] = String.valueOf(gamma);  //gamma
                         eeg[4] = String.valueOf(beta);  //theta
 
-                        final Nomalization nz = new Nomalization(eeg[0], eeg[1], eeg[2], eeg[3], eeg[4]);
+                        int size = nz.setData();
 
-//                        Handler m = new Handler(Looper.getMainLooper());
-//                        m.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                String d = nz.getData();
-//                            }
-//                        }, 3000);
+                        if (size != 0) {
+                            nz.nomal(eeg[0], eeg[1], eeg[2], eeg[3], eeg[4]);
+                        }
+
+                        databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                .child(n[1] + "월")
+                                .child(n[2] + "일")
+                                .child(n[3] + "시")
+                                .child(n[4] + "분")
+                                .child(n[5] + "초")
+                                .child("Alpha").setValue(fAlpha);
 
                         databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
                                 .child(n[1] + "월")
@@ -501,7 +486,7 @@ public class EEG extends Activity {
                                     .child(n[3] + "시")
                                     .child(n[4] + "분")
                                     .child(n[5] + "초")
-                                    .child("ATT").setValue(value);
+                                    .child("집중도").setValue(value);
                         }
                     }
                 });
@@ -523,7 +508,7 @@ public class EEG extends Activity {
                                     .child(n[3] + "시")
                                     .child(n[4] + "분")
                                     .child(n[5] + "초")
-                                    .child("MED").setValue(value);
+                                    .child("명상도").setValue(value);
                         }
                     }
                 });

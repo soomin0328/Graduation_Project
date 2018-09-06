@@ -3,7 +3,7 @@ package com.neurosky.algo_sdk_sample;
 /**
  * 프로세싱 화면을 지정한 시간동안 띄워주는 코드.
  * thread를 이용해서 구현했음.
- * **/
+ **/
 
 import android.content.Context;
 import android.content.Intent;
@@ -45,7 +45,7 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             public void run() {
                 int count = 0;
-                while (count < 3) {
+                while (count < 10) {
                     count++;
                     try {
                         Thread.sleep(1000);

@@ -1,5 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -8,12 +10,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Nomalization {
+public class Nomalization extends AppCompatActivity{
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS").child("aa").child("EEG DATA");
 
-    private ArrayList<String> result_alpha = new ArrayList<>();
+    final private ArrayList<String> result_alpha = new ArrayList<>();
     private ArrayList<String> result_low_beta = new ArrayList<>();
     private ArrayList<String> result_delta = new ArrayList<>();
     private ArrayList<String> result_gamma = new ArrayList<>();
@@ -25,95 +27,73 @@ public class Nomalization {
 
     String str[] = new String[5];
 
-    Double nz_result_alpha = 0.0;
-    Double nz_result_low_beta = 0.0;
-    Double nz_result_delta = 0.0;
-    Double nz_result_gamma = 0.0;
-    Double nz_result_theta = 0.0;
+    private Double nz_result_alpha, nz_result_low_beta, nz_result_delta, nz_result_gamma, nz_result_theta;
 
-    public Nomalization(){
-    }
+    public void nomal(final String alpha, final String low_beta, final String delta, final String gamma, final String theta) {
 
-    public Nomalization(final String alpha, final String low_beta, final String delta, final String gamma, final String theta) {
-        setData();
+        addData[0] = Double.parseDouble(alpha);
+        addData[1] = Double.parseDouble(low_beta);
+        addData[2] = Double.parseDouble(delta);
+        addData[3] = Double.parseDouble(gamma);
+        addData[4] = Double.parseDouble(theta);
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
+        Double[] age_alpha = new Double[result_alpha.size() + 1];
+        age_alpha[result_alpha.size()] = addData[0];
 
-                    addData[0] = Double.parseDouble(alpha);
-                    addData[1] = Double.parseDouble(low_beta);
-                    addData[2] = Double.parseDouble(delta);
-                    addData[3] = Double.parseDouble(gamma);
-                    addData[4] = Double.parseDouble(theta);
+        for (int i = 0; i < result_alpha.size(); i++) {
+            age_alpha[i] = Double.parseDouble(result_alpha.get(i));
+        }
 
-                    Double[] age_alpha = new Double[result_alpha.size() + 1];
-                    age_alpha[result_alpha.size()] = addData[0];
+        Double[] age_low_beta = new Double[result_low_beta.size() + 1];
+        age_low_beta[result_low_beta.size()] = addData[1];
 
-                    for (int i = 0; i < result_alpha.size(); i++) {
-                        age_alpha[i] = Double.parseDouble(result_alpha.get(i));
-                    }
+        for (int i = 0; i < result_low_beta.size(); i++) {
+            age_low_beta[i] = Double.parseDouble(result_low_beta.get(i));
+        }
 
-                    Double[] age_low_beta = new Double[result_low_beta.size() + 1];
-                    age_low_beta[result_low_beta.size()] = addData[1];
+        Double[] age_delta = new Double[result_delta.size() + 1];
+        age_delta[result_delta.size()] = addData[2];
 
-                    for (int i = 0; i < result_low_beta.size(); i++) {
-                        age_low_beta[i] = Double.parseDouble(result_low_beta.get(i));
-                    }
+        for (int i = 0; i < result_delta.size(); i++) {
+            age_delta[i] = Double.parseDouble(result_delta.get(i));
+        }
 
-                    Double[] age_delta = new Double[result_delta.size() + 1];
-                    age_delta[result_delta.size()] = addData[2];
+        Double[] age_gamma = new Double[result_gamma.size() + 1];
+        age_gamma[result_gamma.size()] = addData[3];
 
-                    for (int i = 0; i < result_delta.size(); i++) {
-                        age_delta[i] = Double.parseDouble(result_delta.get(i));
-                    }
+        for (int i = 0; i < result_gamma.size(); i++) {
+            age_gamma[i] = Double.parseDouble(result_gamma.get(i));
+        }
 
-                    Double[] age_gamma = new Double[result_gamma.size() + 1];
-                    age_gamma[result_gamma.size()] = addData[3];
+        Double[] age_theta = new Double[result_theta.size() + 1];
+        age_theta[result_theta.size()] = addData[4];
 
-                    for (int i = 0; i < result_gamma.size(); i++) {
-                        age_gamma[i] = Double.parseDouble(result_gamma.get(i));
-                    }
+        for (int i = 0; i < result_theta.size(); i++) {
+            age_theta[i] = Double.parseDouble(result_theta.get(i));
+        }
 
-                    Double[] age_theta = new Double[result_theta.size() + 1];
-                    age_theta[result_theta.size()] = addData[4];
+        double min = calc_min(age_alpha);
+        double max = calc_max(age_alpha);
+        double min1 = calc_min(age_low_beta);
+        double max1 = calc_max(age_low_beta);
+        double min2 = calc_min(age_delta);
+        double max2 = calc_max(age_delta);
+        double min3 = calc_min(age_gamma);
+        double max3 = calc_max(age_gamma);
+        double min4 = calc_min(age_theta);
+        double max4 = calc_max(age_theta);
 
-                    for (int i = 0; i < result_theta.size(); i++) {
-                        age_theta[i] = Double.parseDouble(result_theta.get(i));
-                    }
+        nz_result_alpha = min_max(age_alpha, min, max);
+        nz_result_low_beta = min_max(age_low_beta, min1, max1);
+        nz_result_delta = min_max(age_delta, min2, max2);
+        nz_result_gamma = min_max(age_gamma, min3, max3);
+        nz_result_theta = min_max(age_theta, min4, max4);
 
-                    double min = calc_min(age_alpha);
-                    double max = calc_max(age_alpha);
-                    double min1 = calc_min(age_low_beta);
-                    double max1 = calc_max(age_low_beta);
-                    double min2 = calc_min(age_delta);
-                    double max2 = calc_max(age_delta);
-                    double min3 = calc_min(age_gamma);
-                    double max3 = calc_max(age_gamma);
-                    double min4 = calc_min(age_theta);
-                    double max4 = calc_max(age_theta);
-
-
-                    nz_result_alpha = min_max(age_alpha, min, max);
-                    nz_result_low_beta = min_max(age_low_beta, min1, max1);
-                    nz_result_delta = min_max(age_delta, min2, max2);
-                    nz_result_gamma = min_max(age_gamma, min3, max3);
-                    nz_result_theta = min_max(age_theta, min4, max4);
-
-                    result_alpha.clear();
-                    result_low_beta.clear();
-                    result_delta.clear();
-                    result_gamma.clear();
-                    result_theta.clear();
-
-                } catch (InterruptedException e) {
-
-                }
-            }
-        });
-        thread.start();
+        result_alpha.clear();
+        result_low_beta.clear();
+        result_delta.clear();
+        result_gamma.clear();
+        result_theta.clear();
     }
 
     // 최소값 출력
@@ -152,7 +132,7 @@ public class Nomalization {
         return str;
     }
 
-    public void setData() {
+    public int setData() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -168,12 +148,6 @@ public class Nomalization {
                     result_delta.add(data[2]);
                     result_gamma.add(data[3]);
                     result_theta.add(data[4]);
-
-//                    Log.d("alpha",result_alpha.get(j));
-//                    Log.d("low beta",result_low_beta.get(j));
-//                    Log.d("delta",result_delta.get(j));
-//                    Log.d("gamma",result_gamma.get(j));
-//                    Log.d("theta",result_theta.get(j));
                     j++;
                 }
             }
@@ -182,6 +156,8 @@ public class Nomalization {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        return result_alpha.size();
     }
 
     // Function to perform min_max normalization
@@ -192,10 +168,14 @@ public class Nomalization {
         double result[] = new double[age.length];
 
         for (int i = 0; i < age.length; i++) {
-            result[i] = (((age[i] - min) / (max - min)) * (new_max - new_min)) + new_min;
+            if (max - min == 0) {
+                result[i] = 0;
+            } else {
+                result[i] = (((age[i] - min) / (max - min)) * (new_max - new_min)) + new_min;
+            }
         }
 
-        return result[age.length-1];
+        return result[age.length - 1];
     }
 
 }
