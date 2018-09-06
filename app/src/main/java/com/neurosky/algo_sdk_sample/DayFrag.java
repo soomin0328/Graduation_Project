@@ -1,25 +1,18 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -152,7 +147,6 @@ public class DayFrag extends Fragment {
                             .child("집중시간")
                             .getChildren()) {
 
-                        Log.d("하루 집중시간", "" + snapshot2.getValue());
                         long test = Long.parseLong(snapshot2.getValue().toString());
 
                         long DHour;
@@ -231,7 +225,6 @@ public class DayFrag extends Fragment {
                                         .child("목표시간")
                                         .getChildren()) {
 
-                                    Log.d("하루 목표시간", "" + snapshot.getValue());
                                     long msg2 = Long.parseLong(snapshot.getValue().toString());
 
                                     long DHour1;
@@ -270,7 +263,6 @@ public class DayFrag extends Fragment {
                                         .child("하루달성율")
                                         .getChildren()) {
 
-                                    Log.d("하루 달성율", "" + snapshot.getValue());
                                     long msg3 = Long.parseLong(snapshot.getValue().toString());
 
                                     ClickPercent.setText(msg3 + "%");
@@ -340,7 +332,6 @@ public class DayFrag extends Fragment {
             }
         });
 
-
         arrayListDayInfo = new ArrayList<>();
         return view;
     }
@@ -354,7 +345,6 @@ public class DayFrag extends Fragment {
             ClickPercent.setText("-");
         } else {
             int percent = (int) (msg5 / size);
-            Log.e("perc", String.valueOf(percent));
             bar.setProgress((int) (percent));
             barPercent.setText(String.valueOf(percent) + "%");
         }

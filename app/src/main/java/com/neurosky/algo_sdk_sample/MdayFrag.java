@@ -1,24 +1,16 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
-
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -95,8 +89,6 @@ public class MdayFrag extends Fragment {
                             .child(String.valueOf(msg))
                             .child("명상시간")
                             .getChildren()) {
-
-                        Log.d("하루 명상시간", "" + snapshot2.getValue());
 
                         long test = Long.parseLong(snapshot2.getValue().toString());
                         long DHour;

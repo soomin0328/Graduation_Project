@@ -122,12 +122,12 @@ public class CnActivity extends AppCompatActivity { //
                 data.addDataSet(set);                           // createSet 을 실행한 set을 DataSet에 추가함
             }
 
-            data_Value = (float) Math.random();
+            data_Value = (float) Math.random(); //////랜덤값 대신에 실시간 데이터값 넣기.
             Log.d("그래프 랜덤값", data_Value + "");
             dia(data_Value);
 
             data.addEntry(new Entry(set.getEntryCount(), data_Value), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
-            data.addEntry(new Entry(set.getEntryCount(), (float) Math.random()), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
+            //  data.addEntry(new Entry(set.getEntryCount(), (float) Math.random()), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
             data.notifyDataChanged();                           // data의 값 변동을 감지함
 
             chart.notifyDataSetChanged();                       // chart의 값 변동을 감지함
@@ -140,7 +140,7 @@ public class CnActivity extends AppCompatActivity { //
     }
 
     private void dia(float data_Value) {
-        if (0.2 < data_Value && data_Value < 0.4) {
+        if (0.2 < data_Value && data_Value < 0.4) { //여기서 범위를 수정해주기
             AlertDialog.Builder ad = new AlertDialog.Builder(CnActivity.this);
             ad.setMessage("집중하세요!!");
 
@@ -160,7 +160,6 @@ public class CnActivity extends AppCompatActivity { //
             }, 1000);
         }
     }
-
 
     private LineDataSet createSet() {
 
@@ -251,11 +250,8 @@ public class CnActivity extends AppCompatActivity { //
             //시작 버튼이 눌리면
 
             case R.id.cbtnstart:
-
                 switch (mStatus) {
-
                     //IDLE상태이면
-
                     case IDLE:
 
                         //현재 값을 세팅해주고
@@ -279,7 +275,6 @@ public class CnActivity extends AppCompatActivity { //
 
                         break;
 
-
                     case RUNNING:  //초시계 움직이고있으면
 
                         //핸들러 메시지를 없애고
@@ -297,7 +292,6 @@ public class CnActivity extends AppCompatActivity { //
                         mStatus = PAUSE;//상태를 멈춤으로 표시
 
                         break;
-
 
                     case PAUSE:  //멈춰있은 상태면
 
@@ -320,15 +314,12 @@ public class CnActivity extends AppCompatActivity { //
                         mStatus = RUNNING;  //멈춰있는 상태에서 초 올라간다
 
                         break;
-
                 }
-
                 break;
 
             case R.id.cbtnsplit:
-
                 switch (mStatus) {
-//진행되고 있는데 끝내기를 누르면
+                    //진행되고 있는데 끝내기를 누르면
                     case RUNNING: //진행되고있으면
                         mTimer.removeMessages(0);
 
@@ -346,8 +337,9 @@ public class CnActivity extends AppCompatActivity { //
                         //db에 들어가는 값을 ms로해서 누적?시켜서 해야될거같음..흠...
 
                         sum = (hour_l + min_l) / 100;     ///결국 sum값이 사용자가 설정한 목표 시간!!!!!!!!!
+                        Log.d("sum test", sum + "is sum/100    " + hour_l + min_l + "is 100안한값  " + sum + 100);
                         databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일")).child("목표시간").push().setValue(sum); //집중한 시간 long값으로 넣은듯
+                                .child(String.valueOf(cday + "일")).child("목표시간").push().setValue(sum * 100); //집중한 시간 long값으로 넣은듯
 
                         rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거임
                         //rtime이 공부 (명상) 다해서 끝내기 눌러서 가져오는 최종 집중 밀리세컨즈단위 시간->이걸디비에go.
@@ -363,7 +355,6 @@ public class CnActivity extends AppCompatActivity { //
                         databaseReference.child("aa").child("EEG DATA").child(String.valueOf(cyear + "년")).child(String.valueOf(cmonth + "월"))
                                 .child(String.valueOf(cday + "일")).child("하루달성율").push().setValue(String.valueOf(result)); //집중한 시간 long값
 
-
                         mStatus = IDLE;
                         mBtnStart.setText("시작");
                         mBtnStart.setEnabled(false);
@@ -372,7 +363,6 @@ public class CnActivity extends AppCompatActivity { //
                         //텍스트뷰의 값을 바꿔줌
 
                         //mSplit.setText(sSplit);  //텅 비어있다가 값 뜰거임
-
 
                         break;
 
@@ -398,15 +388,11 @@ public class CnActivity extends AppCompatActivity { //
                         mBtnSplit.setEnabled(false);
 
                         break;
-
                 }
-
                 break;
-
         }
 
     }
-
 
     Long getEll2() {
         long now = SystemClock.elapsedRealtime();
@@ -422,10 +408,8 @@ public class CnActivity extends AppCompatActivity { //
         long ell = now - mBaseTime;//현재 시간과 지난 시간을 빼서 ell값을 구하고
 
         // String sEll = String.format("%02d:%02d:%02d", ell / 1000 / 60, (ell/1000)%60, (ell %1000)/10);
-        if (ell / 1000 / 60 == 60) {
-            String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) / 600, (ell / 1000) % 60);
-        }
-        sEll = String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) / 60, (ell / 1000) % 60);
+
+        sEll = String.format("%02d:%02d:%02d", ell / 1000 / 3600, (ell / 1000) % 3600 / 60, (ell / 1000) % 60);
         //시간 분 초 로 바꿔준걸 반환해주는거
         Log.d("sEl값", sEll + "");
         return sEll;
@@ -434,4 +418,3 @@ public class CnActivity extends AppCompatActivity { //
 
 
 }
-
