@@ -1,13 +1,36 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 
 import processing.core.PApplet;
 
 public class Sketch extends PApplet {
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mAuth.getCurrentUser();
+    String email = user.getEmail();
+    int idx = email.indexOf("@");
+    String name = email.substring(0, idx);
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS").child(name).child("EEG DATA");
 
     // data input (arraylist)
     ArrayList<String> result_alpha = new ArrayList<>(); // real-time alpha data
@@ -102,6 +125,8 @@ public class Sketch extends PApplet {
     float[] v1 = new float[formResolution];
     float[] v2 = new float[formResolution];
 
+    String x[];
+
     // set color array
     static int[][][] colorList = {
             {{102, 0, 88}, {138, 36, 124}, {174, 72, 160}, {210, 108, 196}, {246, 144, 232}, {255, 180, 255}}
@@ -112,23 +137,66 @@ public class Sketch extends PApplet {
 
     double a = 51.4;
 
+    public String[] getNow() {
+        Calendar cal = Calendar.getInstance();
+
+        n[0] = String.format(Locale.KOREA, "%04d", cal.get(Calendar.YEAR));
+        n[1] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.MONTH) + 1);
+        n[2] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.DAY_OF_MONTH));
+        n[3] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.HOUR_OF_DAY));
+        n[4] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.MINUTE));
+        n[5] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND));
+
+        return n;
+    }
+
     public void getGraphData() {
 
-        Nomalization nomalization = new Nomalization();
-        String x[] = nomalization.getData();
+        getNow();
 
-        result_alpha.add(x[0]);
-        result_low_beta.add(x[1]);
-        result_delta.add(x[2]);
-        result_gamma.add(x[3]);
-        result_theta.add(x[4]);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.child(n[0] + "년")
+                        .child(n[1] + "월")
+                        .child(n[2] + "일")
+                        .child(n[3] + "시")
+                        .child(n[4] + "분")
+                        .child(n[5] + "초").getChildren()) {
 
-        double hb1 = rand.nextInt(40 - 25 + 1) + 25;
-        double smr1 = rand.nextInt(40 - 25 + 1) + 25;
-        result_high_beta.add(String.valueOf(hb1));
-        result_smr.add(String.valueOf(smr1));
-        hb1 = 0;
-        smr1 = 0;
+                    switch (snapshot.getKey()) {
+                        case "Alpha":
+                            result_alpha.add(snapshot.getValue().toString());
+                            break;
+                        case "Low Beta":
+                            result_low_beta.add(snapshot.getValue().toString());
+                            break;
+                        case "High Beta":
+                            result_high_beta.add(snapshot.getValue().toString());
+                            break;
+                        case "Gamma":
+                            result_gamma.add(snapshot.getValue().toString());
+                            break;
+                        case "Theta":
+                            result_theta.add(snapshot.getValue().toString());
+                            break;
+                        case "SMR":
+                            result_smr.add(snapshot.getValue().toString());
+                            break;
+                        case "Delta":
+                            result_delta.add(snapshot.getValue().toString());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
     }
 
     public void setup() {
@@ -244,13 +312,17 @@ public class Sketch extends PApplet {
 
         strokeWeight(1);    //line size
 
-        if (c == 6) {
-            c = 0;  // reset value of c
-//                drawShape();
-        } else {
-//                drawShape();
+        getGraphData();
+
+        if (result_theta.size() != 0){
+            if (c == 6) {
+                c = 0;  // reset value of c
+                drawShape();
+            } else {
+                drawShape();
+            }
+            delay(100);
         }
-//            delay(100);
 
         if (count == 10) {
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();

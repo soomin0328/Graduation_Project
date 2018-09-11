@@ -37,7 +37,7 @@ public class Nomalization extends AppCompatActivity{
 
     private Double nz_result_alpha, nz_result_low_beta, nz_result_delta, nz_result_gamma, nz_result_theta;
 
-    public void nomal(final String alpha, final String low_beta, final String delta, final String gamma, final String theta) {
+    public String[] nomal(final String alpha, final String low_beta, final String delta, final String gamma, final String theta) {
 
         addData[0] = Double.parseDouble(alpha);
         addData[1] = Double.parseDouble(low_beta);
@@ -97,11 +97,19 @@ public class Nomalization extends AppCompatActivity{
         nz_result_gamma = min_max(age_gamma, min3, max3);
         nz_result_theta = min_max(age_theta, min4, max4);
 
+        str[0] = String.valueOf(nz_result_alpha);
+        str[1] = String.valueOf(nz_result_low_beta);
+        str[2] = String.valueOf(nz_result_delta);
+        str[3] = String.valueOf(nz_result_gamma);
+        str[4] = String.valueOf(nz_result_theta);
+
         result_alpha.clear();
         result_low_beta.clear();
         result_delta.clear();
         result_gamma.clear();
         result_theta.clear();
+
+        return str;
     }
 
     // 최소값 출력
