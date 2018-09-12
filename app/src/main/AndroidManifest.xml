@@ -34,7 +34,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".GraphActivity"></activity>
-        <activity android:name=".Meditation"></activity>
         <activity android:name=".EEG" />
         <activity android:name=".FindPw" />
         <activity android:name=".SignUp" />
