@@ -44,7 +44,6 @@ public class MonthFrag extends Fragment {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");//월 전체 계산용
     private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS"); //하루계산용
-    private DatabaseReference databaseRefer = firebaseDatabase.getReference("USERS");//달성율
     private DatabaseReference databaseReferences2 = firebaseDatabase.getReference("USERS");
 
     private int preSelected = -1;
@@ -181,7 +180,8 @@ public class MonthFrag extends Fragment {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            int testValue = 0;
+            int testValue;
+            testValue = 0;
 
             for (int k = 1; k < thisMonthLastDay + 1; k++) {
                 for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
@@ -205,6 +205,7 @@ public class MonthFrag extends Fragment {
                 barPercent.setText("0");
             } else {
                 double imValue = ((double) migrate2 / (double) month_Aim2) * 100;
+
                 bar.setProgress((int) imValue);
                 if ((int) imValue > 100) {
                     barPercent.setText("100%");
@@ -218,7 +219,6 @@ public class MonthFrag extends Fragment {
             month_Aim = 0;
             migrate2 = 0;
             month_Aim2 = 0;
-
         }
 
         @Override
@@ -305,6 +305,7 @@ public class MonthFrag extends Fragment {
                 i = day.getDay();
                 if (day.isInMonth()) {
                     databaseReferences.addValueEventListener(pListener);
+                    databaseReference.addValueEventListener(dayAimListener);
                     view.setBackgroundColor(Color.YELLOW);
                     View prevSelectedView = adapterView.getChildAt(preSelected);
 

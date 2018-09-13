@@ -1,56 +1,53 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MweekFrag extends Fragment { //명상 주별 과거
 
     private TextView tvCalendarTitle;
     private GridView gvCalendar;
-    private LineChart mChart;           //mChart 라는 LineChart를 선언해준다.
+    private ScatterChart scChart;
 
     String i, h = "", name = "";
     long mediTime, Mday_allTime;
     private int preSelected = -1;
+
+    int[] countArray = new int[24];
+    int realCount = 0;
 
     DayInfo day;
     View view;
@@ -58,6 +55,8 @@ public class MweekFrag extends Fragment { //명상 주별 과거
 
     private ArrayList<DayInfo> arrayListDayInfo;
     private ArrayList<String> Mhours = new ArrayList<>();
+    private ArrayList<Entry> entries = new ArrayList<>(); //주별 명상도 그래프
+    final ArrayList<String> labels = new ArrayList<String>();
 
     Calendar mThisMonthCalendar;
     WeekCalendarAdapter mCalendarAdapter, mCalendarAdapter2;
@@ -66,6 +65,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference database = firebaseDatabase.getReference("USERS"); //주 총시간
+    private DatabaseReference databaseGraph = firebaseDatabase.getReference("USERS"); //그래프
 
     Date selectedDate;
     ProgressBar bar;
@@ -104,53 +104,66 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         tvCalendarTitle = view.findViewById(R.id.mw_calendar_title);
         gvCalendar = view.findViewById(R.id.mw_gv_calendar);
 
-        mChart = view.findViewById(R.id.mwChart);
-        mChart.setDragEnabled(true);
-
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setEnabled(false);                //오른쪽에 y축의 데이터를 표시하지 않음.
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);          //x축 값을 밑에 표시.
-        xAxis.setDrawGridLines(false);                  //x축의 그리드라인을 없앰.
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setDrawGridLines(false);               //y축의 그리드라인을 없앰.
-        ArrayList<Entry> yValues = new ArrayList<>();
-        // ArrayList<Entry> xValues = new ArrayList<>();
-        //ArrayList<Entry> zValues = new ArrayList<>();           //각 그래프 별 데이터를 입력받을 배열을 만듦.
-
-        //x축을 일월화수목금토 할거임 숫자를->한글로바꾸는거 알아보기
-
-        yValues.add(new Entry(1, 60));
-        yValues.add(new Entry(2, 50));
-        yValues.add(new Entry(3, 70));
-        yValues.add(new Entry(4, 30));
-        yValues.add(new Entry(5, 50));
-        yValues.add(new Entry(6, 60));
-        yValues.add(new Entry(7, 20));              //Alpha 값 입력
-
-        LineDataSet set1 = new LineDataSet(yValues, "Alpha");
-
-        set1.setColor(Color.RED);
-        // set2.setColor(Color.BLUE);
-        //set3.setColor(Color.GREEN);                 //그래프 별 색 지정
+        scChart = view.findViewById(R.id.mwChart);
+        scChart.setDragEnabled(false);
 
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-        //   dataSets.add(set2);
-        //  dataSets.add(set3);                         //3개의 그래프를 하나의 dataSet이란 배열로 만듦
+        XAxis xAxis = scChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        YAxis leftAxis = scChart.getAxisLeft();
 
-        LineData data = new LineData(dataSets);     //dataSet이란 배열을 data로 선언
-        data.setDrawValues(true);                  //data의 수치를 그래프 위에 나타내지 않기.
-        mChart.setData(data);                       //mChart를 이용하여 data 표시
+        leftAxis.setAxisMinimum(0);
+        leftAxis.setAxisMaximum(24);
+        labels.add("일");
+        labels.add("월");
+        labels.add("화");
+        labels.add("수");
+        labels.add("목");
+        labels.add("금");
+        labels.add("토");
+
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                return labels.get((int) value);
+
+            }
+
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+        YAxis rightAxis = scChart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        entries.add(new Entry(0, -1));    //x축에서 0은 일요일 1시에 점을찍어라
+        entries.add(new Entry(1, -1));   //x축에서 1은 월요일    2시에점을찍어라
+        entries.add(new Entry(2, -1));   ////x축에서 2은 화요일  3시에 점을찍어라
+        entries.add(new Entry(3, -1));   ////x축에서 3은 수요일  20시에점을찍어
+        entries.add(new Entry(4, -1));    //x축에서 4은 목요일
+
+        entries.add(new Entry(5, -1));   //x축에서 5은 금요일
+        entries.add(new Entry(6, -1));
+
+        //6은 토요일*/
+        /// /y축에서 23이 최대임..
+
+
+        databaseGraph.addValueEventListener(graphPoint);
+        ScatterDataSet dataset = new ScatterDataSet(entries, "집중 시간대"); //이 데이타셋
+        dataset.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+        dataset.setColors(Color.TRANSPARENT);
+
+        ScatterData data = new ScatterData(dataset);
+        scChart.setData(data);
 
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Mhours.clear();
-
+                databaseGraph.addValueEventListener(graphPoint);
                 mThisMonthCalendar = Calendar.getInstance();
                 database.addValueEventListener(weekListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -161,7 +174,9 @@ public class MweekFrag extends Fragment { //명상 주별 과거
             @Override
             public void onClick(View view) {
                 Mhours.clear();
-
+                entries.clear();
+                graphChange();
+                databaseGraph.addValueEventListener(graphPoint);
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, -1);
                 database.addValueEventListener(weekListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -171,7 +186,9 @@ public class MweekFrag extends Fragment { //명상 주별 과거
             @Override
             public void onClick(View view) {
                 Mhours.clear();
-
+                entries.clear();
+                graphChange();
+                databaseGraph.addValueEventListener(graphPoint);
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, +1);
                 database.addValueEventListener(weekListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -192,17 +209,17 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     }
 
                     long mediHour = mediTime / 1000 / 3600;
-                    long mediMin = (mediTime / 1000) / 60;
+                    long mediMin = (mediTime / 1000) % 3600 / 60;
                     long mediSec = ((mediTime) / 1000) % 60;
 
-                    if (mediHour == 0) {
+                    if (mediHour != 0) {
+                        mp_week.setText(mediHour + "시간" + mediMin + "분 " + mediSec + "초");
+                        mediTime = 0;
+                    } else if (mediMin != 0) {
                         mp_week.setText(mediMin + "분 " + mediSec + "초");
                         mediTime = 0;
-                    } else if (mediHour != 0 && mediMin == 0) {
-                        mp_week.setText(mediHour + "시간" + mediMin + "분 " + mediSec + "초");
-                        mediTime = 0;
                     } else
-                        mp_week.setText(mediHour + "시간" + mediMin + "분 " + mediSec + "초");
+                        mp_week.setText(mediSec + "초");
                     mediTime = 0;
                 }
 
@@ -287,6 +304,105 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         }, 4000);
 
     }
+
+    //명상도 그래프를 위한 디비
+    ValueEventListener graphPoint = new ValueEventListener() { //그래프에 점 띄울거.
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) { //c_allTime이 식 위에
+
+            realCount = 0;
+            int i = Integer.parseInt(day.getDay());
+            for (int t = 0; t < 24; t++) {
+                // Log.d("test what1",""+t); //작동됨
+                countArray[t] = 0;
+            }
+            //24개의 배열방 0시~23시
+            int t_Value = 0;
+            String s1 = String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+
+            if (s1.length() == 1) {
+                s1 = String.valueOf("0" + (mThisMonthCalendar.get(Calendar.MONTH) + 1) + "월");
+            }
+
+
+            int k = i - 6;
+            {
+                String changValue;
+                //Log.d("test what 2",i+""+(String.valueOf("0"+(mThisMonthCalendar.get(Calendar.MONTH)+ 1) + "월"))+String.valueOf(0+6+ "일"));
+                for (int j = k; j <= i; j++) {
+                    if (String.valueOf(j).length() == 1) {
+                        changValue = "0" + j;
+                    } else {
+                        changValue = String.valueOf(j);
+                    }
+                    ++realCount;
+                    for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(String.valueOf(mThisMonthCalendar.get(Calendar.YEAR) + "년"))
+                            .child(s1).child(String.valueOf(changValue + "일")).getChildren()) {
+
+                        String db_Value = snapshot.getKey().toString(); //시
+                        if (db_Value != null) {
+                            for (int e = 0; e <= 59; e++) {
+                                //for(int t=0 ; t <= 59 ; t++) {
+                                String db_focus = String.valueOf(snapshot.child(e + "분").getValue());
+                                if (db_focus != null) { //분이 존재하면 초단위로 내려감
+                                    for (int y = 0; y <= 59; y++) {
+                                        String db_focus2 = String.valueOf(snapshot.child(e + "분").child(y + "초").child("명상도").getValue());
+                                        if (db_focus2.equals("null")) {
+                                            db_focus2 = "0";
+                                        } else {
+                                            int changeValue = Integer.parseInt(db_focus2);
+                                            if (changeValue >= 50) {
+                                                String[] token = db_Value.split("시");
+
+                                                for (String t : token) {
+                                                    t_Value = Integer.parseInt(t);
+
+                                                }
+                                                countArray[t_Value] += 1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (int r = 0; r < 24; r++) {
+                        if (countArray[r] >= 15) { //각 시간대 배열에 집중도 높았던 순간이15번 이상이면
+                            entries.add(new Entry(realCount - 1, r)); //realCount의 값은 최소 0부터 6까지로 0은 일요일 자리 1은 월요일 2는 화요일자리 3은 수요일자리 이렇게 나간다.
+
+                            // r은 시간대. 카운트배열의 자리값은 시간과같아서 그 시간대의 값이 15(번) 이상이면 점찍기.
+                        } else {
+
+                        }
+                    }
+
+                    for (int t = 0; t < 24; t++) {
+                        // Log.d("test what1",""+t); //작동됨
+                        countArray[t] = 0;
+                    }
+
+                    ScatterDataSet dataset2 = new ScatterDataSet(entries, "집중 시간대");
+                    dataset2.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+                    // dataset2.setValueTextSize(10);
+                    dataset2.setValueTextSize(0);
+                    dataset2.setScatterShapeSize(24);
+                    ScatterData data2 = new ScatterData(dataset2);
+                    dataset2.setColors(Color.RED);
+                    scChart.setData(data2);
+                    scChart.animateY(3000);
+
+                }
+
+
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 
     //주별용 주총 시간 구할겨
     ValueEventListener weekListener = new ValueEventListener() {
@@ -426,4 +542,46 @@ public class MweekFrag extends Fragment { //명상 주별 과거
             Mhours.add("");
         }
     }
+
+    private void graphChange() {
+
+        XAxis xAxis = scChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        labels.add("일");
+        labels.add("월");
+        labels.add("화");
+        labels.add("수");
+        labels.add("목");
+        labels.add("금");
+        labels.add("토");
+
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                return labels.get((int) value);
+
+            }
+
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+        YAxis rightAxis = scChart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        scChart.setDragEnabled(false);
+        entries.add(new Entry(0, -1));    //x축에서 0은 일요일 1시에 점을찍어라
+        entries.add(new Entry(1, -1));   //x축에서 1은 월요일    2시에점을찍어라
+        entries.add(new Entry(2, -1));   ////x축에서 2은 화요일  3시에 점을찍어라
+        entries.add(new Entry(3, -1));   ////x축에서 3은 수요일  20시에점을찍어
+        entries.add(new Entry(4, -1));    //x축에서 4은 목요일
+
+        entries.add(new Entry(5, -1));   //x축에서 5은 금요일
+        entries.add(new Entry(6, -1));
+
+    }
+
 }

@@ -237,6 +237,7 @@ public class MdayFrag extends Fragment {
 
     private void getCalendar(Date dateForCurrentMonth) {
         int dayOfWeek;
+        int thisWeekLastDay;
 
         arrayListDayInfo.clear();
 
@@ -245,7 +246,20 @@ public class MdayFrag extends Fragment {
         dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);//오늘
         calendar.set(Calendar.DATE, dayOfWeek);//1일로 변경
 
+        thisWeekLastDay = calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
+
         setCalendarTitle();
+
+        DayInfo day;
+        //여기 아래부터
+        calendar.add(Calendar.DATE, -1 * (dayOfWeek - 1)); //현재 달력화면에서 보이는 지난달의 시작일
+        for (int i = 0; i < dayOfWeek - 1; i++) {
+            day = new DayInfo();
+            day.setDate(calendar.getTime());
+            day.setInMonth(true);
+            // arrayListDayInfo.add(day);
+            calendar.add(Calendar.DATE, +1);
+        }
     }
 
     private void setCalendarTitle() {

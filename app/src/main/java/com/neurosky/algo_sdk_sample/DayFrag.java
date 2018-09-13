@@ -76,11 +76,34 @@ public class DayFrag extends Fragment {
         dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);//오늘
         calendar.set(Calendar.DATE, dayOfWeek);//1일로 변경
 
+        thisWeekLastDay = calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
+
         setCalendarTitle();
 
         DayInfo day;
 
+        //여기 아래부터
+        calendar.add(Calendar.DATE, -1 * (dayOfWeek - 1)); //현재 달력화면에서 보이는 지난달의 시작일
+        for (int i = 0; i < dayOfWeek - 1; i++) {
+            day = new DayInfo();
+            day.setDate(calendar.getTime());
+            day.setInMonth(true);
+            // arrayListDayInfo.add(day);
+            calendar.add(Calendar.DATE, +1);
+        }
+        //여기까지 지우면 오늘기준날짜부터 일주일간격 날짜로 나옴.
+
+        for (int i = 1; i <= thisWeekLastDay; i++) {
+            day = new DayInfo();
+            day.setDate(calendar.getTime());
+            day.setInMonth(true);
+            arrayListDayInfo.add(day);
+
+            calendar.add(Calendar.DATE, +1);
+        }
+
         mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
+
     }
 
     private void setCalendarTitle() {
@@ -361,6 +384,4 @@ public class DayFrag extends Fragment {
             barPercent.setText(String.valueOf(percent) + "%");
         }
     }
-
-
 }

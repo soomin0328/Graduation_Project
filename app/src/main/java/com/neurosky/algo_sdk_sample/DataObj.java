@@ -1,4 +1,5 @@
 package com.neurosky.algo_sdk_sample;
+
 public class DataObj {
     public String time;
     public String val;

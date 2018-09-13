@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-
 public class PreferenceManager {
 
     Context mContext;
@@ -35,7 +34,6 @@ public class PreferenceManager {
         DataObj obj = gson.fromJson(json, DataObj.class);
         return obj;
     }
-
 
     public void clearPreference() {
         SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(mContext);

@@ -43,18 +43,25 @@ public class WeekFrag extends Fragment {
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference database = firebaseDatabase.getReference("USERS");
     private DatabaseReference databasePercent = firebaseDatabase.getReference("USERS");
+    private DatabaseReference databaseGraph = firebaseDatabase.getReference("USERS");
 
     String i, wconper, h = "", name = "";
     long wconTime, wconHour, conTime, cmigrate, day_allTime;
-    int weekAim, z;
+    int weekAim;
 
     DayInfo day;
     private TextView tvCalendarTitle;
     private GridView gvCalendar;
-    private ScatterChart scChart;           //mChart 라는 LineChart를 선언해준다.
+    private ScatterChart scChart;
     private int preSelected = -1;
+
     private ArrayList<DayInfo> arrayListDayInfo;
     private ArrayList<String> hours = new ArrayList<>();
+    private ArrayList<Entry> entries = new ArrayList<>(); //주별 그래프
+    final ArrayList<String> labels = new ArrayList<String>();
+
+    int[] countArray = new int[24];
+    int realCount = 0;
 
     Calendar mThisMonthCalendar;
     WeekCalendarAdapter mCalendarAdapter, mCalendarAdapter2;
@@ -64,7 +71,7 @@ public class WeekFrag extends Fragment {
     TextView barPercent;
     TextView wAimPer; //날짜하나의 달성율
     View view;
-    TextView cp_week; //주별에서 하루하루 집중ㅅㅣ간
+    TextView cp_week; //주별에서 하루하루 집중시간
     TextView cp_weekall;
 
     public void setSelectedDate(Date date) {
@@ -106,14 +113,15 @@ public class WeekFrag extends Fragment {
         barPercent = view.findViewById(R.id.wbarPercent);
 
         scChart = view.findViewById(R.id.wChart);
-        scChart.setDragEnabled(true);
+        scChart.setDragEnabled(false);
 
-        ArrayList<Entry> entries = new ArrayList<>();
 
         XAxis xAxis = scChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        final ArrayList<String> labels = new ArrayList<String>();
+        YAxis leftAxis = scChart.getAxisLeft();
 
+        leftAxis.setAxisMinimum(0);
+        leftAxis.setAxisMaximum(24);
         labels.add("일");
         labels.add("월");
         labels.add("화");
@@ -138,32 +146,34 @@ public class WeekFrag extends Fragment {
         YAxis rightAxis = scChart.getAxisRight();
         rightAxis.setEnabled(false);
 
-        entries.add(new Entry(0, 1));    //x축에서 0은 일요일 1시에 점을찍어라
-        entries.add(new Entry(1, 2));   //x축에서 1은 월요일    2시에점을찍어라
-        entries.add(new Entry(2, 3));   ////x축에서 2은 화요일  3시에 점을찍어라
-        entries.add(new Entry(3, 20));   ////x축에서 3은 수요일  20시에점을찍어
-        entries.add(new Entry(4, 5));    //x축에서 4은 목요일
-        entries.add(new Entry(5, 24));   //x축에서 5은 금요일
-        entries.add(new Entry(5, 22));
-        entries.add(new Entry(6, 17));
-        entries.add(new Entry(6, 19)); //6은 토요일
+        entries.add(new Entry(0, -1));    //x축에서 0은 일요일 1시에 점을찍어라
+        entries.add(new Entry(1, -1));   //x축에서 1은 월요일    2시에점을찍어라
+        entries.add(new Entry(2, -1));   ////x축에서 2은 화요일  3시에 점을찍어라
+        entries.add(new Entry(3, -1));   ////x축에서 3은 수요일  20시에점을찍어
+        entries.add(new Entry(4, -1));    //x축에서 4은 목요일
+
+        entries.add(new Entry(5, -1));   //x축에서 5은 금요일
+        entries.add(new Entry(6, -1));
+
+        //6은 토요일*/
         /// /y축에서 23이 최대임..
 
+
+        databaseGraph.addValueEventListener(graphPoint);
         ScatterDataSet dataset = new ScatterDataSet(entries, "집중 시간대"); //이 데이타셋
+        dataset.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+        dataset.setColors(Color.TRANSPARENT);
 
-
-        // ScatterData data2=new ScatterData((IScatterDataSet) labels);
         ScatterData data = new ScatterData(dataset);
-        // ScatterChart data2=new ScatterData(labels);
-        //scChart.setData(data2);
         scChart.setData(data);
+
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hours.clear();
 
                 mThisMonthCalendar = Calendar.getInstance();
-
+                databaseGraph.addValueEventListener(graphPoint);
                 database.addValueEventListener(weekListener);
                 databasePercent.addValueEventListener(dataPercentListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -175,7 +185,11 @@ public class WeekFrag extends Fragment {
             public void onClick(View view) {
                 hours.clear();
 
+                entries.clear();
+                graphChange();
+                databaseGraph.addValueEventListener(graphPoint);
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, -1);
+
 
                 database.addValueEventListener(weekListener);
                 databasePercent.addValueEventListener(dataPercentListener);
@@ -186,9 +200,11 @@ public class WeekFrag extends Fragment {
             @Override
             public void onClick(View view) {
                 hours.clear();
-
+                entries.clear();
+                graphChange();
                 mThisMonthCalendar.add(Calendar.WEEK_OF_MONTH, +1);
 
+                databaseGraph.addValueEventListener(graphPoint);
                 database.addValueEventListener(weekListener);
                 databasePercent.addValueEventListener(dataPercentListener);
                 getCalendar(mThisMonthCalendar.getTime());
@@ -464,115 +480,103 @@ public class WeekFrag extends Fragment {
         }
     };
 
+    //그래프에 점 띄우기 위한 코드여
     ValueEventListener graphPoint = new ValueEventListener() { //그래프에 점 띄울거.
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) { //c_allTime이 식 위에
-            long testValue;
+
+            realCount = 0;
             int i = Integer.parseInt(day.getDay());
+
+            for (int t = 0; t < 24; t++) {
+                countArray[t] = 0;
+            }
+            //24개의 배열방 0시~23시
+            int t_Value = 0;
+            String s1 = String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+
+            if (s1.length() == 1) {
+                s1 = String.valueOf("0" + (mThisMonthCalendar.get(Calendar.MONTH) + 1) + "월");
+            }
+
+
             int k = i - 6;
-
-            if ((i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6) && (dayOfWeek == 4 || dayOfWeek == 5)) {
-                int month = mThisMonthCalendar.get(Calendar.MONTH) + 1;
-                if (month == 1 || month == 3 || month == 5 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-                    for (int j = 31 - (6 - i); j <= 31; j++) {
-                        for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
-                                .child("목표시간").getChildren()) {
-                            if (snapshot.getValue().toString() == null) {
-                                testValue = 0;
-                            } else {
-                                testValue = Long.parseLong(snapshot.getValue().toString());
-                            }
-                            weekAim += testValue;
-                            //conTime += testValue;
-                        }
-                        //divide(day_allTime);
-                        week_Aim2 += weekAim;
-                        weekAim = 0;
-                        // conTime += 0;
-                    }
-                } else if (month == 4 || month == 6 || month == 9 || month == 11) {
-                    for (int j = 30 - (6 - i); j <= 30; j++) {
-                        for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
-                                .child("목표시간").getChildren()) {
-                            if (snapshot.getValue().toString() == null) {
-                                testValue = 0;
-                            } else {
-                                testValue = Long.parseLong(snapshot.getValue().toString());
-                            }
-                            weekAim += testValue;
-                            //conTime += test;
-                        }
-                        //divide(day_allTime);
-                        week_Aim2 += weekAim;
-                        weekAim = 0;
-                        //conTime += 0;
-                    }
-                } else {
-                    for (int j = 28 - (6 - i); j <= 28; j++) {
-                        for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
-                                .child("목표시간").getChildren()) {
-                            if (snapshot.getValue().toString() == null) {
-                                testValue = 0;
-                            } else {
-                                testValue = Long.parseLong(snapshot.getValue().toString());
-                            }
-                            weekAim += testValue;
-                            //  conTime += test;
-                        }
-                        // divide(day_allTime);
-                        week_Aim2 += weekAim;
-                        weekAim = 0;
-                        //conTime += 0;
-                    }
-                }
-            }
-
-            if ((i != 1 || i != 2 || i != 3 || i != 4 || i != 5 || i != 6) && (dayOfWeek != 4 || dayOfWeek != 5)) {
+            {
+                String changValue;
+                //Log.d("test what 2",i+""+(String.valueOf("0"+(mThisMonthCalendar.get(Calendar.MONTH)+ 1) + "월"))+String.valueOf(0+6+ "일"));
                 for (int j = k; j <= i; j++) {
-                    for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
-                            .child("목표시간").getChildren()) {
-                        if (snapshot.getValue().toString() == null) {
-                            testValue = 0;
-                        } else {
-                            testValue = Long.parseLong(snapshot.getValue().toString());
-                        }
-                        weekAim += testValue;
-                        //conTime += testValue;
+                    if (String.valueOf(j).length() == 1) {
+                        changValue = "0" + j;
+                    } else {
+                        changValue = String.valueOf(j);
                     }
-                    //  divide(day_allTime);
-                    week_Aim2 += weekAim;
-                    weekAim = 0;
-                    // conTime += 0;
+                    ++realCount;
+                    for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(String.valueOf(mThisMonthCalendar.get(Calendar.YEAR) + "년"))
+                            .child(s1).child(String.valueOf(changValue + "일")).getChildren()) {
+
+                        String db_Value = snapshot.getKey().toString(); //시
+                        if (db_Value != null) {
+                            for (int e = 0; e <= 59; e++) {
+                                //for(int t=0 ; t <= 59 ; t++) {
+                                String db_focus = String.valueOf(snapshot.child(e + "분").getValue());
+                                if (db_focus != null) { //분이 존재하면 초단위로 내려감
+                                    for (int y = 0; y <= 59; y++) {
+                                        String db_focus2 = String.valueOf(snapshot.child(e + "분").child(y + "초").child("집중도").getValue());
+                                        if (db_focus2.equals("null")) {
+                                            db_focus2 = "0";
+                                        } else {
+                                            int changeValue = Integer.parseInt(db_focus2);
+                                            if (changeValue >= 50) {
+                                                String[] token = db_Value.split("시");
+
+                                                for (String t : token) {
+                                                    t_Value = Integer.parseInt(t);
+
+                                                }
+                                                countArray[t_Value] += 1;
+                                                //   Log.d("디비 값2", db_focus2 + "");
+                                            }
+                                        }
+                                    }
+                                }
+                                //Log.d("디비 포커스 값", db_focus+"");
+                                // }
+                            }
+                        }
+
+                    }
+
+                    for (int r = 0; r < 24; r++) {
+                        if (countArray[r] >= 15) { //각 시간대 배열에 집중도 높았던 순간이15번 이상이면
+                            entries.add(new Entry(realCount - 1, r)); //realCount의 값은 최소 0부터 6까지로 0은 일요일 자리 1은 월요일 2는 화요일자리 3은 수요일자리 이렇게 나간다.
+
+                            // r은 시간대. 카운트배열의 자리값은 시간과같아서 그 시간대의 값이 15(번) 이상이면 점찍기.
+                        } else {
+
+                        }
+                    }
+
+                    for (int t = 0; t < 24; t++) {
+                        // Log.d("test what1",""+t); //작동됨
+                        countArray[t] = 0;
+                    }
+
+                    ScatterDataSet dataset2 = new ScatterDataSet(entries, "집중 시간대");
+                    dataset2.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+                    // dataset2.setValueTextSize(10);
+                    dataset2.setValueTextSize(0);
+                    dataset2.setScatterShapeSize(24);
+                    ScatterData data2 = new ScatterData(dataset2);
+                    dataset2.setColors(Color.RED);
+                    scChart.setData(data2);
+                    scChart.animateY(3000);
+
                 }
-            }
 
-            long migrate2 = cmigrate; //집중한 시간
 
-            double imValue;
-
-            if (week_Aim2 == 0 || cmigrate == 0) {
-                bar.setProgress(0);
-                barPercent.setText("0");
-            } else {
-                imValue = ((double) migrate2 / (double) week_Aim2) * 100;
-                //  int a= (int) migrate2;
-                // int b= (int) week_Aim2;
-                week_Aim2 = 0;
-                bar.setProgress((int) imValue);
-                if ((int) imValue > 100) {
-                    barPercent.setText("100%");
-                } else {
-                    barPercent.setText((int) imValue + "%");
-                }
-
-                weekAim = 0;
-                migrate2 = 0;
             }
         }
+
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -717,5 +721,46 @@ public class WeekFrag extends Fragment {
         } else {
             hours.add("");
         }
+    }
+
+    private void graphChange() {
+
+        XAxis xAxis = scChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        labels.add("일");
+        labels.add("월");
+        labels.add("화");
+        labels.add("수");
+        labels.add("목");
+        labels.add("금");
+        labels.add("토");
+
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                return labels.get((int) value);
+
+            }
+
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+        YAxis rightAxis = scChart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        scChart.setDragEnabled(false);
+        entries.add(new Entry(0, -1));    //x축에서 0은 일요일 1시에 점을찍어라
+        entries.add(new Entry(1, -1));   //x축에서 1은 월요일    2시에점을찍어라
+        entries.add(new Entry(2, -1));   ////x축에서 2은 화요일  3시에 점을찍어라
+        entries.add(new Entry(3, -1));   ////x축에서 3은 수요일  20시에점을찍어
+        entries.add(new Entry(4, -1));    //x축에서 4은 목요일
+
+        entries.add(new Entry(5, -1));   //x축에서 5은 금요일
+        entries.add(new Entry(6, -1));
+
     }
 }
