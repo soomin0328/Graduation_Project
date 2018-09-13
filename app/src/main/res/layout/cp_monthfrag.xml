@@ -73,13 +73,11 @@
 
     <GridView
         android:id="@+id/mgv_calendar"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="393dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginStart="1dp"
         android:columnWidth="90dp"
         android:horizontalSpacing="0dp"
         android:numColumns="7"

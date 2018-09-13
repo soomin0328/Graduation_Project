@@ -83,8 +83,8 @@ public class DayFrag extends Fragment {
         DayInfo day;
 
         //여기 아래부터
-        calendar.add(Calendar.DATE, -1 * (dayOfWeek - 1)); //현재 달력화면에서 보이는 지난달의 시작일
-        for (int i = 0; i < dayOfWeek - 1; i++) {
+        calendar.add(Calendar.DATE, -1*(dayOfWeek-1)); //현재 달력화면에서 보이는 지난달의 시작일
+        for(int i=0; i<dayOfWeek-1; i++){
             day = new DayInfo();
             day.setDate(calendar.getTime());
             day.setInMonth(true);
@@ -93,7 +93,7 @@ public class DayFrag extends Fragment {
         }
         //여기까지 지우면 오늘기준날짜부터 일주일간격 날짜로 나옴.
 
-        for (int i = 1; i <= thisWeekLastDay; i++) {
+        for(int i=1; i <= thisWeekLastDay; i++){
             day = new DayInfo();
             day.setDate(calendar.getTime());
             day.setInMonth(true);
@@ -101,6 +101,15 @@ public class DayFrag extends Fragment {
 
             calendar.add(Calendar.DATE, +1);
         }
+
+        /*for(int i=1; i<thisMonthLastDay+1; i++) {
+            day = new DayInfo();
+            day.setDate(calendar.getTime());
+            day.setInMonth(false);
+            arrayListDayInfo.add(day);
+
+            calendar.add(Calendar.DATE, +1);
+        }*/
 
         mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
 
@@ -342,7 +351,6 @@ public class DayFrag extends Fragment {
                 mThisMonthCalendar = Calendar.getInstance();
                 getCalendar(mThisMonthCalendar.getTime());
                 databaseReference.addValueEventListener(valueEventListener);
-
             }
         });
 
@@ -355,15 +363,14 @@ public class DayFrag extends Fragment {
                 databaseReference.addValueEventListener(valueEventListener);
             }
         });
+
         btnNextCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mThisMonthCalendar.add(Calendar.DAY_OF_MONTH, +1);
 
                 getCalendar(mThisMonthCalendar.getTime());
                 databaseReference.addValueEventListener(valueEventListener);
-
             }
         });
 

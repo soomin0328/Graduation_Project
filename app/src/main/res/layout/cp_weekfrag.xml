@@ -61,15 +61,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wChart" />
 
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.ScatterChart
         android:id="@+id/wChart"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="290dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/w_gv_calendar"
         android:layout_marginEnd="1dp"
         android:layout_marginStart="1dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/w_gv_calendar" />
 
@@ -172,15 +173,17 @@
 
     <TextView
         android:id="@+id/wbarPercent"
-        android:layout_width="28dp"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="24dp"
         android:layout_below="@+id/wtv1"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:layout_toEndOf="@+id/wprogressBar"
-        android:text="20"
+        android:text="20%"
         android:textColor="@color/black"
-        android:textSize="17sp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/wprogressBar"
         app:layout_constraintTop_toBottomOf="@+id/wcptoday" />
 
@@ -191,7 +194,7 @@
         android:layout_alignEnd="@+id/tv"
         android:layout_alignParentTop="true"
         android:layout_marginStart="38dp"
-        android:text="달성율:"
+        android:text="달성률:"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
