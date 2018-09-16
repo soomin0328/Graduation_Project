@@ -33,7 +33,6 @@ public class MmonthFrag extends Fragment {
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
-    private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS");
 
     private TextView tvCalendarTitle;
     private GridView gvCalendar;
@@ -53,13 +52,7 @@ public class MmonthFrag extends Fragment {
     private ArrayList<DayInfo> arrayListDayInfo;
     private ArrayList<String> mHours = new ArrayList<>();
 
-    public void setSelectedDate(Date date) {
-        selectedDate = date;
-
-        if (mCalendarAdapter != null) {
-            mCalendarAdapter.selectedDate = date;
-        }
-    }
+    /**---Setting---**/
 
     @Nullable
     @Override
@@ -130,7 +123,7 @@ public class MmonthFrag extends Fragment {
                 i = day.getDay();
 
                 if (day.isInMonth()) {
-                    databaseReferences.addValueEventListener(pListener);
+                    databaseReference.addValueEventListener(pListener);
                     view.setBackgroundColor(Color.YELLOW);
                     View prevSelectedView = adapterView.getChildAt(preSelected);
 
@@ -147,6 +140,15 @@ public class MmonthFrag extends Fragment {
         arrayListDayInfo = new ArrayList<>();
         return view;
     }
+
+    public void onResume() {
+        super.onResume();
+
+        mThisMonthCalendar = Calendar.getInstance();
+        getCalendar(mThisMonthCalendar.getTime());
+    }
+
+    /**---EventListener---**/
 
     ValueEventListener pListener = new ValueEventListener() {
         @Override
@@ -224,11 +226,14 @@ public class MmonthFrag extends Fragment {
         }
     };
 
-    public void onResume() {
-        super.onResume();
+    /**---Method---**/
 
-        mThisMonthCalendar = Calendar.getInstance();
-        getCalendar(mThisMonthCalendar.getTime());
+    public void setSelectedDate(Date date) {
+        selectedDate = date;
+
+        if (mCalendarAdapter != null) {
+            mCalendarAdapter.selectedDate = date;
+        }
     }
 
     private void getCalendar(Date dateForCurrentMonth) {

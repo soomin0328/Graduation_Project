@@ -42,27 +42,124 @@ public class MonthFrag extends Fragment {
 
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");//월 전체 계산용
-    private DatabaseReference databaseReferences = firebaseDatabase.getReference("USERS"); //하루계산용
-    private DatabaseReference databaseReferences2 = firebaseDatabase.getReference("USERS");
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
 
     private int preSelected = -1;
     String dayAim_per, i, h = "", name = "";
     long conTime, conHour, c_allTime, day_allTime, migrate, migrate2, month_Aim2;
-    int thisMonthLastDay, month_Aim; //한달 전체 달성울
+    int thisMonthLastDay, month_Aim;    //month_Aim: 한달 전체 달성울
 
     View view;
-    TextView cpm_all, barPercent, aimPer, c_hour, cp_day; //달력의 하루하루
+    TextView cpm_all, barPercent, aimPer, c_hour, cp_day;
     Date selectedDate;
     ProgressBar bar;
 
-    public void setSelectedDate(Date date) {
-        selectedDate = date;
+    /**---Setting---**/
 
-        if (mCalendarAdapter != null) {
-            mCalendarAdapter.selectedDate = date;
-        }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
+
+        int idx = email.indexOf("@");
+        name = email.substring(0, idx);
+
+        hours.clear();
+
+        view = inflater.inflate(R.layout.cp_monthfrag, container, false);
+        cp_day = view.findViewById(R.id.mp_day); //하루에 집중한 시간
+        cpm_all = view.findViewById(R.id.mpm_all); //그달 전체 집중시간
+        aimPer = view.findViewById(R.id.aimPer); //하루 달성율
+
+        Button btnPreviousCalendar = view.findViewById(R.id.mbtn_previous_calendar);
+        Button btnNextCalendar = view.findViewById(R.id.mbtn_next_calendar);
+        Button goToday = view.findViewById(R.id.mptoday1);
+
+        tvCalendarTitle = view.findViewById(R.id.mtv_calendar_title);
+        gvCalendar = view.findViewById(R.id.mgv_calendar);
+
+        bar = (ProgressBar) view.findViewById(R.id.progressBar);
+        barPercent = view.findViewById(R.id.barPercent);
+
+        databaseReference.addValueEventListener(valueEventListener);
+        databaseReference.addValueEventListener(percentListener);
+
+        goToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hours.clear();
+
+                mThisMonthCalendar = Calendar.getInstance();
+                getCalendar(mThisMonthCalendar.getTime());
+                databaseReference.addValueEventListener(valueEventListener);
+                databaseReference.addValueEventListener(percentListener);
+            }
+        });
+
+        btnPreviousCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hours.clear();
+
+                mThisMonthCalendar.add(Calendar.MONTH, -1);
+
+                getCalendar(mThisMonthCalendar.getTime());
+                databaseReference.addValueEventListener(valueEventListener);
+                databaseReference.addValueEventListener(percentListener);
+            }
+        });
+        btnNextCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hours.clear();
+
+                mThisMonthCalendar.add(Calendar.MONTH, +1);
+
+                getCalendar(mThisMonthCalendar.getTime());
+                databaseReference.addValueEventListener(valueEventListener);
+                databaseReference.addValueEventListener(percentListener);
+            }
+        });
+
+        gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            DayInfo day;
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                setSelectedDate(((DayInfo) view.getTag()).getDate());
+                day = arrayListDayInfo.get(position);
+                i = day.getDay();
+                if (day.isInMonth()) {
+                    databaseReference.addValueEventListener(pListener);
+                    databaseReference.addValueEventListener(dayAimListener);
+                    view.setBackgroundColor(Color.YELLOW);
+                    View prevSelectedView = adapterView.getChildAt(preSelected);
+
+                    if (preSelected != -1) {
+                        prevSelectedView.setSelected(false);
+                        prevSelectedView.setBackgroundResource(R.drawable.bg_rect_border);
+                    }
+
+                    preSelected = position;
+                }
+            }
+        });
+
+        arrayListDayInfo = new ArrayList<>();
+        return view;
     }
+
+    public void onResume() {
+        super.onResume();
+
+        mThisMonthCalendar = Calendar.getInstance();
+        getCalendar(mThisMonthCalendar.getTime());
+    }
+
+    /**---EventListener---**/
 
     //달력에서 특정 날짜 눌렀을 때 하루 집중시간 구하기
     ValueEventListener pListener = new ValueEventListener() {
@@ -156,7 +253,6 @@ public class MonthFrag extends Fragment {
                     .child("하루달성율").getChildren()) {
                 dayAim_per = (snapshot.getValue().toString());
             }
-            // barPercent.setText(String.valueOf(day_aim)); //숫자표현
 
             if (dayAim_per == null) {
                 dayAim_per = "0";
@@ -164,7 +260,6 @@ public class MonthFrag extends Fragment {
 
             } else {
                 aimPer.setText(dayAim_per + "%");
-                // bar.setProgress(day_aim);
             }
             dayAim_per = "0";
         }
@@ -175,13 +270,12 @@ public class MonthFrag extends Fragment {
         }
     };
 
-    //한달 퍼센트 구하기
-    ValueEventListener percentListener = databaseReference.addValueEventListener(new ValueEventListener() {
+    //한 달 퍼센트 구하기
+    ValueEventListener percentListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
             int testValue;
-            testValue = 0;
 
             for (int k = 1; k < thisMonthLastDay + 1; k++) {
                 for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
@@ -225,116 +319,11 @@ public class MonthFrag extends Fragment {
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
         }
-    });
+    };
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    /**---Method---**/
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String email = user.getEmail();
-
-        int idx = email.indexOf("@");
-        name = email.substring(0, idx);
-
-        hours.clear();
-
-        view = inflater.inflate(R.layout.cp_monthfrag, container, false);
-        cp_day = view.findViewById(R.id.mp_day); //하루에 집중한 시간
-        cpm_all = view.findViewById(R.id.mpm_all); //그달 전체 집중시간
-        aimPer = view.findViewById(R.id.aimPer); //하루 달성율
-
-        Button btnPreviousCalendar = view.findViewById(R.id.mbtn_previous_calendar);
-        Button btnNextCalendar = view.findViewById(R.id.mbtn_next_calendar);
-        Button goToday = view.findViewById(R.id.mptoday1);
-
-        tvCalendarTitle = view.findViewById(R.id.mtv_calendar_title);
-        gvCalendar = view.findViewById(R.id.mgv_calendar);
-
-        bar = (ProgressBar) view.findViewById(R.id.progressBar);
-        barPercent = view.findViewById(R.id.barPercent);
-
-        databaseReference.addValueEventListener(valueEventListener);
-        databaseReferences2.addValueEventListener(percentListener);
-
-        goToday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hours.clear();
-
-                mThisMonthCalendar = Calendar.getInstance();
-                getCalendar(mThisMonthCalendar.getTime());
-                databaseReference.addValueEventListener(valueEventListener);
-                databaseReferences2.addValueEventListener(percentListener);
-            }
-        });
-
-        btnPreviousCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hours.clear();
-
-                mThisMonthCalendar.add(Calendar.MONTH, -1);
-
-                getCalendar(mThisMonthCalendar.getTime());
-                databaseReference.addValueEventListener(valueEventListener);
-                databaseReferences2.addValueEventListener(percentListener);
-            }
-        });
-        btnNextCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hours.clear();
-
-                mThisMonthCalendar.add(Calendar.MONTH, +1);
-
-                getCalendar(mThisMonthCalendar.getTime());
-                databaseReference.addValueEventListener(valueEventListener);
-                databaseReferences2.addValueEventListener(percentListener);
-            }
-        });
-
-        gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            DayInfo day;
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                setSelectedDate(((DayInfo) view.getTag()).getDate());
-                day = arrayListDayInfo.get(position);
-                i = day.getDay();
-                if (day.isInMonth()) {
-                    databaseReferences.addValueEventListener(pListener);
-                    databaseReference.addValueEventListener(dayAimListener);
-                    view.setBackgroundColor(Color.YELLOW);
-                    View prevSelectedView = adapterView.getChildAt(preSelected);
-
-                    if (preSelected != -1) {
-                        //prevSelectedView.setClickable(false);
-                        prevSelectedView.setSelected(false);
-                        prevSelectedView.setBackgroundResource(R.drawable.bg_rect_border);
-                    }
-
-                    preSelected = position;
-
-                    final long a = mThisMonthCalendar.get(Calendar.YEAR);
-                    final long b = (mThisMonthCalendar.get(Calendar.MONTH) + 1);
-                }
-            }
-        });
-
-        arrayListDayInfo = new ArrayList<>();
-        return view;
-    }
-
-
-    public void onResume() {
-        super.onResume();
-
-        mThisMonthCalendar = Calendar.getInstance();
-        getCalendar(mThisMonthCalendar.getTime());
-    }
-
+    //요일들 구하기 & 화면 띄우기
     private void getCalendar(Date dateForCurrentMonth) {
         int dayOfWeek;
 
@@ -385,6 +374,7 @@ public class MonthFrag extends Fragment {
             calendar.add(Calendar.DATE, +1);
         }
 
+        //달력 화면을 띄움
         mCalendarAdapter2 = new CalendarAdapter(arrayListDayInfo, selectedDate);
         gvCalendar.setAdapter(mCalendarAdapter2);
 
@@ -400,6 +390,15 @@ public class MonthFrag extends Fragment {
 
     }
 
+    //현재 선택한 날짜
+    public void setSelectedDate(Date date) {
+        selectedDate = date;
+
+        if (mCalendarAdapter != null) {
+            mCalendarAdapter.selectedDate = date;
+        }
+    }
+
     private void setCalendarTitle() {
         StringBuilder sb = new StringBuilder();
 
@@ -410,6 +409,7 @@ public class MonthFrag extends Fragment {
         tvCalendarTitle.setText(sb.toString());
     }
 
+    //Firebase에서 얻은 하루 총 공부 시간을 시간/분/초로 나눈 뒤, CalendarAdapter에 넘기기위해 hours라는 ArrayList에 넣음
     private void divide(Long time) {
         if (time != 0) {
             long hour = time / 1000 / 3600;
@@ -428,4 +428,5 @@ public class MonthFrag extends Fragment {
             hours.add("");
         }
     }
+
 }

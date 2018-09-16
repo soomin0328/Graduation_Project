@@ -534,13 +534,10 @@ public class WeekFrag extends Fragment {
 
                                                 }
                                                 countArray[t_Value] += 1;
-                                                //   Log.d("디비 값2", db_focus2 + "");
                                             }
                                         }
                                     }
                                 }
-                                //Log.d("디비 포커스 값", db_focus+"");
-                                // }
                             }
                         }
 
@@ -572,8 +569,6 @@ public class WeekFrag extends Fragment {
                     scChart.animateY(3000);
 
                 }
-
-
             }
         }
 

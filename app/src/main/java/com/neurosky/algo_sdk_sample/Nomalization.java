@@ -31,7 +31,6 @@ public class Nomalization extends AppCompatActivity{
 
     private String data[] = new String[5];
     private Double addData[] = new Double[5];
-    private String data2[] = new String[5];
 
     String str[] = new String[5];
 
@@ -114,9 +113,9 @@ public class Nomalization extends AppCompatActivity{
 
     // 최소값 출력
     public static Double calc_min(Double age[]) {
-        int i, j;
-        Double min = 0.0;
-        min = age[0];
+        int i;
+        Double min = age[0];
+
         for (i = 1; i < age.length; i++) {
             if (age[i] < min) {
                 min = age[i];
@@ -127,9 +126,9 @@ public class Nomalization extends AppCompatActivity{
 
     // 최대값 뽑기
     public static Double calc_max(Double age[]) {
-        int i, j;
-        Double max = 0.0;
-        max = age[0];
+        int i;
+        Double max = age[0];
+
         for (i = 0; i < age.length; i++) {
             if (age[i] > max) {
                 max = age[i];
@@ -155,7 +154,8 @@ public class Nomalization extends AppCompatActivity{
                 int j = 0;
                 for (int s = 10; s <= 59; s++) {
                     int i = 0;
-                    for (DataSnapshot snapshot : dataSnapshot.child("2018년").child("07월").child("31일").child("22시").child("19분").child(String.valueOf(s) + "초").getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.child("2018년").child("07월").child("31일")
+                            .child("22시").child("19분").child(String.valueOf(s) + "초").getChildren()) {
                         data[i] = snapshot.getValue().toString();
                         i++;
                     }

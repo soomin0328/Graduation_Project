@@ -44,8 +44,8 @@ public class GraphActivity extends AppCompatActivity {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                int count = 0;
-                while (count < 20) {
+                double count = 0;
+                while (count < 16.2) {
                     count++;
                     try {
                         Thread.sleep(1000);

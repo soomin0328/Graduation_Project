@@ -461,27 +461,6 @@ public class EEG extends Activity {
         });
     }
 
-    private short[] readData(InputStream is, int size) {
-        short data[] = new short[size];
-        int lineCount = 0;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        try {
-            while (lineCount < size) {
-                String line = reader.readLine();
-                if (line == null || line.isEmpty()) {
-                    Log.d(TAG, "lineCount=" + lineCount);
-                    break;
-                }
-                data[lineCount] = Short.parseShort(line);
-                lineCount++;
-            }
-            Log.d(TAG, "lineCount=" + lineCount);
-        } catch (IOException e) {
-
-        }
-        return data;
-    }
-
     @Override
     public void onBackPressed() {
         nskAlgoSdk.NskAlgoUninit();
@@ -510,12 +489,6 @@ public class EEG extends Activity {
                     showToast("Connected", Toast.LENGTH_SHORT);
                     break;
                 case ConnectionStates.STATE_WORKING:
-                    // Do something when working
-
-                    //(9) demo of recording raw data , stop() will call stopRecordRawData,
-                    //or you can add a button to control it.
-                    //You can change the save path by calling setRecordStreamFilePath(String filePath) before startRecordRawData
-                    //tgStreamReader.startRecordRawData();
 
                     EEG.this.runOnUiThread(new Runnable() {
                         public void run() {
@@ -527,10 +500,6 @@ public class EEG extends Activity {
 
                     break;
                 case ConnectionStates.STATE_GET_DATA_TIME_OUT:
-                    // Do something when getting data timeout
-
-                    //(9) demo of recording raw data, exception handling
-                    //tgStreamReader.stopRecordRawData();
 
                     showToast("Get data time out!", Toast.LENGTH_SHORT);
 
@@ -575,9 +544,6 @@ public class EEG extends Activity {
 
         @Override
         public void onDataReceived(int datatype, int data, Object obj) {
-            // You can handle the received data here
-            // You can feed the raw data to algo sdk here if necessary.
-            //Log.i(TAG,"onDataReceived");
             switch (datatype) {
                 case MindDataType.CODE_ATTENTION:
                     short attValue[] = {(short) data};
