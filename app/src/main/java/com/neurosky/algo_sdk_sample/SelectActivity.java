@@ -19,7 +19,6 @@ public class SelectActivity extends AppCompatActivity {
     TimePickerDialog.OnTimeSetListener tt = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            Log.d("test", "hour:" + hourOfDay + "minute" + minute);
         }
     };
 
@@ -95,9 +94,9 @@ public class SelectActivity extends AppCompatActivity {
 
                 //명상 현재
                 else if (meditate.isChecked() == true && now.isChecked() == true) {
-                    Intent goEEG = new Intent(SelectActivity.this, EEG.class);
+                    Intent goGraph = new Intent(SelectActivity.this, GraphActivity.class);
                     Toast.makeText(getApplicationContext(), "명상 현재", Toast.LENGTH_SHORT).show();
-                    startActivity(goEEG);
+                    startActivity(goGraph);
                 } else {
                     Toast.makeText(getApplicationContext(), "올바르지 않은 선택입니다", Toast.LENGTH_SHORT).show();
                 }

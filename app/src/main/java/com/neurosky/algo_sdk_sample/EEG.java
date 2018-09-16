@@ -45,8 +45,6 @@ import java.util.Random;
 
 public class EEG extends Activity {
 
-    final String TAG = "EEGTag";
-
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
@@ -104,26 +102,19 @@ public class EEG extends Activity {
             if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
                 Toast.makeText(
                         this,
-                        "Please enable your Bluetooth and re-run this program !",
+                        "Please turn on Bluetooth",
                         Toast.LENGTH_LONG).show();
                 //finish();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i(TAG, "error:" + e.getMessage());
             return;
         }
 
         headsetButton = (Button) this.findViewById(R.id.headsetButton);
-//        cannedButton = (Button) this.findViewById(R.id.cannedDatabutton);
-        setAlgosButton = (Button) this.findViewById(R.id.setAlgosButton);
         startButton = (Button) this.findViewById(R.id.startButton);
         stopButton = (Button) this.findViewById(R.id.stopButton);
         logoutButton = (Button) this.findViewById(R.id.logoutBtn);
-
-        attCheckBox = (CheckBox) this.findViewById(R.id.attCheckBox);
-        medCheckBox = (CheckBox) this.findViewById(R.id.medCheckBox);
-        bpCheckBox = (CheckBox) this.findViewById(R.id.bpCheckBox);
 
         stateText = (TextView) this.findViewById(R.id.stateText);
         sqText = (TextView) this.findViewById(R.id.sqText);
@@ -131,6 +122,29 @@ public class EEG extends Activity {
         headsetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int algoTypes = 0;// = NskAlgoType.NSK_ALGO_TYPE_CR.value;
+
+                startButton.setEnabled(false);
+                stopButton.setEnabled(false);
+
+                currentSelectedAlgo = NskAlgoType.NSK_ALGO_TYPE_INVALID;
+
+                stateText.setText("");
+                sqText.setText("");
+
+                algoTypes += NskAlgoType.NSK_ALGO_TYPE_MED.value;
+                algoTypes += NskAlgoType.NSK_ALGO_TYPE_BP.value;
+                algoTypes += NskAlgoType.NSK_ALGO_TYPE_ATT.value;
+
+                if (bInited) {
+                    nskAlgoSdk.NskAlgoUninit();
+                    bInited = false;
+                }
+                int ret = nskAlgoSdk.NskAlgoInit(algoTypes, getFilesDir().getAbsolutePath());
+                if (ret == 0) {
+                    bInited = true;
+                }
+
                 output_data_count = 0;
                 output_data = null;
 
@@ -160,8 +174,8 @@ public class EEG extends Activity {
                     nskAlgoSdk.NskAlgoStart(false);     //Start EEG data measurement.
 
                     //Start drawing the graph.
-                    Intent graphIntent = new Intent(getApplicationContext(), GraphActivity.class);
-                    startActivity(graphIntent);
+                    Intent goSelect = new Intent(getApplicationContext(), SelectActivity.class);
+                    startActivity(goSelect);
 
                 } else {
                     nskAlgoSdk.NskAlgoPause();
@@ -174,47 +188,6 @@ public class EEG extends Activity {
             @Override
             public void onClick(View v) {
                 nskAlgoSdk.NskAlgoStop();
-            }
-        });
-
-        setAlgosButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int algoTypes = 0;// = NskAlgoType.NSK_ALGO_TYPE_CR.value;
-
-                startButton.setEnabled(false);
-                stopButton.setEnabled(false);
-
-                currentSelectedAlgo = NskAlgoType.NSK_ALGO_TYPE_INVALID;
-
-                stateText.setText("");
-                sqText.setText("");
-
-                if (bpCheckBox.isChecked()) {
-                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_MED.value;
-                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_BP.value;
-                    algoTypes += NskAlgoType.NSK_ALGO_TYPE_ATT.value;
-                }
-
-                if (algoTypes == 0) {
-                    showDialog("Please select at least one algorithm");
-                } else {
-                    if (bInited) {
-                        nskAlgoSdk.NskAlgoUninit();
-                        bInited = false;
-                    }
-                    int ret = nskAlgoSdk.NskAlgoInit(algoTypes, getFilesDir().getAbsolutePath());
-                    if (ret == 0) {
-                        bInited = true;
-                    }
-
-                    String sdkVersion = "SDK ver.: " + nskAlgoSdk.NskAlgoSdkVersion();
-
-                    if ((algoTypes & NskAlgoType.NSK_ALGO_TYPE_BP.value) != 0) {
-                        sdkVersion += "\nEEG Bandpower ver.: " + nskAlgoSdk.NskAlgoAlgoVersion(NskAlgoType.NSK_ALGO_TYPE_BP.value);
-                    }
-                    showToast(sdkVersion, Toast.LENGTH_LONG);
-                }
             }
         });
 
@@ -261,6 +234,7 @@ public class EEG extends Activity {
 
                 final String finalStateStr = stateStr + " | " + reasonStr;
                 final int finalState = state;
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -478,7 +452,6 @@ public class EEG extends Activity {
         @Override
         public void onStatesChanged(int connectionStates) {
             // TODO Auto-generated method stub
-            Log.d(TAG, "connectionStates change to: " + connectionStates);
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTING:
                     // Do something when connecting
@@ -532,8 +505,6 @@ public class EEG extends Activity {
 
         @Override
         public void onRecordFail(int flag) {
-            // You can handle the record error message here
-            Log.e(TAG, "onRecordFail: " + flag);
 
         }
 

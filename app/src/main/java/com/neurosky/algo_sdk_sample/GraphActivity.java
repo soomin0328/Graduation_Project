@@ -21,7 +21,6 @@ import processing.core.PApplet;
 public class GraphActivity extends AppCompatActivity {
 
     private PApplet sketch;
-    Bitmap stateBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -41,7 +41,7 @@ public class Sketch extends PApplet {
     private ArrayList<String> result_smr = new ArrayList<>();
     private ArrayList<String> result_high_beta = new ArrayList<>();
 
-    int width = 0, height = 0, count = 0, number = 1, j = 0, num = 1, c = 0;
+    int width, height, count = 0, number = 1, j = 0, num = 1, c = 0;
     int formResolution = 7;
     int stepSize = 1; // random size
     float centerX, centerY;
@@ -168,8 +168,6 @@ public class Sketch extends PApplet {
                             break;
                         case "Low Beta":
                             result_low_beta.add(snapshot.getValue().toString());
-                            Log.e("size",String.valueOf(result_low_beta.size()));
-                            Log.e("result_low_beta",snapshot.getValue().toString());
                             break;
                         case "High Beta":
                             result_high_beta.add(snapshot.getValue().toString());
@@ -543,6 +541,9 @@ public class Sketch extends PApplet {
         } else if (75.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) <= 100.0) {
             curveVertex(v1[0] + centerX, v2[0] + centerY - (centerX / 4));
             num = 22;
+        } else {
+            curveVertex(a1[0] + centerX, a2[0] + centerY - (centerX / 4));
+            num = 1;
         }
 
         // smr
@@ -590,6 +591,8 @@ public class Sketch extends PApplet {
             curveVertex(u1[1] + centerX, u2[1] + centerY - (centerX / 4));
         } else if (75.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) <= 100.0) {
             curveVertex(v1[1] + centerX, v2[1] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[1] + centerX, a2[1] + centerY - (centerX / 4));
         }
 
         // alpha
@@ -637,6 +640,8 @@ public class Sketch extends PApplet {
             curveVertex(u1[2] + centerX, u2[2] + centerY - (centerX / 4));
         } else if (75.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) <= 100.0) {
             curveVertex(v1[2] + centerX, v2[2] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[2] + centerX, a2[2] + centerY - (centerX / 4));
         }
 
         // theta
@@ -684,6 +689,8 @@ public class Sketch extends PApplet {
             curveVertex(u1[3] + centerX, u2[3] + centerY - (centerX / 4));
         } else if (75.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) <= 100.0) {
             curveVertex(v1[3] + centerX, v2[3] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[3] + centerX, a2[3] + centerY - (centerX / 4));
         }
 
 
@@ -732,6 +739,8 @@ public class Sketch extends PApplet {
             curveVertex(u1[4] + centerX, u2[4] + centerY - (centerX / 4));
         } else if (75.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) <= 100.0) {
             curveVertex(v1[4] + centerX, v2[4] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[4] + centerX, a2[4] + centerY - (centerX / 4));
         }
 
         // gamma
@@ -779,6 +788,8 @@ public class Sketch extends PApplet {
             curveVertex(u1[5] + centerX, u2[5] + centerY - (centerX / 4));
         } else if (75.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) <= 100.0) {
             curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[5] + centerX, a2[5] + centerY - (centerX / 4));
         }
 
 
@@ -827,6 +838,8 @@ public class Sketch extends PApplet {
             curveVertex(u1[6] + centerX, u2[6] + centerY - (centerX / 4));
         } else if (75.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) <= 100.0) {
             curveVertex(v1[6] + centerX, v2[6] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[6] + centerX, a2[6] + centerY - (centerX / 4));
         }
 
 
@@ -897,6 +910,9 @@ public class Sketch extends PApplet {
         } else if (num == 22) {
             curveVertex(v1[0] + centerX, v2[0] + centerY - (centerX / 4));
             curveVertex(v1[1] + centerX, v2[1] + centerY - (centerX / 4));
+        } else {
+            curveVertex(a1[0] + centerX, a2[0] + centerY - (centerX / 4));
+            curveVertex(a1[1] + centerX, a2[1] + centerY - (centerX / 4));
         }
 
         if (j == result_alpha.size() - 1) {
@@ -905,9 +921,6 @@ public class Sketch extends PApplet {
 
         //end
         endShape();
-
-        Log.e("j",String.valueOf(j));
-        Log.e("low_beta",String.valueOf(result_low_beta.get(j)));
 
         // eeg count ++
         j++;
