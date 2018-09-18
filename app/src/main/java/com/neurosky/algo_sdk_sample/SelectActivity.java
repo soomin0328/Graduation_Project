@@ -69,6 +69,8 @@ public class SelectActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent send = new Intent(SelectActivity.this, GraphActivity.class);
+
                 //집중-과거데이터
                 if (concent.isChecked() == true && past.isChecked() == true) {
                     Intent cp = new Intent(SelectActivity.this, CpActivity.class);
@@ -83,6 +85,8 @@ public class SelectActivity extends AppCompatActivity {
                     at.show(getSupportFragmentManager(), "picker");
                     Toast.makeText(getApplicationContext(), "집중 현재", Toast.LENGTH_SHORT).show();
 
+                    send.putExtra("now","Cn");
+                    startActivity(send);
                 }
 
                 //명상-과거
@@ -94,6 +98,8 @@ public class SelectActivity extends AppCompatActivity {
 
                 //명상 현재
                 else if (meditate.isChecked() == true && now.isChecked() == true) {
+                    send.putExtra("now","Mn");
+                    startActivity(send);
                     Intent goGraph = new Intent(SelectActivity.this, GraphActivity.class);
                     Toast.makeText(getApplicationContext(), "명상 현재", Toast.LENGTH_SHORT).show();
                     startActivity(goGraph);

@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -188,7 +187,8 @@ public class MnActivity extends AppCompatActivity {
                 dataList = new ArrayList<>();
 
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.child(name).child("EEG DATA").child(nowArray[0] + "년").child(nowArray[1] + "월").child(nowArray[2] + "일").getChildren()) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.child(name)
+                        .child("EEG DATA").child(nowArray[0] + "년").child(nowArray[1] + "월").child(nowArray[2] + "일").getChildren()) {
 
                     String hour = dataSnapshot1.getKey().toString();
 
@@ -214,7 +214,6 @@ public class MnActivity extends AppCompatActivity {
 
                                 dataList.add(new DataObj(hour + ":" + min + ":" + sec, String.valueOf(map.get("명상도"))));
                                 // 어떤 데이터가 저장되는지 로그켓에 빨간색으로 뜰 것입니다.
-                                Log.e(hour + " " + min + " " + sec, String.valueOf(map.get("명상도")));
                             }
                         }
                     }
@@ -323,7 +322,6 @@ public class MnActivity extends AppCompatActivity {
                                                 seekbar.setMax(music.getDuration());
                                                 music.seekTo(0);
                                                 //int a= music.getDuration();
-                                                // Log.d("seebar",a+"");
 
                                                 music.start();
 
@@ -384,7 +382,6 @@ public class MnActivity extends AppCompatActivity {
                         seekbar.setMax(music.getDuration());
                         music.seekTo(0);
                         //int a= music.getDuration();
-                        // Log.d("seebar",a+"");
 
                         music.start();  ////////
                         // Thread();
@@ -498,12 +495,10 @@ public class MnActivity extends AppCompatActivity {
                     // 최근 데이터를 그래프에 그림
                     data.addEntry(new Entry(set.getEntryCount(), Float.parseFloat(object.getVal())), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
                 } else {
-                    Log.e("시간 중복됨", "값도 똑같은지 체크");
                     if (!prevObj.getVal().equals(object.getVal())) {
                         // 최근 데이터를 그래프에 그림
                         data.addEntry(new Entry(set.getEntryCount(), Float.parseFloat(object.getVal())), 0);   // set의 맨 마지막에 랜덤값을 Entry로 data에 추가함
                     } else {
-                        Log.e("값도 중복됨", "중복");
                     }
                 }
             } else {

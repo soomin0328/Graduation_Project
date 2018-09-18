@@ -55,27 +55,27 @@ public class Sketch extends PApplet {
 
     // graph size
     float initRadius1 = 150;
-    float initRadius2 = 155;
-    float initRadius3 = 160;
-    float initRadius4 = 165;
-    float initRadius5 = 170;
-    float initRadius6 = 175;
-    float initRadius7 = 180;
-    float initRadius8 = 185;
-    float initRadius9 = 190;
-    float initRadius10 = 195;
-    float initRadius11 = 200;
-    float initRadius12 = 205;
-    float initRadius13 = 210;
-    float initRadius14 = 215;
-    float initRadius15 = 220;
-    float initRadius16 = 225;
-    float initRadius17 = 235;
-    float initRadius18 = 245;
-    float initRadius19 = 255;
-    float initRadius20 = 265;
-    float initRadius21 = 275;
-    float initRadius22 = 290;
+    float initRadius2 = 175;
+    float initRadius3 = 180;
+    float initRadius4 = 185;
+    float initRadius5 = 190;
+    float initRadius6 = 195;
+    float initRadius7 = 200;
+    float initRadius8 = 205;
+    float initRadius9 = 210;
+    float initRadius10 = 215;
+    float initRadius11 = 220;
+    float initRadius12 = 225;
+    float initRadius13 = 230;
+    float initRadius14 = 235;
+    float initRadius15 = 240;
+    float initRadius16 = 245;
+    float initRadius17 = 255;
+    float initRadius18 = 255;
+    float initRadius19 = 275;
+    float initRadius20 = 285;
+    float initRadius21 = 295;
+    float initRadius22 = 310;
 
     // graper position
     float[] a1 = new float[formResolution];
@@ -143,18 +143,30 @@ public class Sketch extends PApplet {
         n[2] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.DAY_OF_MONTH));
         n[3] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.HOUR_OF_DAY));
         n[4] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.MINUTE));
-        n[5] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND));
+
+        int count = Integer.parseInt(String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND))) - 2;
+        n[5] = String.valueOf(count);
 
         return n;
     }
 
     public void getGraphData() {
+        Random rd = new Random();
+
+        final int aa = rd.nextInt(30 - 20 + 1) + 20;
+        final int bb = rd.nextInt(30 - 20 + 1) + 20;
+        final int cc = rd.nextInt(30 - 20 + 1) + 20;
+        final int dd = rd.nextInt(30 - 20 + 1) + 20;
+        final int ee = rd.nextInt(30 - 20 + 1) + 20;
+        final int ff = rd.nextInt(30 - 20 + 1) + 20;
+        final int gg = rd.nextInt(30 - 20 + 1) + 20;
 
         getNow();
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot snapshot : dataSnapshot.child(n[0] + "년")
                         .child(n[1] + "월")
                         .child(n[2] + "일")
@@ -164,27 +176,62 @@ public class Sketch extends PApplet {
 
                     switch (snapshot.getKey()) {
                         case "Alpha":
-                            result_alpha.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_alpha.add("25");
+                            else {
+                                result_alpha.add(snapshot.getValue().toString());
+                            }
                             break;
                         case "Low Beta":
-                            result_low_beta.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_low_beta.add("25");
+                            else {
+                                result_low_beta.add(snapshot.getValue().toString());
+                            }
                             break;
                         case "High Beta":
-                            result_high_beta.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_high_beta.add("25");
+                            else {
+                                result_high_beta.add(snapshot.getValue().toString());
+                            }
                             break;
                         case "Gamma":
-                            result_gamma.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_gamma.add("25");
+                            else {
+                                result_gamma.add(snapshot.getValue().toString());
+                            }
                             break;
                         case "Theta":
-                            result_theta.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_theta.add("25");
+                            else {
+                                result_theta.add(snapshot.getValue().toString());
+                            }
                             break;
                         case "SMR":
-                            result_smr.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_smr.add("25");
+                            else {
+                                result_smr.add(snapshot.getValue().toString());
+                            }
                             break;
                         case "Delta":
-                            result_delta.add(snapshot.getValue().toString());
+                            if (snapshot.getValue() == null)
+                                result_delta.add("25");
+                            else {
+                                result_delta.add(snapshot.getValue().toString());
+                            }
                             break;
                         default:
+                            result_alpha.add(String.valueOf(aa));
+                            result_low_beta.add(String.valueOf(bb));
+                            result_high_beta.add(String.valueOf(cc));
+                            result_gamma.add(String.valueOf(dd));
+                            result_theta.add(String.valueOf(ee));
+                            result_smr.add(String.valueOf(ff));
+                            result_delta.add(String.valueOf(gg));
                             break;
                     }
                 }
@@ -195,6 +242,7 @@ public class Sketch extends PApplet {
             }
         });
 
+        delay(1100);
     }
 
     public void setup() {
@@ -308,7 +356,7 @@ public class Sketch extends PApplet {
             v2[i] += random(-stepSize, stepSize);
         }
 
-        strokeWeight(1);    //line size
+        strokeWeight(3);    //line size
 
         getGraphData();
 
@@ -319,10 +367,10 @@ public class Sketch extends PApplet {
             } else {
                 drawShape();
             }
-            delay(1000);
+            delay(100);
         }
 
-        if (count == 10) {
+        if (count == 9) {
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
             saveFrame(path + "/test.jpg");
             count = 0;
@@ -475,70 +523,70 @@ public class Sketch extends PApplet {
         }
 
         // low beta
-        if (0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 3.0) {
+        if (20 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 22.0) {
             curveVertex(a1[0] + centerX, a2[0] + centerY - (centerX / 4));
             num = 1;
-        } else if (3.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 6.0) {
+        } else if (22.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 24.0) {
             curveVertex(b1[0] + centerX, b2[0] + centerY - (centerX / 4));
             num = 2;
-        } else if (6.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 9.0) {
+        } else if (24.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 26.0) {
             curveVertex(c1[0] + centerX, c2[0] + centerY - (centerX / 4));
             num = 3;
-        } else if (9.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 12.0) {
+        } else if (26.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 27.0) {
             curveVertex(d1[0] + centerX, d2[0] + centerY - (centerX / 4));
             num = 4;
-        } else if (12.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 15.0) {
+        } else if (27.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 28.0) {
             curveVertex(e1[0] + centerX, e2[0] + centerY - (centerX / 4));
             num = 5;
-        } else if (15.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 18.0) {
+        } else if (28.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 29.0) {
             curveVertex(f1[0] + centerX, f2[0] + centerY - (centerX / 4));
             num = 6;
-        } else if (18.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 21.0) {
+        } else if (29.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 30.0) {
             curveVertex(g1[0] + centerX, g2[0] + centerY - (centerX / 4));
             num = 7;
-        } else if (21.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 24.0) {
+        } else if (30.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 31.0) {
             curveVertex(h1[0] + centerX, h2[0] + centerY - (centerX / 4));
             num = 8;
-        } else if (24.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 27.0) {
+        } else if (31.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 32.0) {
             curveVertex(i1[0] + centerX, i2[0] + centerY - (centerX / 4));
             num = 9;
-        } else if (27.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 30.0) {
+        } else if (32.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 33.0) {
             curveVertex(j1[0] + centerX, j2[0] + centerY - (centerX / 4));
             num = 10;
-        } else if (30.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 33.0) {
+        } else if (33.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 34.0) {
             curveVertex(k1[0] + centerX, k2[0] + centerY - (centerX / 4));
             num = 11;
-        } else if (33.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 36.0) {
+        } else if (34.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 35.0) {
             curveVertex(l1[0] + centerX, l2[0] + centerY - (centerX / 4));
             num = 12;
-        } else if (36.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 39.0) {
+        } else if (35.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 36.0) {
             curveVertex(m1[0] + centerX, m2[0] + centerY - (centerX / 4));
             num = 13;
-        } else if (39.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 42.0) {
+        } else if (36.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 37.0) {
             curveVertex(n1[0] + centerX, n2[0] + centerY - (centerX / 4));
             num = 14;
-        } else if (42.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 45.0) {
+        } else if (37.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 38.0) {
             curveVertex(o1[0] + centerX, o2[0] + centerY - (centerX / 4));
             num = 15;
-        } else if (45.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 48.0) {
+        } else if (38.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 39.0) {
             curveVertex(p1[0] + centerX, p2[0] + centerY - (centerX / 4));
             num = 16;
-        } else if (48.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 51.0) {
+        } else if (39.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 40.0) {
             curveVertex(q1[0] + centerX, q2[0] + centerY - (centerX / 4));
             num = 17;
-        } else if (51.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 54.0) {
+        } else if (40.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 41.0) {
             curveVertex(r1[0] + centerX, r2[0] + centerY - (centerX / 4));
             num = 18;
-        } else if (54.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 57.0) {
+        } else if (41.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 42.0) {
             curveVertex(s1[0] + centerX, s2[0] + centerY - (centerX / 4));
             num = 19;
-        } else if (57.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 60.0) {
+        } else if (42.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 43.0) {
             curveVertex(t1[0] + centerX, t2[0] + centerY - (centerX / 4));
             num = 20;
-        } else if (60.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 75.0) {
+        } else if (43.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) < 44.0) {
             curveVertex(u1[0] + centerX, u2[0] + centerY - (centerX / 4));
             num = 21;
-        } else if (75.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) <= 100.0) {
+        } else if (44.0 <= Float.parseFloat(result_low_beta.get(j)) && Float.parseFloat(result_low_beta.get(j)) <= 45.0) {
             curveVertex(v1[0] + centerX, v2[0] + centerY - (centerX / 4));
             num = 22;
         } else {
@@ -547,147 +595,147 @@ public class Sketch extends PApplet {
         }
 
         // smr
-        if (0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 3.0) {
+        if (20 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 22.0) {
             curveVertex(a1[1] + centerX, a2[1] + centerY);
-        } else if (3.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 6.0) {
+        } else if (22.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 24.0) {
             curveVertex(b1[1] + centerX, b2[1] + centerY - (centerX / 4));
-        } else if (6.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 9.0) {
+        } else if (24.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 26.0) {
             curveVertex(c1[1] + centerX, c2[1] + centerY - (centerX / 4));
-        } else if (9.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 12.0) {
+        } else if (26.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 27.0) {
             curveVertex(d1[1] + centerX, d2[1] + centerY - (centerX / 4));
-        } else if (12.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 15.0) {
+        } else if (27.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 28.0) {
             curveVertex(e1[1] + centerX, e2[1] + centerY - (centerX / 4));
-        } else if (15.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 18.0) {
+        } else if (28.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 29.0) {
             curveVertex(f1[1] + centerX, f2[1] + centerY - (centerX / 4));
-        } else if (18.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 21.0) {
+        } else if (29.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 30.0) {
             curveVertex(g1[1] + centerX, g2[1] + centerY - (centerX / 4));
-        } else if (21.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 24.0) {
+        } else if (30.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 31.0) {
             curveVertex(h1[1] + centerX, h2[1] + centerY - (centerX / 4));
-        } else if (24.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 27.0) {
+        } else if (31.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 32.0) {
             curveVertex(i1[1] + centerX, i2[1] + centerY - (centerX / 4));
-        } else if (27.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 30.0) {
+        } else if (32.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 33.0) {
             curveVertex(j1[1] + centerX, j2[1] + centerY - (centerX / 4));
-        } else if (30.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 33.0) {
+        } else if (33.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 34.0) {
             curveVertex(k1[1] + centerX, k2[1] + centerY - (centerX / 4));
-        } else if (33.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 36.0) {
+        } else if (34.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 35.0) {
             curveVertex(l1[1] + centerX, l2[1] + centerY - (centerX / 4));
-        } else if (36.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 39.0) {
+        } else if (35.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 36.0) {
             curveVertex(m1[1] + centerX, m2[1] + centerY - (centerX / 4));
-        } else if (39.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 42.0) {
+        } else if (36.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 37.0) {
             curveVertex(n1[1] + centerX, n2[1] + centerY - (centerX / 4));
-        } else if (42.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 45.0) {
+        } else if (37.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 38.0) {
             curveVertex(o1[1] + centerX, o2[1] + centerY - (centerX / 4));
-        } else if (45.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 48.0) {
+        } else if (38.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 39.0) {
             curveVertex(p1[1] + centerX, p2[1] + centerY - (centerX / 4));
-        } else if (48.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 51.0) {
+        } else if (39.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 40.0) {
             curveVertex(q1[1] + centerX, q2[1] + centerY - (centerX / 4));
-        } else if (51.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 54.0) {
+        } else if (40.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 41.0) {
             curveVertex(r1[1] + centerX, r2[1] + centerY - (centerX / 4));
-        } else if (54.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 57.0) {
+        } else if (41.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 42.0) {
             curveVertex(s1[1] + centerX, s2[1] + centerY - (centerX / 4));
-        } else if (57.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 60.0) {
+        } else if (42.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 43.0) {
             curveVertex(t1[1] + centerX, t2[1] + centerY - (centerX / 4));
-        } else if (60.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 75.0) {
+        } else if (43.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 44.0) {
             curveVertex(u1[1] + centerX, u2[1] + centerY - (centerX / 4));
-        } else if (75.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) <= 100.0) {
+        } else if (44.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) <= 45.0) {
             curveVertex(v1[1] + centerX, v2[1] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[1] + centerX, a2[1] + centerY - (centerX / 4));
         }
 
         // alpha
-        if (0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_smr.get(j)) < 3.0) {
+        if (20 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_smr.get(j)) < 22.0) {
             curveVertex(a1[2] + centerX, a2[2] + centerY - (centerX / 4));
-        } else if (3.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 6.0) {
+        } else if (22.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 24.0) {
             curveVertex(b1[2] + centerX, b2[2] + centerY - (centerX / 4));
-        } else if (6.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 9.0) {
+        } else if (24.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 26.0) {
             curveVertex(c1[2] + centerX, c2[2] + centerY - (centerX / 4));
-        } else if (9.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 12.0) {
+        } else if (26.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 27.0) {
             curveVertex(d1[2] + centerX, d2[2] + centerY - (centerX / 4));
-        } else if (12.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 15.0) {
+        } else if (27.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 28.0) {
             curveVertex(e1[2] + centerX, e2[2] + centerY - (centerX / 4));
-        } else if (15.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 18.0) {
+        } else if (28.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 29.0) {
             curveVertex(f1[2] + centerX, f2[2] + centerY - (centerX / 4));
-        } else if (18.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 21.0) {
+        } else if (29.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 30.0) {
             curveVertex(g1[2] + centerX, g2[2] + centerY - (centerX / 4));
-        } else if (21.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 24.0) {
+        } else if (30.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 31.0) {
             curveVertex(h1[2] + centerX, h2[2] + centerY - (centerX / 4));
-        } else if (24.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 27.0) {
+        } else if (31.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 32.0) {
             curveVertex(i1[2] + centerX, i2[2] + centerY - (centerX / 4));
-        } else if (27.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 30.0) {
+        } else if (32.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 33.0) {
             curveVertex(j1[2] + centerX, j2[2] + centerY - (centerX / 4));
-        } else if (30.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 33.0) {
+        } else if (33.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 34.0) {
             curveVertex(k1[2] + centerX, k2[2] + centerY - (centerX / 4));
-        } else if (33.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 36.0) {
+        } else if (34.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 35.0) {
             curveVertex(l1[2] + centerX, l2[2] + centerY - (centerX / 4));
-        } else if (36.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 39.0) {
+        } else if (35.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 36.0) {
             curveVertex(m1[2] + centerX, m2[2] + centerY - (centerX / 4));
-        } else if (39.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 42.0) {
+        } else if (36.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 37.0) {
             curveVertex(n1[2] + centerX, n2[2] + centerY - (centerX / 4));
-        } else if (42.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 45.0) {
+        } else if (37.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 38.0) {
             curveVertex(o1[2] + centerX, o2[2] + centerY - (centerX / 4));
-        } else if (45.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 48.0) {
+        } else if (38.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 39.0) {
             curveVertex(p1[2] + centerX, p2[2] + centerY - (centerX / 4));
-        } else if (48.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 51.0) {
+        } else if (39.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 40.0) {
             curveVertex(q1[2] + centerX, q2[2] + centerY - (centerX / 4));
-        } else if (51.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 54.0) {
+        } else if (40.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 41.0) {
             curveVertex(r1[2] + centerX, r2[2] + centerY - (centerX / 4));
-        } else if (54.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 57.0) {
+        } else if (41.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 42.0) {
             curveVertex(s1[2] + centerX, s2[2] + centerY - (centerX / 4));
-        } else if (57.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 60.0) {
+        } else if (42.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 43.0) {
             curveVertex(t1[2] + centerX, t2[2] + centerY - (centerX / 4));
-        } else if (60.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 75.0) {
+        } else if (43.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) < 44.0) {
             curveVertex(u1[2] + centerX, u2[2] + centerY - (centerX / 4));
-        } else if (75.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) <= 100.0) {
+        } else if (44.0 <= Float.parseFloat(result_alpha.get(j)) && Float.parseFloat(result_alpha.get(j)) <= 45.0) {
             curveVertex(v1[2] + centerX, v2[2] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[2] + centerX, a2[2] + centerY - (centerX / 4));
         }
 
         // theta
-        if (0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 3.0) {
+        if (20 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 22.0) {
             curveVertex(a1[3] + centerX, a2[3] + centerY - (centerX / 4));
-        } else if (3.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 6.0) {
+        } else if (22.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 24.0) {
             curveVertex(b1[3] + centerX, b2[3] + centerY - (centerX / 4));
-        } else if (6.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 9.0) {
+        } else if (24.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 26.0) {
             curveVertex(c1[3] + centerX, c2[3] + centerY - (centerX / 4));
-        } else if (9.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 12.0) {
+        } else if (26.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 27.0) {
             curveVertex(d1[3] + centerX, d2[3] + centerY - (centerX / 4));
-        } else if (12.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 15.0) {
+        } else if (27.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 28.0) {
             curveVertex(e1[3] + centerX, e2[3] + centerY - (centerX / 4));
-        } else if (15.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 18.0) {
+        } else if (28.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 29.0) {
             curveVertex(f1[3] + centerX, f2[3] + centerY - (centerX / 4));
-        } else if (18.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 21.0) {
+        } else if (29.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 30.0) {
             curveVertex(g1[3] + centerX, g2[3] + centerY - (centerX / 4));
-        } else if (21.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 24.0) {
+        } else if (30.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 31.0) {
             curveVertex(h1[3] + centerX, h2[3] + centerY - (centerX / 4));
-        } else if (24.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 27.0) {
+        } else if (31.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 32.0) {
             curveVertex(i1[3] + centerX, i2[3] + centerY - (centerX / 4));
-        } else if (27.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 30.0) {
+        } else if (32.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 33.0) {
             curveVertex(j1[3] + centerX, j2[3] + centerY - (centerX / 4));
-        } else if (30.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 33.0) {
+        } else if (33.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 34.0) {
             curveVertex(k1[3] + centerX, k2[3] + centerY - (centerX / 4));
-        } else if (33.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 36.0) {
+        } else if (34.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 35.0) {
             curveVertex(l1[3] + centerX, l2[3] + centerY - (centerX / 4));
-        } else if (36.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 39.0) {
+        } else if (35.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 36.0) {
             curveVertex(m1[3] + centerX, m2[3] + centerY - (centerX / 4));
-        } else if (39.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 42.0) {
+        } else if (36.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 37.0) {
             curveVertex(n1[3] + centerX, n2[3] + centerY - (centerX / 4));
-        } else if (42.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 45.0) {
+        } else if (37.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 38.0) {
             curveVertex(o1[3] + centerX, o2[3] + centerY - (centerX / 4));
-        } else if (45.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 48.0) {
+        } else if (38.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 39.0) {
             curveVertex(p1[3] + centerX, p2[3] + centerY - (centerX / 4));
-        } else if (48.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 51.0) {
+        } else if (39.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 40.0) {
             curveVertex(q1[3] + centerX, q2[3] + centerY - (centerX / 4));
-        } else if (51.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 54.0) {
+        } else if (40.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 41.0) {
             curveVertex(r1[3] + centerX, r2[3] + centerY - (centerX / 4));
-        } else if (54.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 57.0) {
+        } else if (41.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 42.0) {
             curveVertex(s1[3] + centerX, s2[3] + centerY - (centerX / 4));
-        } else if (57.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 60.0) {
+        } else if (42.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 43.0) {
             curveVertex(t1[3] + centerX, t2[3] + centerY - (centerX / 4));
-        } else if (60.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 75.0) {
+        } else if (43.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) < 44.0) {
             curveVertex(u1[3] + centerX, u2[3] + centerY - (centerX / 4));
-        } else if (75.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) <= 100.0) {
+        } else if (44.0 <= Float.parseFloat(result_theta.get(j)) && Float.parseFloat(result_theta.get(j)) <= 45.0) {
             curveVertex(v1[3] + centerX, v2[3] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[3] + centerX, a2[3] + centerY - (centerX / 4));
@@ -695,98 +743,98 @@ public class Sketch extends PApplet {
 
 
         // delta
-        if (0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 3.0) {
+        if (20 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 22.0) {
             curveVertex(a1[4] + centerX, a2[4] + centerY - (centerX / 4));
-        } else if (3.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 6.0) {
+        } else if (22.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 24.0) {
             curveVertex(b1[4] + centerX, b2[4] + centerY - (centerX / 4));
-        } else if (6.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 9.0) {
+        } else if (24.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 26.0) {
             curveVertex(c1[4] + centerX, c2[4] + centerY - (centerX / 4));
-        } else if (9.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 12.0) {
+        } else if (26.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 27.0) {
             curveVertex(d1[4] + centerX, d2[4] + centerY - (centerX / 4));
-        } else if (12.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 15.0) {
+        } else if (27.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 28.0) {
             curveVertex(e1[4] + centerX, e2[4] + centerY - (centerX / 4));
-        } else if (15.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 18.0) {
+        } else if (28.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 29.0) {
             curveVertex(f1[4] + centerX, f2[4] + centerY - (centerX / 4));
-        } else if (18.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 21.0) {
+        } else if (29.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 30.0) {
             curveVertex(g1[4] + centerX, g2[4] + centerY - (centerX / 4));
-        } else if (21.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 24.0) {
+        } else if (30.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 31.0) {
             curveVertex(h1[4] + centerX, h2[4] + centerY - (centerX / 4));
-        } else if (24.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 27.0) {
+        } else if (31.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 32.0) {
             curveVertex(i1[4] + centerX, i2[4] + centerY - (centerX / 4));
-        } else if (27.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 30.0) {
+        } else if (32.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 33.0) {
             curveVertex(j1[4] + centerX, j2[4] + centerY - (centerX / 4));
-        } else if (30.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 33.0) {
+        } else if (33.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 34.0) {
             curveVertex(k1[4] + centerX, k2[4] + centerY - (centerX / 4));
-        } else if (33.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 36.0) {
+        } else if (34.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 35.0) {
             curveVertex(l1[4] + centerX, l2[4] + centerY - (centerX / 4));
-        } else if (36.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 39.0) {
+        } else if (35.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 36.0) {
             curveVertex(m1[4] + centerX, m2[4] + centerY - (centerX / 4));
-        } else if (39.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 42.0) {
+        } else if (36.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 37.0) {
             curveVertex(n1[4] + centerX, n2[4] + centerY - (centerX / 4));
-        } else if (42.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 45.0) {
+        } else if (37.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 38.0) {
             curveVertex(o1[4] + centerX, o2[4] + centerY - (centerX / 4));
-        } else if (45.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 48.0) {
+        } else if (38.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 39.0) {
             curveVertex(p1[4] + centerX, p2[4] + centerY - (centerX / 4));
-        } else if (48.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 51.0) {
+        } else if (39.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 40.0) {
             curveVertex(q1[4] + centerX, q2[4] + centerY - (centerX / 4));
-        } else if (51.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 54.0) {
+        } else if (40.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 41.0) {
             curveVertex(r1[4] + centerX, r2[4] + centerY - (centerX / 4));
-        } else if (54.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 57.0) {
+        } else if (41.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 42.0) {
             curveVertex(s1[4] + centerX, s2[4] + centerY - (centerX / 4));
-        } else if (57.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 60.0) {
+        } else if (42.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 43.0) {
             curveVertex(t1[4] + centerX, t2[4] + centerY - (centerX / 4));
-        } else if (60.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 75.0) {
+        } else if (43.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) < 44.0) {
             curveVertex(u1[4] + centerX, u2[4] + centerY - (centerX / 4));
-        } else if (75.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) <= 100.0) {
+        } else if (44.0 <= Float.parseFloat(result_delta.get(j)) && Float.parseFloat(result_delta.get(j)) <= 45.0) {
             curveVertex(v1[4] + centerX, v2[4] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[4] + centerX, a2[4] + centerY - (centerX / 4));
         }
 
         // gamma
-        if (0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 3.0) {
-            curveVertex(a1[5] + centerX, a2[5] + centerY - (centerX / 4));
-        } else if (3.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 6.0) {
-            curveVertex(b1[5] + centerX, b2[5] + centerY - (centerX / 4));
-        } else if (6.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 9.0) {
-            curveVertex(c1[5] + centerX, c2[5] + centerY - (centerX / 4));
-        } else if (9.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 12.0) {
-            curveVertex(d1[5] + centerX, d2[5] + centerY - (centerX / 4));
-        } else if (12.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 15.0) {
-            curveVertex(e1[5] + centerX, e2[5] + centerY - (centerX / 4));
-        } else if (15.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 18.0) {
-            curveVertex(f1[5] + centerX, f2[5] + centerY - (centerX / 4));
-        } else if (18.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 21.0) {
+        if (20.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 22.0) {
             curveVertex(g1[5] + centerX, g2[5] + centerY - (centerX / 4));
-        } else if (21.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 24.0) {
+        } else if (22.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 24.0) {
             curveVertex(h1[5] + centerX, h2[5] + centerY - (centerX / 4));
-        } else if (24.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 27.0) {
+        } else if (24.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 26.0) {
             curveVertex(i1[5] + centerX, i2[5] + centerY - (centerX / 4));
-        } else if (27.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 30.0) {
+        } else if (26.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 27.0) {
             curveVertex(j1[5] + centerX, j2[5] + centerY - (centerX / 4));
-        } else if (30.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 33.0) {
+        } else if (27.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 28.0) {
             curveVertex(k1[5] + centerX, k2[5] + centerY - (centerX / 4));
-        } else if (33.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 36.0) {
+        } else if (28.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 29.0) {
             curveVertex(l1[5] + centerX, l2[5] + centerY - (centerX / 4));
-        } else if (36.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 39.0) {
+        } else if (29.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 30.0) {
             curveVertex(m1[5] + centerX, m2[5] + centerY - (centerX / 4));
-        } else if (39.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 42.0) {
+        } else if (30.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 31.0) {
             curveVertex(n1[5] + centerX, n2[5] + centerY - (centerX / 4));
-        } else if (42.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 45.0) {
+        } else if (31.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 32.0) {
             curveVertex(o1[5] + centerX, o2[5] + centerY - (centerX / 4));
-        } else if (45.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 48.0) {
+        } else if (32.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 33.0) {
             curveVertex(p1[5] + centerX, p2[5] + centerY - (centerX / 4));
-        } else if (48.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 51.0) {
+        } else if (33.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 34.0) {
             curveVertex(q1[5] + centerX, q2[5] + centerY - (centerX / 4));
-        } else if (51.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 54.0) {
+        } else if (34.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 35.0) {
             curveVertex(r1[5] + centerX, r2[5] + centerY - (centerX / 4));
-        } else if (54.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 57.0) {
+        } else if (35.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 36.0) {
             curveVertex(s1[5] + centerX, s2[5] + centerY - (centerX / 4));
-        } else if (57.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 60.0) {
+        } else if (36.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 37.0) {
             curveVertex(t1[5] + centerX, t2[5] + centerY - (centerX / 4));
-        } else if (60.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 75.0) {
+        } else if (37.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 38.0) {
             curveVertex(u1[5] + centerX, u2[5] + centerY - (centerX / 4));
-        } else if (75.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) <= 100.0) {
+        } else if (38.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 39.0) {
+            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else if (39.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 40.0) {
+            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else if (40.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 41.0) {
+            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else if (41.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 42.0) {
+            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else if (42.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 43.0) {
+            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else if (43.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 44.0) {
+            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+        } else if (44.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) <= 45.0) {
             curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[5] + centerX, a2[5] + centerY - (centerX / 4));
@@ -794,49 +842,49 @@ public class Sketch extends PApplet {
 
 
         // high beta
-        if (0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 3.0) {
+        if (20 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 22.0) {
             curveVertex(a1[6] + centerX, a2[6] + centerY - (centerX / 4));
-        } else if (3.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 6.0) {
+        } else if (22.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 24.0) {
             curveVertex(b1[6] + centerX, b2[6] + centerY - (centerX / 4));
-        } else if (6.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 9.0) {
+        } else if (24.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 26.0) {
             curveVertex(c1[6] + centerX, c2[6] + centerY - (centerX / 4));
-        } else if (9.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 12.0) {
+        } else if (26.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 27.0) {
             curveVertex(d1[6] + centerX, d2[6] + centerY - (centerX / 4));
-        } else if (12.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 15.0) {
+        } else if (27.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 28.0) {
             curveVertex(e1[6] + centerX, e2[6] + centerY - (centerX / 4));
-        } else if (15.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 18.0) {
+        } else if (28.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 29.0) {
             curveVertex(f1[6] + centerX, f2[6] + centerY - (centerX / 4));
-        } else if (18.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 21.0) {
+        } else if (29.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 30.0) {
             curveVertex(g1[6] + centerX, g2[6] + centerY - (centerX / 4));
-        } else if (21.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 24.0) {
+        } else if (30.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 31.0) {
             curveVertex(h1[6] + centerX, h2[6] + centerY - (centerX / 4));
-        } else if (24.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 27.0) {
+        } else if (31.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 32.0) {
             curveVertex(i1[6] + centerX, i2[6] + centerY - (centerX / 4));
-        } else if (27.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 30.0) {
+        } else if (32.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 33.0) {
             curveVertex(j1[6] + centerX, j2[6] + centerY - (centerX / 4));
-        } else if (30.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 33.0) {
+        } else if (33.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 34.0) {
             curveVertex(k1[6] + centerX, k2[6] + centerY - (centerX / 4));
-        } else if (33.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 36.0) {
+        } else if (34.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 35.0) {
             curveVertex(l1[6] + centerX, l2[6] + centerY - (centerX / 4));
-        } else if (36.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 39.0) {
+        } else if (35.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 36.0) {
             curveVertex(m1[6] + centerX, m2[6] + centerY - (centerX / 4));
-        } else if (39.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 42.0) {
+        } else if (36.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 37.0) {
             curveVertex(n1[6] + centerX, n2[6] + centerY - (centerX / 4));
-        } else if (42.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 45.0) {
+        } else if (37.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 38.0) {
             curveVertex(o1[6] + centerX, o2[6] + centerY - (centerX / 4));
-        } else if (45.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 48.0) {
+        } else if (38.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 39.0) {
             curveVertex(p1[6] + centerX, p2[6] + centerY - (centerX / 4));
-        } else if (48.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 51.0) {
+        } else if (39.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 40.0) {
             curveVertex(q1[6] + centerX, q2[6] + centerY - (centerX / 4));
-        } else if (51.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 54.0) {
+        } else if (40.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 41.0) {
             curveVertex(r1[6] + centerX, r2[6] + centerY - (centerX / 4));
-        } else if (54.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 57.0) {
+        } else if (41.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 42.0) {
             curveVertex(s1[6] + centerX, s2[6] + centerY - (centerX / 4));
-        } else if (57.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 60.0) {
+        } else if (42.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 43.0) {
             curveVertex(t1[6] + centerX, t2[6] + centerY - (centerX / 4));
-        } else if (60.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 75.0) {
+        } else if (43.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) < 44.0) {
             curveVertex(u1[6] + centerX, u2[6] + centerY - (centerX / 4));
-        } else if (75.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) <= 100.0) {
+        } else if (44.0 <= Float.parseFloat(result_high_beta.get(j)) && Float.parseFloat(result_high_beta.get(j)) <= 45.0) {
             curveVertex(v1[6] + centerX, v2[6] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[6] + centerX, a2[6] + centerY - (centerX / 4));

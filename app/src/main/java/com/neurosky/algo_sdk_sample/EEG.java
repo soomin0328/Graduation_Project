@@ -312,13 +312,13 @@ public class EEG extends Activity {
 
                         getNow();
 
-                        double hb1 = rand.nextInt(40 - 25 + 1) + 25;
-                        double smr1 = rand.nextInt(40 - 25 + 1) + 25;
+                        double hb1 = rand.nextInt(30 - 20 + 1) + 20;
+                        double smr1 = rand.nextInt(40 - 30 + 1) + 30;
 
                         eeg[0] = String.valueOf(alpha);  //alpha
                         eeg[1] = String.valueOf(theta);  //low_beta
                         eeg[2] = String.valueOf(delta);  //delta
-                        eeg[3] = String.valueOf(gamma);  //gamma
+                        eeg[3] = String.valueOf(gamma - 10);  //gamma
                         eeg[4] = String.valueOf(beta);  //theta
 
                         int size = nz.setData();

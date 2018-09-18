@@ -51,7 +51,7 @@ public class AimTime extends DialogFragment {
 
                 AimTime.this.getDialog();
                 {
-                    Intent intent = new Intent(AimTime.this.getActivity(), CnActivity.class); //현재집중으로
+                    Intent intent = new Intent(AimTime.this.getActivity(), GraphActivity.class); //현재집중으로
                     int hours = hourPicker.getValue();
                     int mins = minPicker.getValue();
                     String data = "목표시간 " + hours + "시간 " + mins + "분";

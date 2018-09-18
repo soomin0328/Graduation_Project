@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -20,7 +21,7 @@ import processing.core.PApplet;
 
 public class GraphActivity extends AppCompatActivity {
 
-    private PApplet sketch;
+    private PApplet sketch, sketch2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +33,24 @@ public class GraphActivity extends AppCompatActivity {
         int width = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
         int height = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
 
-
         setContentView(frame, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+//        Intent get = getIntent();
+//        String now = get.getStringExtra("now");
+//
+//        Log.e("now", now);
+
+//        if (now.equals("Cn")){
+//            sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height);
+//
+//            final PFragment fragment = new PFragment(sketch);
+//            fragment.setView(frame, this);
+//        }else if (now.equals("Mn")){
+//            sketch2 = new com.neurosky.algo_sdk_sample.Sketch(width, height);
+//
+//            final PFragment fragment = new PFragment(sketch2);
+//            fragment.setView(frame, this);
+//        }
 
         sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height);
 
@@ -44,7 +61,7 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             public void run() {
                 double count = 0;
-                while (count < 16.2) {
+                while (count < 11) {
                     count++;
                     try {
                         Thread.sleep(1000);
