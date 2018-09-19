@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,7 +36,7 @@ public class TensorflowActivity extends AppCompatActivity {
     private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
     private TextView textViewResult;
-    private Button btnDetectObject,btnNext;
+    private Button btnDetectObject, btnNext;
     private ImageView imageView;
 
     private Context mContext;
@@ -53,7 +52,7 @@ public class TensorflowActivity extends AppCompatActivity {
         textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
         btnDetectObject = (Button) findViewById(R.id.btnDetect);
-        btnNext = (Button)findViewById(R.id.btnNext);
+        btnNext = (Button) findViewById(R.id.btnNext);
 
         imageView = (ImageView) findViewById(R.id.stateImage);
 
