@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -59,17 +60,14 @@ public class CnActivity extends AppCompatActivity { //
     int cyear = cal.get(Calendar.YEAR);
     int cmonth = (cal.get(Calendar.MONTH) + 1);
     int cday = cal.get(Calendar.DAY_OF_MONTH);
+    String newmonth = "", newday = "";
 
     TextView mEllapse, percent;
     Button mBtnStart, mBtnSplit;
 
-    /**
-     * 디비
-     */
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
-    private DatabaseReference databaseReference2 = firebaseDatabase.getReference("USERS");
     private DatabaseReference graphRef = firebaseDatabase.getReference("USERS");
     private ValueEventListener valueEventListener;
 
@@ -180,7 +178,8 @@ public class CnActivity extends AppCompatActivity { //
                 // DB에서 가져온 데이터들이 저장되는 리스트
                 dataList = new ArrayList<>();
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.child(name).child("EEG DATA").child(nowArray[0] + "년").child(nowArray[1] + "월").child(nowArray[2] + "일").getChildren()) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.child(name).child("EEG DATA")
+                        .child(nowArray[0] + "년").child(nowArray[1] + "월").child(nowArray[2] + "일").getChildren()) {
                     //시
                     String hour = dataSnapshot1.getKey().toString();
                     hour = stringToNum(hour);
@@ -457,67 +456,36 @@ public class CnActivity extends AppCompatActivity { //
                         min_l = min * 1000 * 60; //설정한 분을 ms로바꾼거
 
                         sum = (hour_l + min_l) / 100; ///결국 sum값이 사용자가 설정한 목표 시간!!!!!!!!!
-                        sum1 = sum;
+
+                        newmonth = newCal(cmonth);
+                        newday = newCal(cday);
 
                         databaseReference.child(name)
                                 .child("EEG DATA")
                                 .child(String.valueOf(cyear + "년"))
-                                .child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일"))
+                                .child(String.valueOf(newmonth + "월"))
+                                .child(String.valueOf(newday + "일"))
                                 .child("목표시간").push().setValue(sum);
 
-                        databaseReference2
-                                .child(name)
-                                .child("EEG DATA")
-                                .child(String.valueOf(cyear + "년년"))
-                                .child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일"))
-                                .child(String.valueOf(formatDate4 + "시 " + formatDate5 + "분"))
-                                .child("목표시간")
-                                .push().setValue(sum1);
-
-                        rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거임
-                        rtime1 = rtime;
+                        rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거
 
                         databaseReference.child(name)
                                 .child("EEG DATA")
                                 .child(String.valueOf(cyear + "년"))
-                                .child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일"))
+                                .child(String.valueOf(newmonth + "월"))
+                                .child(String.valueOf(newday + "일"))
                                 .child("집중시간").push().setValue(rtime);
 
-                        databaseReference2
-                                .child("aa")
-                                .child("EEG DATA")
-                                .child(String.valueOf(cyear + "년년"))
-                                .child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일"))
-                                .child(String.valueOf(formatDate4 + "시 " + formatDate5 + "분"))
-                                .child("집중시간")
-                                .push().setValue(rtime1);
-
-
                         result = rtime / sum;
-                        result1 = result;
 
                         percent.setText("달성률:" + result + "%");
 
                         databaseReference.child(name)
                                 .child("EEG DATA")
                                 .child(String.valueOf(cyear + "년"))
-                                .child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일"))
+                                .child(String.valueOf(newmonth + "월"))
+                                .child(String.valueOf(newday + "일"))
                                 .child("하루달성율").push().setValue(String.valueOf(result)); //집중한 시간 long값
-
-                        databaseReference2
-                                .child(name)
-                                .child("EEG DATA")
-                                .child(String.valueOf(cyear + "년년"))
-                                .child(String.valueOf(cmonth + "월"))
-                                .child(String.valueOf(cday + "일"))
-                                .child(String.valueOf(formatDate4 + "시 " + formatDate5 + "분"))
-                                .child("하루달성율")
-                                .push().setValue(String.valueOf(result1));
 
                         mStatus = IDLE;
 
@@ -526,7 +494,6 @@ public class CnActivity extends AppCompatActivity { //
                         mBtnStart.setEnabled(false);
                         mBtnSplit.setEnabled(false);
 
-                        //mSplit.setText(sSplit);  //텅 비어있다가 값 뜰거임
                         break;
 
                     case PAUSE://여기서는 초기화버튼이 됨
@@ -534,7 +501,6 @@ public class CnActivity extends AppCompatActivity { //
                         //핸들러를 없애고
 
                         mTimer.removeMessages(0);
-
 
                         //처음상태로 원상복귀시킴
 
@@ -591,6 +557,16 @@ public class CnActivity extends AppCompatActivity { //
         super.onDestroy();
         // DB 리스너를 제거해줌
         graphRef.removeEventListener(valueEventListener);
+    }
+
+    private String newCal(int cal) {
+
+        String str = String.valueOf(cal);
+
+        if (str.length() == 1)
+            return "0" + str;
+        else
+            return str;
     }
 
 }

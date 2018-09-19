@@ -83,7 +83,7 @@ public class TensorflowActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goMn = new Intent(TensorflowActivity.this, MnActivity.class);
+                Intent goMn = new Intent(TensorflowActivity.this, CnActivity.class);
                 startActivity(goMn);
                 finish();
             }

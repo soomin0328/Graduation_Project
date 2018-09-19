@@ -52,8 +52,6 @@ public class MmonthFrag extends Fragment {
     private ArrayList<DayInfo> arrayListDayInfo;
     private ArrayList<String> mHours = new ArrayList<>();
 
-    /**---Setting---**/
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -148,8 +146,6 @@ public class MmonthFrag extends Fragment {
         getCalendar(mThisMonthCalendar.getTime());
     }
 
-    /**---EventListener---**/
-
     ValueEventListener pListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -225,8 +221,6 @@ public class MmonthFrag extends Fragment {
 
         }
     };
-
-    /**---Method---**/
 
     public void setSelectedDate(Date date) {
         selectedDate = date;

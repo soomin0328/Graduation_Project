@@ -54,7 +54,6 @@ public class MonthFrag extends Fragment {
     Date selectedDate;
     ProgressBar bar;
 
-    /**---Setting---**/
 
     @Nullable
     @Override
@@ -159,8 +158,6 @@ public class MonthFrag extends Fragment {
         getCalendar(mThisMonthCalendar.getTime());
     }
 
-    /**---EventListener---**/
-
     //달력에서 특정 날짜 눌렀을 때 하루 집중시간 구하기
     ValueEventListener pListener = new ValueEventListener() {
         @Override
@@ -201,6 +198,8 @@ public class MonthFrag extends Fragment {
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
             long test2;
+
+            Log.e("month",String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1));
 
             for (int z = 1; z < thisMonthLastDay + 1; z++) {
                 for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
@@ -320,8 +319,6 @@ public class MonthFrag extends Fragment {
 
         }
     };
-
-    /**---Method---**/
 
     //요일들 구하기 & 화면 띄우기
     private void getCalendar(Date dateForCurrentMonth) {
