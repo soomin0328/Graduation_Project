@@ -168,7 +168,7 @@ public class MonthFrag extends Fragment {
             newday = newCal(Integer.parseInt(i));
 
             for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                    .child(String.valueOf(newmonth + "월")).child(String.valueOf(i + "일"))
+                    .child(String.valueOf(newmonth + "월")).child(newday+ "일")
                     .child("집중시간").getChildren()) {
                 long test = Long.parseLong(snapshot.getValue().toString());
                 conTime += test;
@@ -209,7 +209,7 @@ public class MonthFrag extends Fragment {
                 newday = newCal(z);
 
                 for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                        .child(newmonth + "월").child(String.valueOf(newday + "일"))
+                        .child(newmonth + "월").child(newday + "일")
                         .child("집중시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {
                         test2 = 0;
@@ -257,7 +257,7 @@ public class MonthFrag extends Fragment {
             newday = newCal(Integer.parseInt(i));
 
             for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                    .child(newmonth + "월").child(String.valueOf(i + "일"))
+                    .child(newmonth + "월").child(newday + "일")
                     .child("하루달성율").getChildren()) {
                 dayAim_per = (snapshot.getValue().toString());
             }
@@ -291,7 +291,7 @@ public class MonthFrag extends Fragment {
                 newday = newCal(k);
 
                 for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                        .child(newmonth + "월").child(String.valueOf(k + "일"))
+                        .child(newmonth + "월").child(newday + "일")
                         .child("목표시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {
                         testValue = 0;

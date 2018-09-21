@@ -681,25 +681,18 @@ public class MnActivity extends AppCompatActivity {
                     case RUNNING: //진행되고있으면
                         mTimer.removeMessages(0);
 
-
-                        // String sSplit = mSplit.getText().toString();
-                        String result;
-                        //long realing=getEll2(); //실제 진행한시간  밀리세컨즈
-                        result = String.valueOf(ell);   ///result를 디비에 넣으면돼
-
+                        String result = String.valueOf(ell);   ///result를 디비에 넣으면돼
 
                         databaseReference.child(name).child("EEG DATA").child(String.valueOf(myear + "년")).child(String.valueOf(mmonth + "월")).child(String.valueOf(mday + "일")).child("명상시간").push().setValue(String.valueOf(result)); //명상한 시간 long값
                         databaseReference
                                 .child(name)
                                 .child("EEG DATA")
-                                .child(String.valueOf(myear + "년년"))
+                                .child(String.valueOf(myear + "년"))
                                 .child(String.valueOf(mmonth + "월"))
                                 .child(String.valueOf(mday + "일"))
                                 .child(String.valueOf(formatDate4 + "시 " + formatDate5 + "분"))
                                 .child("명상시간")
                                 .push().setValue(String.valueOf(result));
-
-                        //sSplit = String.format("달성률"+"%s\n", realing);
 
                         mStatus = IDLE;
                         mBtnStart.setText("시작");

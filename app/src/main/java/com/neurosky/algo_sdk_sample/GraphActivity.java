@@ -35,23 +35,6 @@ public class GraphActivity extends AppCompatActivity {
 
         setContentView(frame, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-//        Intent get = getIntent();
-//        String now = get.getStringExtra("now");
-//
-//        Log.e("now", now);
-
-//        if (now.equals("Cn")){
-//            sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height);
-//
-//            final PFragment fragment = new PFragment(sketch);
-//            fragment.setView(frame, this);
-//        }else if (now.equals("Mn")){
-//            sketch2 = new com.neurosky.algo_sdk_sample.Sketch(width, height);
-//
-//            final PFragment fragment = new PFragment(sketch2);
-//            fragment.setView(frame, this);
-//        }
-
         sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height);
 
         final PFragment fragment = new PFragment(sketch);

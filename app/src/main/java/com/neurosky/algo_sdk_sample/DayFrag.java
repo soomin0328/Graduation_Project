@@ -35,16 +35,22 @@ public class DayFrag extends Fragment {
     private DatabaseReference databaseReference2 = firebaseDatabase.getReference("USERS");
     private DatabaseReference databaseReference3 = firebaseDatabase.getReference("USERS");
 
-    private ArrayList<DayInfo> arrayListDayInfo;
+    long msg1;
 
+    private TextView tvCalendarTitle;
+    //private TextView tvSelectedDate;
+
+    private ArrayList<DayInfo> arrayListDayInfo;
     Calendar mThisMonthCalendar;
     WeekCalendarAdapter mCalendarAdapter;
 
-    View view;
     Date selectedDate;
     ProgressBar bar;
-    TextView barPercent, ClickHour, ClickPercent, DTT;
-    private TextView tvCalendarTitle;
+    TextView barPercent;
+    View view;
+    TextView ClickHour;
+    TextView ClickPercent;
+    TextView DTT;
 
     String name = "";
 
@@ -76,24 +82,27 @@ public class DayFrag extends Fragment {
         dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);//오늘
         calendar.set(Calendar.DATE, dayOfWeek);//1일로 변경
 
+        /*if(dayOfWeek == Calendar.SUNDAY){//현재 달의 1일이 무슨 요일인지 검사
+            Log.d("현재 달 1일 무슨 요일",dayOfWeek+"");
+            dayOfWeek += 7;
+        }*/
+
         thisWeekLastDay = calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
 
         setCalendarTitle();
 
         DayInfo day;
-
         //여기 아래부터
-        calendar.add(Calendar.DATE, -1*(dayOfWeek-1)); //현재 달력화면에서 보이는 지난달의 시작일
-        for(int i=0; i<dayOfWeek-1; i++){
+        calendar.add(Calendar.DATE, -1 * (dayOfWeek - 1)); //현재 달력화면에서 보이는 지난달의 시작일
+        for (int i = 0; i < dayOfWeek - 1; i++) {
             day = new DayInfo();
             day.setDate(calendar.getTime());
             day.setInMonth(true);
             // arrayListDayInfo.add(day);
             calendar.add(Calendar.DATE, +1);
         }
-        //여기까지 지우면 오늘기준날짜부터 일주일간격 날짜로 나옴.
-
-        for(int i=1; i <= thisWeekLastDay; i++){
+//여기까지 지우면 오늘기준날짜부터 일주일간격 날짜로 나옴.
+        for (int i = 1; i <= thisWeekLastDay; i++) {
             day = new DayInfo();
             day.setDate(calendar.getTime());
             day.setInMonth(true);
@@ -112,6 +121,8 @@ public class DayFrag extends Fragment {
         }*/
 
         mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
+
+        // tvSelectedDate.setText(sdf.format(selectedDate));
 
     }
 
@@ -138,7 +149,7 @@ public class DayFrag extends Fragment {
         int idx = email.indexOf("@");
         name = email.substring(0, idx);
 
-        final ValueEventListener valueEventListener = new ValueEventListener () {
+        final ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -255,6 +266,7 @@ public class DayFrag extends Fragment {
                         //클릭한 아이템의 문자열을 가져옴
                         final String selected_item = (String) adapterView.getItemAtPosition(position);
 
+
                         ValueEventListener valueEventListener2 = databaseReference2.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -327,8 +339,7 @@ public class DayFrag extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };
-
+        });
         view = inflater.inflate(R.layout.cp_dayfrag, container, false);
 
         Button btnPreviousCalendar = view.findViewById(R.id.w_previous_calendar);
@@ -345,13 +356,13 @@ public class DayFrag extends Fragment {
         final TextView s_hour = view.findViewById(R.id.ws_hour);
         //  bar=(ProgressBar)view.findViewById(R.id.wprogressBar);//달성율을 프로그레스바로 표현해주려고
         // barPercent=view.findViewById(R.id.barPercent);//달성률 프로그레스바의 구체적 수치표현해주는거
-
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mThisMonthCalendar = Calendar.getInstance();
                 getCalendar(mThisMonthCalendar.getTime());
                 databaseReference.addValueEventListener(valueEventListener);
+
             }
         });
 
@@ -364,16 +375,18 @@ public class DayFrag extends Fragment {
                 databaseReference.addValueEventListener(valueEventListener);
             }
         });
-
         btnNextCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mThisMonthCalendar.add(Calendar.DAY_OF_MONTH, +1);
 
                 getCalendar(mThisMonthCalendar.getTime());
                 databaseReference.addValueEventListener(valueEventListener);
+
             }
         });
+
 
         arrayListDayInfo = new ArrayList<>();
         return view;
@@ -392,4 +405,6 @@ public class DayFrag extends Fragment {
             barPercent.setText(String.valueOf(percent) + "%");
         }
     }
+
+
 }

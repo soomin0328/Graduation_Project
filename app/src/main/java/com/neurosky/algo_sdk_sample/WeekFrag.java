@@ -45,7 +45,7 @@ public class WeekFrag extends Fragment {
     private DatabaseReference databasePercent = firebaseDatabase.getReference("USERS");
     private DatabaseReference databaseGraph = firebaseDatabase.getReference("USERS");
 
-    String i, wconper, h = "", name = "";
+    String i, wconper, h = "", name = "", newmonth = "", newday = "";
     long wconTime, wconHour, conTime, cmigrate, day_allTime;
     int weekAim;
 
@@ -215,11 +215,13 @@ public class WeekFrag extends Fragment {
             ValueEventListener pListener = new ValueEventListener() {
 
                 @Override
-
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+                    newday = newCal(Integer.parseInt(i));
+
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
+                            .child(newmonth + "월").child(newday + "일")
                             .child("집중시간").getChildren()) {
                         long test = Long.parseLong(snapshot.getValue().toString());
                         wconTime += test;
@@ -250,8 +252,12 @@ public class WeekFrag extends Fragment {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+                    newday = newCal(Integer.parseInt(i));
+
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
+                            .child(newmonth + "월").child(newday + "일")
                             .child("하루달성율").getChildren())
 
                     {
@@ -367,12 +373,17 @@ public class WeekFrag extends Fragment {
             int i = Integer.parseInt(day.getDay());
             int k = i - 6;
 
+            newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+
             if ((i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6) && (dayOfWeek == 4 || dayOfWeek == 5)) {
                 int month = mThisMonthCalendar.get(Calendar.MONTH) + 1;
+
                 if (month == 1 || month == 3 || month == 5 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
                     for (int j = 31 - (6 - i); j <= 31; j++) {
+                        newday = newCal(j);
+
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("목표시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 testValue = 0;
@@ -388,9 +399,13 @@ public class WeekFrag extends Fragment {
                         // conTime += 0;
                     }
                 } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH));
+
                     for (int j = 30 - (6 - i); j <= 30; j++) {
+                        newday = newCal(j);
+
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("목표시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 testValue = 0;
@@ -406,9 +421,13 @@ public class WeekFrag extends Fragment {
                         //conTime += 0;
                     }
                 } else {
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH));
+
                     for (int j = 28 - (6 - i); j <= 28; j++) {
+                        newday = newCal(j);
+
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("목표시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 testValue = 0;
@@ -428,8 +447,10 @@ public class WeekFrag extends Fragment {
 
             if ((i != 1 || i != 2 || i != 3 || i != 4 || i != 5 || i != 6) && (dayOfWeek != 4 || dayOfWeek != 5)) {
                 for (int j = k; j <= i; j++) {
+                    newday = newCal(j);
+
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                            .child(newmonth + "월").child(newday + "일")
                             .child("목표시간").getChildren()) {
                         if (snapshot.getValue().toString() == null) {
                             testValue = 0;
@@ -493,17 +514,17 @@ public class WeekFrag extends Fragment {
             }
             //24개의 배열방 0시~23시
             int t_Value = 0;
+
             String s1 = String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1);
 
             if (s1.length() == 1) {
-                s1 = String.valueOf("0" + (mThisMonthCalendar.get(Calendar.MONTH) + 1) + "월");
+                s1 = String.valueOf("0" + (mThisMonthCalendar.get(Calendar.MONTH) + 1));
             }
-
 
             int k = i - 6;
             {
                 String changValue;
-                //Log.d("test what 2",i+""+(String.valueOf("0"+(mThisMonthCalendar.get(Calendar.MONTH)+ 1) + "월"))+String.valueOf(0+6+ "일"));
+
                 for (int j = k; j <= i; j++) {
                     if (String.valueOf(j).length() == 1) {
                         changValue = "0" + j;
@@ -512,7 +533,7 @@ public class WeekFrag extends Fragment {
                     }
                     ++realCount;
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(String.valueOf(mThisMonthCalendar.get(Calendar.YEAR) + "년"))
-                            .child(s1).child(String.valueOf(changValue + "일")).getChildren()) {
+                            .child(s1 + "월").child(String.valueOf(changValue + "일")).getChildren()) {
 
                         String db_Value = snapshot.getKey().toString(); //시
                         if (db_Value != null) {
@@ -587,12 +608,16 @@ public class WeekFrag extends Fragment {
             int i = Integer.parseInt(day.getDay());
             int k = i - 6;
 
+            newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+
             if ((i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6) && (dayOfWeek == 4 || dayOfWeek == 5)) {
                 int month = mThisMonthCalendar.get(Calendar.MONTH) + 1;
                 if (month == 1 || month == 3 || month == 5 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
                     for (int j = 31 - (6 - i); j <= 31; j++) {
+                        newday = newCal(j);
+
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("집중시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 test = 0;
@@ -607,9 +632,13 @@ public class WeekFrag extends Fragment {
                         conTime += 0;
                     }
                 } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH));
+
                     for (int j = 30 - (6 - i); j <= 30; j++) {
+                        newday = newCal(j);
+
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("집중시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 test = 0;
@@ -624,9 +653,13 @@ public class WeekFrag extends Fragment {
                         conTime += 0;
                     }
                 } else {
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH));
+
                     for (int j = 28 - (6 - i); j <= 28; j++) {
+                        newday = newCal(j);
+
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("집중시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 test = 0;
@@ -645,8 +678,10 @@ public class WeekFrag extends Fragment {
 
             if ((i != 1 || i != 2 || i != 3 || i != 4 || i != 5 || i != 6) && (dayOfWeek != 4 || dayOfWeek != 5)) {
                 for (int j = k; j <= i; j++) {
+                    newday = newCal(j);
+
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                            .child(newmonth + "월").child(newday + "일")
                             .child("집중시간").getChildren()) {
                         if (snapshot.getValue().toString() == null) {
                             test = 0;
@@ -758,4 +793,15 @@ public class WeekFrag extends Fragment {
         entries.add(new Entry(6, -1));
 
     }
+
+    private String newCal(int cal) {
+
+        String str = String.valueOf(cal);
+
+        if (str.length() == 1)
+            return "0" + str;
+        else
+            return str;
+    }
+
 }
