@@ -21,7 +21,7 @@ import processing.core.PApplet;
 
 public class GraphActivity extends AppCompatActivity {
 
-    private PApplet sketch, sketch2;
+    private PApplet sketch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +33,15 @@ public class GraphActivity extends AppCompatActivity {
         int width = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
         int height = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
 
+        Intent get = getIntent();
+        final String pick = get.getExtras().getString("pick");
+
         setContentView(frame, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height);
+        sketch = new com.neurosky.algo_sdk_sample.Sketch(width, height, pick);
 
         final PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
-
-        Intent get = getIntent();
-        final String pick = get.getExtras().getString("pick");
 
         Thread th = new Thread(new Runnable() {
             @Override

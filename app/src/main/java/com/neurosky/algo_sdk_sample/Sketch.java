@@ -45,10 +45,13 @@ public class Sketch extends PApplet {
     int formResolution = 7;
     int stepSize = 1; // random size
     float centerX, centerY;
+    String state = "";
 
-    public Sketch(int a, int b) {
+    public Sketch(int a, int b, String s) {
         this.width = a;
         this.height = b;
+        this.state = s;
+        Log.e("state",state);
     }
 
     String n[] = new String[6];
