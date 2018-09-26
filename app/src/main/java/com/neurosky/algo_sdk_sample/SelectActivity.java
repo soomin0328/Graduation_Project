@@ -93,9 +93,10 @@ public class SelectActivity extends AppCompatActivity {
 
                 //명상 현재
                 else if (meditate.isChecked() == true && now.isChecked() == true) {
-                    Intent goGraph = new Intent(SelectActivity.this, GraphActivity.class);
+                    Intent mn = new Intent(SelectActivity.this, GraphActivity.class);
+                    mn.putExtra("pick","mn");
                     Toast.makeText(getApplicationContext(), "명상 현재", Toast.LENGTH_SHORT).show();
-                    startActivity(goGraph);
+                    startActivity(mn);
                 } else {
                     Toast.makeText(getApplicationContext(), "올바르지 않은 선택입니다", Toast.LENGTH_SHORT).show();
                 }

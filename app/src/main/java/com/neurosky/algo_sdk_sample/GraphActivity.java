@@ -40,6 +40,9 @@ public class GraphActivity extends AppCompatActivity {
         final PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
 
+        Intent get = getIntent();
+        final String pick = get.getExtras().getString("pick");
+
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -53,6 +56,7 @@ public class GraphActivity extends AppCompatActivity {
                     }
                 }
                 Intent goTensorflow = new Intent(getApplicationContext(), TensorflowActivity.class);
+                goTensorflow.putExtra("pick",pick);
                 startActivity(goTensorflow);
                 finish();
             }

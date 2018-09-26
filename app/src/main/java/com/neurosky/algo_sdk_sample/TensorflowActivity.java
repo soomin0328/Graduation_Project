@@ -56,6 +56,9 @@ public class TensorflowActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.stateImage);
 
+        Intent get = getIntent();
+        final String pick = get.getExtras().getString("pick");
+
         importImage();
 
         btnDetectObject.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +85,17 @@ public class TensorflowActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goMn = new Intent(TensorflowActivity.this, CnActivity.class);
-                startActivity(goMn);
-                finish();
+                if (pick.equals("mn")){
+                    Toast.makeText(getApplicationContext(),"명상 현재",Toast.LENGTH_LONG).show();
+                    Intent goMn = new Intent(TensorflowActivity.this, MnActivity.class);
+                    startActivity(goMn);
+                    finish();
+                } else if (pick.equals("cn")){
+                    Toast.makeText(getApplicationContext(),"집중 현재",Toast.LENGTH_LONG).show();
+                    Intent goCn = new Intent(TensorflowActivity.this, CnActivity.class);
+                    startActivity(goCn);
+                    finish();
+                }
             }
         });
 

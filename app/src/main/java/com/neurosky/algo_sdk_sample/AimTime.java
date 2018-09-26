@@ -30,7 +30,7 @@ public class AimTime extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialog = inflater.inflate(R.layout.activity_aimtime, null);
 
         btnOk = dialog.findViewById(R.id.btn_ok);
@@ -51,7 +51,9 @@ public class AimTime extends DialogFragment {
 
                 AimTime.this.getDialog();
                 {
-                    Intent intent = new Intent(AimTime.this.getActivity(), GraphActivity.class); //현재집중으로
+                    Intent intent = new Intent(AimTime.this.getActivity(), GraphActivity.class);
+                    intent.putExtra("pick","cn");
+
                     int hours = hourPicker.getValue();
                     int mins = minPicker.getValue();
                     String data = "목표시간 " + hours + "시간 " + mins + "분";
