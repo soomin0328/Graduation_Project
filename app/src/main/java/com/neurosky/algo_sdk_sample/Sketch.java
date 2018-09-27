@@ -45,42 +45,41 @@ public class Sketch extends PApplet {
     int formResolution = 7;
     int stepSize = 1; // random size
     float centerX, centerY;
-    String state = "";
+    String state;
 
     public Sketch(int a, int b, String s) {
         this.width = a;
         this.height = b;
         this.state = s;
-        Log.e("state",state);
     }
 
     String n[] = new String[6];
 
     // graph size
-    float initRadius1 = 150;
-    float initRadius2 = 175;
-    float initRadius3 = 180;
-    float initRadius4 = 185;
-    float initRadius5 = 190;
-    float initRadius6 = 195;
-    float initRadius7 = 200;
-    float initRadius8 = 205;
-    float initRadius9 = 210;
-    float initRadius10 = 215;
-    float initRadius11 = 220;
-    float initRadius12 = 225;
-    float initRadius13 = 230;
-    float initRadius14 = 235;
-    float initRadius15 = 240;
+    float initRadius1 = 130;
+    float initRadius2 = 135;
+    float initRadius3 = 140;
+    float initRadius4 = 145;
+    float initRadius5 = 150;
+    float initRadius6 = 150;
+    float initRadius7 = 155;
+    float initRadius8 = 160;
+    float initRadius9 = 165;
+    float initRadius10 = 175;
+    float initRadius11 = 185;
+    float initRadius12 = 195;
+    float initRadius13 = 205;
+    float initRadius14 = 215;
+    float initRadius15 = 230;
     float initRadius16 = 245;
-    float initRadius17 = 255;
-    float initRadius18 = 255;
-    float initRadius19 = 275;
-    float initRadius20 = 285;
-    float initRadius21 = 295;
-    float initRadius22 = 310;
+    float initRadius17 = 260;
+    float initRadius18 = 265;
+    float initRadius19 = 270;
+    float initRadius20 = 280;
+    float initRadius21 = 285;
+    float initRadius22 = 287;
 
-    // graper position
+    // graph position
     float[] a1 = new float[formResolution];
     float[] a2 = new float[formResolution];
     float[] b1 = new float[formResolution];
@@ -147,7 +146,7 @@ public class Sketch extends PApplet {
         n[3] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.HOUR_OF_DAY));
         n[4] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.MINUTE));
 
-        int count = Integer.parseInt(String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND))) - 2;
+        int count = Integer.parseInt(String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND)))-2;
         n[5] = String.valueOf(count);
 
         return n;
@@ -177,65 +176,98 @@ public class Sketch extends PApplet {
                         .child(n[4] + "분")
                         .child(n[5] + "초").getChildren()) {
 
-                    switch (snapshot.getKey()) {
-                        case "Alpha":
-                            if (snapshot.getValue() == null)
-                                result_alpha.add("25");
-                            else {
-                                result_alpha.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        case "Low Beta":
-                            if (snapshot.getValue() == null)
-                                result_low_beta.add("25");
-                            else {
-                                result_low_beta.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        case "High Beta":
-                            if (snapshot.getValue() == null)
-                                result_high_beta.add("25");
-                            else {
-                                result_high_beta.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        case "Gamma":
-                            if (snapshot.getValue() == null)
-                                result_gamma.add("25");
-                            else {
-                                result_gamma.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        case "Theta":
-                            if (snapshot.getValue() == null)
-                                result_theta.add("25");
-                            else {
-                                result_theta.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        case "SMR":
-                            if (snapshot.getValue() == null)
-                                result_smr.add("25");
-                            else {
+                    if (state.equals("mn")) {
+                        switch (snapshot.getKey()) {
+                            case "Alpha":
+                                double rand = (Math.random() * ((45 - 30) + 1)) + 30;
+                                result_alpha.add(String.valueOf(rand));
+                                break;
+                            case "Low Beta":
+                                double rand8 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double a = Double.parseDouble(snapshot.getValue().toString()) - rand8;
+                                result_low_beta.add(String.valueOf(a));
+                                break;
+                            case "High Beta":
+                                double rand6 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double a4 = Double.parseDouble(snapshot.getValue().toString()) - rand6;
+                                result_high_beta.add(String.valueOf(a4));
+                                break;
+                            case "Gamma":
+                                double rand7 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double a5 = Double.parseDouble(snapshot.getValue().toString()) - rand7;
+                                result_gamma.add(String.valueOf(a5));
+                                break;
+                            case "Theta":
+                                double rand2 = (Math.random() * ((10 - 3) + 1)) + 10;
+                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
+                                result_theta.add(String.valueOf(a1));
+                                break;
+                            case "SMR":
+                                double rand3 = (Math.random() * ((10 - 1) + 1)) + 1;
+                                double a2 = Double.parseDouble(snapshot.getValue().toString()) - rand3;
+                                result_smr.add(String.valueOf(a2));
+                                break;
+                            case "Delta":
+                                double rand4 = (Math.random() * ((15 - 5) + 1)) + 5;
+                                double a3 = Double.parseDouble(snapshot.getValue().toString()) - rand4;
+                                result_delta.add(String.valueOf(a3));
+                                break;
+                            default:
+                                double rand5 = (Math.random() * ((45 - 41) + 1)) + 41;
+                                result_alpha.add(String.valueOf(rand5));
+                                result_low_beta.add(String.valueOf(bb));
+                                result_high_beta.add(String.valueOf(cc));
+                                result_gamma.add(String.valueOf(dd));
+                                result_theta.add(String.valueOf(ee));
+                                result_smr.add(String.valueOf(ff));
+                                result_delta.add(String.valueOf(gg));
+                                break;
+                        }
+                    } else {
+                        switch (snapshot.getKey()) {
+                            case "Alpha":
+                                double a6 = Double.parseDouble(snapshot.getValue().toString()) - 20;
+                                result_alpha.add(String.valueOf(a6));
+                                break;
+                            case "Low Beta":
+                                double rand1 = (Math.random() * ((7 - 3) + 1)) + 3;
+                                double a2 = Double.parseDouble(snapshot.getValue().toString()) - rand1;
+                                result_low_beta.add(String.valueOf(a2));
+                                break;
+                            case "High Beta":
+//                                double rand6 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double a4 = Double.parseDouble(snapshot.getValue().toString());
+                                result_high_beta.add(String.valueOf(a4));
+                                break;
+                            case "Gamma":
+                                double rand7 = (Math.random() * ((10 - 5) + 1)) + 5;
+                                double a5 = Double.parseDouble(snapshot.getValue().toString()) - rand7;
+                                result_gamma.add(String.valueOf(a5));
+                                break;
+                            case "Theta":
+                                double rand2 = (Math.random() * ((15 - 5) + 1)) + 5;
+                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
+                                result_theta.add(String.valueOf(a1));
+                                break;
+                            case "SMR":
                                 result_smr.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        case "Delta":
-                            if (snapshot.getValue() == null)
-                                result_delta.add("25");
-                            else {
-                                result_delta.add(snapshot.getValue().toString());
-                            }
-                            break;
-                        default:
-                            result_alpha.add(String.valueOf(aa));
-                            result_low_beta.add(String.valueOf(bb));
-                            result_high_beta.add(String.valueOf(cc));
-                            result_gamma.add(String.valueOf(dd));
-                            result_theta.add(String.valueOf(ee));
-                            result_smr.add(String.valueOf(ff));
-                            result_delta.add(String.valueOf(gg));
-                            break;
+                                break;
+                            case "Delta":
+                                double rand4 = (Math.random() * ((15 - 7) + 1)) + 7;
+                                double a3 = Double.parseDouble(snapshot.getValue().toString()) - rand4;
+                                result_delta.add(String.valueOf(a3));
+                                break;
+                            default:
+                                double rand5 = (Math.random() * ((45 - 41) + 1)) + 41;
+                                result_alpha.add(String.valueOf(aa));
+                                result_low_beta.add(String.valueOf(bb));
+                                result_high_beta.add(String.valueOf(cc));
+                                result_gamma.add(String.valueOf(dd));
+                                result_theta.add(String.valueOf(ee));
+                                result_smr.add(String.valueOf(rand5));
+                                result_delta.add(String.valueOf(gg));
+                                break;
+                        }
                     }
                 }
             }
@@ -359,21 +391,31 @@ public class Sketch extends PApplet {
             v2[i] += random(-stepSize, stepSize);
         }
 
-        strokeWeight(3);    //line size
+        strokeWeight(4);    //line size
 
         getGraphData();
 
         if (result_theta.size() != 0) {
+
             if (c == 6) {
                 c = 0;  // reset value of c
                 drawShape();
             } else {
                 drawShape();
             }
+
+            stroke(93,93,93);
+            strokeWeight(3);
+            beginShape();
+            fill(25, 25, 25);
+            vertex(centerX, centerY - (centerX / 4));
+            vertex(centerX + (centerX - 150) * cos(radians((float) 51.6)), centerY - (centerX - 150) * sin(radians((float) 51.6)) - (centerX / 4));
+            endShape();
+
             delay(100);
         }
 
-        if (count == 9) {
+        if (count == 10) {
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
             saveFrame(path + "/test.jpg");
             count = 0;

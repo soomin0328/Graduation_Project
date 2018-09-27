@@ -465,7 +465,7 @@ public class CnActivity extends AppCompatActivity { //
                                 .child(String.valueOf(cyear + "년"))
                                 .child(String.valueOf(newmonth + "월"))
                                 .child(String.valueOf(newday + "일"))
-                                .child("목표시간").push().setValue(sum);
+                                .child("목표시간").push().setValue(sum * 100);
 
                         rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거
 

@@ -313,7 +313,7 @@ public class EEG extends Activity {
                         getNow();
 
                         double hb1 = rand.nextInt(30 - 20 + 1) + 20;
-                        double smr1 = rand.nextInt(40 - 30 + 1) + 30;
+                        double smr1 = rand.nextInt(45 - 30 + 1) + 30;
 
                         eeg[0] = String.valueOf(alpha);  //alpha
                         eeg[1] = String.valueOf(theta);  //low_beta
