@@ -42,7 +42,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
     private GridView gvCalendar;
     private ScatterChart scChart;
 
-    String i, h = "", name = "";
+    String i, h = "", name = "", newmonth = "", newday = "", newmonth2 = "";
     long mediTime, Mday_allTime;
     private int preSelected = -1;
 
@@ -198,11 +198,13 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             ValueEventListener pListener = new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+                    newday = newCal(Integer.parseInt(i));
+
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
+                            .child(newmonth + "월").child(String.valueOf(newday + "일"))
                             .child("명상시간").getChildren()) {
                         long test = Long.parseLong(snapshot.getValue().toString());
                         mediTime += test;
@@ -368,7 +370,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     }
 
                     for (int r = 0; r < 24; r++) {
-                        if (countArray[r] >= 15) { //각 시간대 배열에 집중도 높았던 순간이15번 이상이면
+                        if (countArray[r] >= 30) { //각 시간대 배열에 집중도 높았던 순간이15번 이상이면
                             entries.add(new Entry(realCount - 1, r)); //realCount의 값은 최소 0부터 6까지로 0은 일요일 자리 1은 월요일 2는 화요일자리 3은 수요일자리 이렇게 나간다.
 
                             // r은 시간대. 카운트배열의 자리값은 시간과같아서 그 시간대의 값이 15(번) 이상이면 점찍기.
@@ -412,13 +414,15 @@ public class MweekFrag extends Fragment { //명상 주별 과거
             long test;
             int i = Integer.parseInt(day.getDay());
             int k = i - 6;
-
+            newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+            newmonth2 = newCal(mThisMonthCalendar.get(Calendar.MONTH));
             if ((i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6) && (dayOfWeek == 4 || dayOfWeek == 5)) {
                 int month = mThisMonthCalendar.get(Calendar.MONTH) + 1;
                 if (month == 1 || month == 3 || month == 5 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
                     for (int j = 31 - (6 - i); j <= 31; j++) {
+                        newday = newCal(j);
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth + "월").child(newday + "일")
                                 .child("명상시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 test = 0;
@@ -434,8 +438,9 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     }
                 } else if (month == 4 || month == 6 || month == 9 || month == 11) {
                     for (int j = 30 - (6 - i); j <= 30; j++) {
+                        newday = newCal(j);
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth2 + "월").child(newday + "일")
                                 .child("명상시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 test = 0;
@@ -451,8 +456,9 @@ public class MweekFrag extends Fragment { //명상 주별 과거
                     }
                 } else {
                     for (int j = 28 - (6 - i); j <= 28; j++) {
+                        newday = newCal(j);
                         for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                                .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + "월")).child(String.valueOf(j + "일"))
+                                .child(newmonth2 + "월").child(newday + "일")
                                 .child("명상시간").getChildren()) {
                             if (snapshot.getValue().toString() == null) {
                                 test = 0;
@@ -472,7 +478,7 @@ public class MweekFrag extends Fragment { //명상 주별 과거
             if ((i != 1 || i != 2 || i != 3 || i != 4 || i != 5 || i != 6) && (dayOfWeek != 4 || dayOfWeek != 5)) {
                 for (int j = k; j <= i; j++) {
                     for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                            .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(j + "일"))
+                            .child(newmonth + "월").child(newday + "일")
                             .child("명상시간").getChildren()) {
                         if (snapshot.getValue().toString() == null) {
                             test = 0;
@@ -582,6 +588,16 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         entries.add(new Entry(5, -1));   //x축에서 5은 금요일
         entries.add(new Entry(6, -1));
 
+    }
+
+    private String newCal(int cal) {
+
+        String str = String.valueOf(cal);
+
+        if (str.length() == 1)
+            return "0" + str;
+        else
+            return str;
     }
 
 }

@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,7 @@ public class MmonthFrag extends Fragment {
     long mediTime, mediHour, allTime, day_allTime;
     int thisMonthLastDay;
     private int preSelected = -1;
+    String newmonth = "", newday = "";
 
     private ArrayList<DayInfo> arrayListDayInfo;
     private ArrayList<String> mHours = new ArrayList<>();
@@ -149,15 +149,19 @@ public class MmonthFrag extends Fragment {
     ValueEventListener pListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
+            if (i.length() == 1) {
+                i = "0" + i;
+            }
             for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                    .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(i + "일"))
+                    .child(String.valueOf(newmonth + "월")).child(String.valueOf(i + "일"))
                     .child("명상시간").getChildren()) {
                 long test = Long.parseLong(snapshot.getValue().toString());
                 mediTime += test;
             }
 
             mediHour = mediTime / 1000 / 3600;
-            long mediMin = (mediTime / 1000) / 60;
+            long mediMin = (mediTime / 1000) % 3600 / 60;
             long mediSec = ((mediTime) / 1000) % 60;
 
             if (mediHour != 0) {
@@ -183,10 +187,12 @@ public class MmonthFrag extends Fragment {
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
             long test2;
+            newmonth = newCal(mThisMonthCalendar.get(Calendar.MONTH) + 1);
 
             for (int z = 1; z < thisMonthLastDay + 1; z++) {
+                newday = newCal(z);
                 for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                        .child(String.valueOf(mThisMonthCalendar.get(Calendar.MONTH) + 1 + "월")).child(String.valueOf(z + "일"))
+                        .child(String.valueOf(newmonth + "월")).child(newday + "일")
                         .child("명상시간").getChildren()) {
                     if (snapshot.getValue().toString() == null) {
                         test2 = 0;
@@ -201,7 +207,7 @@ public class MmonthFrag extends Fragment {
             }
 
             long mediHour2 = allTime / 1000 / 3600;
-            long mediMin2 = (allTime / 1000) / 60;
+            long mediMin2 = (allTime / 1000) % 3600 / 60;
             long mediSec2 = ((allTime) / 1000) % 60;
 
             if (mediHour2 != 0) {
@@ -321,5 +327,15 @@ public class MmonthFrag extends Fragment {
         } else {
             mHours.add("");
         }
+    }
+
+    private String newCal(int cal) {
+
+        String str = String.valueOf(cal);
+
+        if (str.length() == 1)
+            return "0" + str;
+        else
+            return str;
     }
 }
