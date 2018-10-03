@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Nomalization extends AppCompatActivity{
+public class Nomalization extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
@@ -21,7 +21,7 @@ public class Nomalization extends AppCompatActivity{
     String name = email.substring(0, idx);
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS").child(name).child("EEG DATA");
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS").child(name);
 
     final private ArrayList<String> result_alpha = new ArrayList<>();
     private ArrayList<String> result_low_beta = new ArrayList<>();
@@ -152,19 +152,21 @@ public class Nomalization extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int j = 0;
-                for (int s = 10; s <= 59; s++) {
-                    int i = 0;
-                    for (DataSnapshot snapshot : dataSnapshot.child("2018년").child("07월").child("31일")
-                            .child("22시").child("19분").child(String.valueOf(s) + "초").getChildren()) {
-                        data[i] = snapshot.getValue().toString();
-                        i++;
+                for (int z = 32; z <= 33; z++){
+                    for (int s = 10; s <= 59; s++) {
+                        int i = 0;
+                        for (DataSnapshot snapshot : dataSnapshot.child("DATA SET").child("2018년").child("19시")
+                                .child(String.valueOf(z)+"분").child(String.valueOf(s) + "초").getChildren()) {
+                            data[i] = snapshot.getValue().toString();
+                            i++;
+                        }
+                        result_alpha.add(data[0]);
+                        result_low_beta.add(data[1]);
+                        result_delta.add(data[2]);
+                        result_gamma.add(data[3]);
+                        result_theta.add(data[4]);
+                        j++;
                     }
-                    result_alpha.add(data[0]);
-                    result_low_beta.add(data[1]);
-                    result_delta.add(data[2]);
-                    result_gamma.add(data[3]);
-                    result_theta.add(data[4]);
-                    j++;
                 }
             }
 

@@ -68,14 +68,18 @@ public class TensorflowActivity extends AppCompatActivity {
                 //image -> bitmap
                 Drawable drawable = imageView.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, true);
 
-                //Classifier
-                if (bitmap != null) {
-                    final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-                    textViewResult.setText(results.toString());
-                } else {
-                    Toast.makeText(TensorflowActivity.this, "not null", Toast.LENGTH_LONG).show();
+                try{
+                    //Classifier
+                    if (bitmap != null) {
+                        final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+                        textViewResult.setText(results.toString());
+                    } else {
+                        Toast.makeText(TensorflowActivity.this, "not null", Toast.LENGTH_LONG).show();
+                    }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
 
             }
@@ -85,13 +89,13 @@ public class TensorflowActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pick.equals("mn")){
-                    Toast.makeText(getApplicationContext(),"명상 현재",Toast.LENGTH_LONG).show();
+                if (pick.equals("mn")) {
+                    Toast.makeText(getApplicationContext(), "명상 현재", Toast.LENGTH_LONG).show();
                     Intent goMn = new Intent(TensorflowActivity.this, MnActivity.class);
                     startActivity(goMn);
                     finish();
-                } else if (pick.equals("cn")){
-                    Toast.makeText(getApplicationContext(),"집중 현재",Toast.LENGTH_LONG).show();
+                } else if (pick.equals("cn")) {
+                    Toast.makeText(getApplicationContext(), "집중 현재", Toast.LENGTH_LONG).show();
                     Intent goCn = new Intent(TensorflowActivity.this, CnActivity.class);
                     startActivity(goCn);
                     finish();

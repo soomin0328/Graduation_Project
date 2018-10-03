@@ -1,9 +1,6 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,7 +10,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -56,28 +52,28 @@ public class Sketch extends PApplet {
     String n[] = new String[6];
 
     // graph size
-    float initRadius1 = 130;
-    float initRadius2 = 135;
-    float initRadius3 = 140;
-    float initRadius4 = 145;
-    float initRadius5 = 150;
-    float initRadius6 = 150;
-    float initRadius7 = 155;
-    float initRadius8 = 160;
-    float initRadius9 = 165;
-    float initRadius10 = 175;
-    float initRadius11 = 185;
-    float initRadius12 = 195;
-    float initRadius13 = 205;
-    float initRadius14 = 215;
-    float initRadius15 = 230;
-    float initRadius16 = 245;
-    float initRadius17 = 260;
-    float initRadius18 = 265;
-    float initRadius19 = 270;
-    float initRadius20 = 280;
-    float initRadius21 = 285;
-    float initRadius22 = 287;
+    float initRadius1 = 150;
+    float initRadius2 = 160;
+    float initRadius3 = 170;
+    float initRadius4 = 180;
+    float initRadius5 = 190;
+    float initRadius6 = 200;
+    float initRadius7 = 210;
+    float initRadius8 = 220;
+    float initRadius9 = 230;
+    float initRadius10 = 240;
+    float initRadius11 = 250;
+    float initRadius12 = 260;
+    float initRadius13 = 270;
+    float initRadius14 = 250;
+    float initRadius15 = 240;
+    float initRadius16 = 260;
+    float initRadius17 = 290;
+    float initRadius18 = 270;
+    float initRadius19 = 250;
+    float initRadius20 = 260;
+    float initRadius21 = 270;
+    float initRadius22 = 280;
 
     // graph position
     float[] a1 = new float[formResolution];
@@ -146,7 +142,7 @@ public class Sketch extends PApplet {
         n[3] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.HOUR_OF_DAY));
         n[4] = String.format(Locale.KOREA, "%02d", cal.get(Calendar.MINUTE));
 
-        int count = Integer.parseInt(String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND)))-2;
+        int count = Integer.parseInt(String.format(Locale.KOREA, "%02d", cal.get(Calendar.SECOND))) - 2;
         n[5] = String.valueOf(count);
 
         return n;
@@ -179,41 +175,42 @@ public class Sketch extends PApplet {
                     if (state.equals("mn")) {
                         switch (snapshot.getKey()) {
                             case "Alpha":
-                                double rand = (Math.random() * ((45 - 30) + 1)) + 30;
-                                result_alpha.add(String.valueOf(rand));
+                                double a6 = (Math.random() * ((45 - 35) + 1)) + 35;
+                                result_alpha.add(String.valueOf(a6));
                                 break;
                             case "Low Beta":
-                                double rand8 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double rand8 = (Math.random() * ((10 - 1) + 1)) + 1;
                                 double a = Double.parseDouble(snapshot.getValue().toString()) - rand8;
                                 result_low_beta.add(String.valueOf(a));
                                 break;
                             case "High Beta":
-                                double rand6 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double rand6 = (Math.random() * ((10 - 1) + 1)) + 1;
                                 double a4 = Double.parseDouble(snapshot.getValue().toString()) - rand6;
                                 result_high_beta.add(String.valueOf(a4));
                                 break;
                             case "Gamma":
                                 double rand7 = (Math.random() * ((5 - 1) + 1)) + 1;
-                                double a5 = Double.parseDouble(snapshot.getValue().toString()) - rand7;
+                                double a5 = Double.parseDouble(snapshot.getValue().toString()) + rand7;
                                 result_gamma.add(String.valueOf(a5));
                                 break;
                             case "Theta":
-                                double rand2 = (Math.random() * ((10 - 3) + 1)) + 10;
+                                double rand2 = (Math.random() * ((7 - 1) + 1)) + 1;
                                 double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
                                 result_theta.add(String.valueOf(a1));
                                 break;
                             case "SMR":
-                                double rand3 = (Math.random() * ((10 - 1) + 1)) + 1;
-                                double a2 = Double.parseDouble(snapshot.getValue().toString()) - rand3;
+                                double rand3 = (Math.random() * ((20 - 1) + 1)) + 1;
+                                double rand9 = (Math.random() * ((5 - 1) + 1)) + 1;
+                                double a2 = rand3 - rand9;
                                 result_smr.add(String.valueOf(a2));
                                 break;
                             case "Delta":
-                                double rand4 = (Math.random() * ((15 - 5) + 1)) + 5;
-                                double a3 = Double.parseDouble(snapshot.getValue().toString()) - rand4;
+                                double rand4 = (Math.random() * ((7 - 3) + 1)) + 3;
+                                double a3 = Double.parseDouble(snapshot.getValue().toString()) + rand4;
                                 result_delta.add(String.valueOf(a3));
                                 break;
                             default:
-                                double rand5 = (Math.random() * ((45 - 41) + 1)) + 41;
+                                double rand5 = (Math.random() * ((45 - 35) + 1)) + 35;
                                 result_alpha.add(String.valueOf(rand5));
                                 result_low_beta.add(String.valueOf(bb));
                                 result_high_beta.add(String.valueOf(cc));
@@ -226,17 +223,18 @@ public class Sketch extends PApplet {
                     } else {
                         switch (snapshot.getKey()) {
                             case "Alpha":
-                                double a6 = Double.parseDouble(snapshot.getValue().toString()) - 20;
+                                double rand10 = (Math.random() * ((7 - 1) + 1)) + 1;
+                                double a6 = Double.parseDouble(snapshot.getValue().toString()) + rand10;
                                 result_alpha.add(String.valueOf(a6));
                                 break;
                             case "Low Beta":
-                                double rand1 = (Math.random() * ((7 - 3) + 1)) + 3;
+                                double rand1 = (Math.random() * (10 - 1) + 1) + 1;
                                 double a2 = Double.parseDouble(snapshot.getValue().toString()) - rand1;
                                 result_low_beta.add(String.valueOf(a2));
                                 break;
                             case "High Beta":
-//                                double rand6 = (Math.random() * ((5 - 1) + 1)) + 1;
-                                double a4 = Double.parseDouble(snapshot.getValue().toString());
+                                double rand6 = (Math.random() * ((7 - 1) + 1)) + 1;
+                                double a4 = Double.parseDouble(snapshot.getValue().toString()) + rand6;
                                 result_high_beta.add(String.valueOf(a4));
                                 break;
                             case "Gamma":
@@ -245,15 +243,15 @@ public class Sketch extends PApplet {
                                 result_gamma.add(String.valueOf(a5));
                                 break;
                             case "Theta":
-                                double rand2 = (Math.random() * ((15 - 5) + 1)) + 5;
-                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
+                                double rand2 = (Math.random() * ((10 - 5) + 1)) + 5;
+                                double a1 = Double.parseDouble(snapshot.getValue().toString()) + rand2;
                                 result_theta.add(String.valueOf(a1));
                                 break;
                             case "SMR":
                                 result_smr.add(snapshot.getValue().toString());
                                 break;
                             case "Delta":
-                                double rand4 = (Math.random() * ((15 - 7) + 1)) + 7;
+                                double rand4 = (Math.random() * ((10 - 5) + 1)) + 5;
                                 double a3 = Double.parseDouble(snapshot.getValue().toString()) - rand4;
                                 result_delta.add(String.valueOf(a3));
                                 break;
@@ -404,7 +402,7 @@ public class Sketch extends PApplet {
                 drawShape();
             }
 
-            stroke(93,93,93);
+            stroke(93, 93, 93);
             strokeWeight(3);
             beginShape();
             fill(25, 25, 25);

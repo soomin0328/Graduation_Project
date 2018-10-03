@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,15 +34,14 @@ import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.TgStreamReader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileWriter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
 public class EEG extends Activity {
+
+    FileWriter fw = null;
 
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -313,7 +311,7 @@ public class EEG extends Activity {
                         getNow();
 
                         double hb1 = rand.nextInt(30 - 20 + 1) + 20;
-                        double smr1 = rand.nextInt(45 - 30 + 1) + 30;
+                        double smr1 = rand.nextInt(30 - 20 + 1) + 20;
 
                         eeg[0] = String.valueOf(alpha);  //alpha
                         eeg[1] = String.valueOf(theta);  //low_beta
@@ -324,67 +322,67 @@ public class EEG extends Activity {
                         int size = nz.setData();
 
                         if (size != 0) {
-                            nomal = nz.nomal(eeg[0], eeg[1], eeg[2], eeg[3], eeg[4]);
+                            if (nomal.length != 0) {
+                                nomal = nz.nomal(eeg[0], eeg[1], eeg[2], eeg[3], eeg[4]);
+                                if (nomal.length != 0) {
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("Alpha").setValue(nomal[0]);
 
-                            if (nomal.length != 0){
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("Alpha").setValue(nomal[0]);
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("Low Beta").setValue(nomal[1]);
 
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("Low Beta").setValue(nomal[1]);
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("Delta").setValue(nomal[2]);
 
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("Delta").setValue(nomal[2]);
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("Gamma").setValue(nomal[3]);
 
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("Gamma").setValue(nomal[3]);
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("Theta").setValue(nomal[4]);
 
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("Theta").setValue(nomal[4]);
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("High Beta").setValue(hb1);
 
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("High Beta").setValue(hb1);
-
-                                databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
-                                        .child(n[1] + "월")
-                                        .child(n[2] + "일")
-                                        .child(n[3] + "시")
-                                        .child(n[4] + "분")
-                                        .child(n[5] + "초")
-                                        .child("SMR").setValue(smr1);
+                                    databaseReference.child(name).child("EEG DATA").child(n[0] + "년")
+                                            .child(n[1] + "월")
+                                            .child(n[2] + "일")
+                                            .child(n[3] + "시")
+                                            .child(n[4] + "분")
+                                            .child(n[5] + "초")
+                                            .child("SMR").setValue(smr1);
+                                }
                             }
                         }
-
                     }
                 });
             }
