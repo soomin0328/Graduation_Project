@@ -63,9 +63,7 @@ public class EEG extends Activity {
     private float output_data[];
     private int output_data_count = 0;
 
-    private Button headsetButton, setAlgosButton, startButton, stopButton, logoutButton;
-
-    private CheckBox attCheckBox, medCheckBox, bpCheckBox;
+    private Button headsetButton, startButton, stopButton, logoutButton;
 
     private TextView stateText, sqText;
 
