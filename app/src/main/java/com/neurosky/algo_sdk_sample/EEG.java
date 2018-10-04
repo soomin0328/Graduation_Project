@@ -15,6 +15,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -61,7 +62,6 @@ public class EEG extends Activity {
     private int raw_data_index = 0;
     private float output_data[];
     private int output_data_count = 0;
-    private int raw_data_sec_len = 85;
 
     private Button headsetButton, setAlgosButton, startButton, stopButton, logoutButton;
 
@@ -84,6 +84,7 @@ public class EEG extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_eeg);
 

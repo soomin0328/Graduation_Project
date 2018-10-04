@@ -7,4 +7,6 @@
     <color name="black">#000000</color>
     <color name="pink">#fdd5ff</color>
     <color name="sky">#caebfd</color>
+    <color name="colorPrimaryDark_1">#00757575</color>
+    <color name="accent_material_light_1">#003df5</color>
 </resources>

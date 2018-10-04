@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:drawable="@color/colorSplash" />
     <item>
+
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash1" />
+            android:src="@drawable/brainwave" />
+
     </item>
+
 </layer-list>
