@@ -7,14 +7,15 @@ package com.neurosky.algo_sdk_sample;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText idText, pwText;
     Button signup, login, findPw;
+    TextView tv;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -45,12 +47,18 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
 
+        tv = (TextView) findViewById(R.id.loginTv);
+        tv.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/MILKYWAY.TTF"));
+
         idText = (EditText) findViewById(R.id.emailInput);
         pwText = (EditText) findViewById(R.id.passwordInput);
 
         login = (Button) findViewById(R.id.loginButton);
         signup = (Button) findViewById(R.id.signupButton);
         findPw = (Button) findViewById(R.id.findPassword);
+        login.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/MILKYWAY.TTF"));
+        signup.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/MILKYWAY.TTF"));
+        findPw.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/MILKYWAY.TTF"));
 
         getPermission();
 
@@ -66,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toSignup = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(toSignup);
+                overridePendingTransition(0,0);
                 finish();
             }
         });
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toFind = new Intent(MainActivity.this, FindPw.class);
                 startActivity(toFind);
+                overridePendingTransition(0,0);
                 finish();
             }
         });
@@ -114,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Toast.makeText(MainActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
                                 Intent goEEG = new Intent(MainActivity.this, EEG.class);
+                                overridePendingTransition(0,0);
                                 finish();
                                 startActivity(goEEG);
                             }

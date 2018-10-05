@@ -1,73 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUp">
+    android:background="#A3A0ED">
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/leftarrow"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="11dp" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true">
+        <Button
+            android:id="@+id/loginlButton"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/userNickname"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Enroll"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userNickname" />
+
+        <EditText
+            android:id="@+id/userNickname"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/passwordCheck"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/back"
+            android:textColorHint="#ffffff"
+            android:paddingLeft="25dp"
+            android:hint="Enter your nickname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordCheck" />
+
+        <EditText
+            android:id="@+id/passwordCheck"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/passwordInput"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/back"
+            android:textColorHint="#ffffff"
+            android:paddingLeft="25dp"
+            android:hint="Password Checking"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/emailInput"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/back"
+            android:textColorHint="#ffffff"
+            android:paddingLeft="25dp"
+            android:ems="10"
+            android:hint="Enter Your Password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
         <EditText
             android:id="@+id/emailInput"
             android:layout_width="300dp"
             android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/back"
+            android:textColorHint="#ffffff"
+            android:paddingLeft="25dp"
+            android:ems="10"
             android:hint="Enter Your Email for ID"
-            android:layout_centerHorizontal="true"
-            android:ems="10"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:id="@+id/passwordInput"
-            android:layout_centerHorizontal="true"
-            android:hint="Enter Your Password"
-            android:layout_below="@+id/emailInput"
-            android:ems="10"
-            android:inputType="textPassword"/>
-
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:id="@+id/passwordCheck"
-            android:layout_centerHorizontal="true"
-            android:hint="Password Checking"
-            android:layout_below="@+id/passwordInput"
-            android:inputType="textPassword"/>
-
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:id="@+id/userNickname"
-            android:layout_centerHorizontal="true"
-            android:hint="Enter your nickname"
-            android:layout_below="@+id/passwordCheck"/>
-
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="Enroll"
-            android:id="@+id/loginlButton"
-            android:textAllCaps="false"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/userNickname"/>
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/leftarrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
