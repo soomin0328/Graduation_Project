@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class FindPw extends AppCompatActivity{
 
-    private Button sendEmail;
+    private Button sendEmail, back;
     private EditText email;
     private FirebaseAuth mAuth;
 
@@ -26,7 +27,10 @@ public class FindPw extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
 
         email = (EditText)findViewById(R.id.emailForFind);
+
+        back = (Button)findViewById(R.id.backButton2);
         sendEmail = (Button)findViewById(R.id.sendButton);
+        sendEmail.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/MILKYWAY.TTF"));
 
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +38,13 @@ public class FindPw extends AppCompatActivity{
                 String emailAddress = email.getText().toString().trim();
                 Toast.makeText(FindPw.this, emailAddress, Toast.LENGTH_SHORT).show();
                 sendEmail(emailAddress);
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
