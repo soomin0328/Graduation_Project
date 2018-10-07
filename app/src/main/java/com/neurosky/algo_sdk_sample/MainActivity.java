@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toSignup = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(toSignup);
-                overridePendingTransition(0,0);
-                finish();
             }
         });
 
@@ -85,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent toFind = new Intent(MainActivity.this, FindPw.class);
                 startActivity(toFind);
                 overridePendingTransition(0,0);
-                finish();
             }
         });
     }
