@@ -6,6 +6,7 @@ package com.neurosky.algo_sdk_sample;
 
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,7 @@ public class SignUp extends AppCompatActivity {
 
         back = (Button) findViewById(R.id.backButton);
         enroll = (Button) findViewById(R.id.loginlButton);
+        enroll.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/MILKYWAY.TTF"));
 
         idText = (EditText) findViewById(R.id.emailInput);
         pwText = (EditText) findViewById(R.id.passwordInput);

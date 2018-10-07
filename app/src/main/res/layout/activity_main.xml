@@ -30,7 +30,7 @@
             android:layout_marginTop="8dp"
             android:text="APP NAME"
             android:textColor="#fffff3"
-            android:textSize="55dp"
+            android:textSize="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -51,6 +51,7 @@
             android:paddingLeft="25dp"
             android:textColorHint="#ffffff"
             android:textColor="#4C4C4C"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loginTv" />
@@ -71,6 +72,7 @@
             android:paddingLeft="25dp"
             android:textColorHint="#ffffff"
             android:textColor="#4C4C4C"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailInput" />

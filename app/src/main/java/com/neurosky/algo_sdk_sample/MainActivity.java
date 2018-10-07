@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toSignup = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(toSignup);
+                overridePendingTransition(0,0);
             }
         });
 
@@ -129,6 +130,36 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
     }
+
+//    private void userLogin(final String email, String password) {
+//        Intent intent = new Intent(MainActivity.this, CustomDialog.class);
+//
+//        if (idText.getText().toString().equals("")) {
+//
+//        } else if (pwText.getText().toString().equals("")) {
+//
+//        } else {
+//            mAuth.signInWithEmailAndPassword(email, password)
+//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            if (!task.isSuccessful()) {
+//                                Toast.makeText(MainActivity.this, "Login Fail", Toast.LENGTH_SHORT).show();
+//                                idText.setText("");
+//                                pwText.setText("");
+//                            } else {
+//                                currentUser = mAuth.getCurrentUser();
+//
+//                                Toast.makeText(MainActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
+//                                Intent goEEG = new Intent(MainActivity.this, EEG.class);
+//                                overridePendingTransition(0,0);
+//                                finish();
+//                                startActivity(goEEG);
+//                            }
+//                        }
+//                    });
+//        }
+//    }
 
     @Override
     public void onStart() {
