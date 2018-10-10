@@ -51,7 +51,7 @@
         <activity android:name=".MpActivity" />
         <activity
             android:name=".CustomDialog"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:theme="@style/Dialog" />
 
     </application>
 </manifest>

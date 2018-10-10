@@ -4,119 +4,155 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="81dp"
+    android:background="#A3A0ED">
 
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_width="137dp"
-        android:layout_height="45dp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="72dp"
-        android:text="logout"
+        android:layout_marginTop="88dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/stopButton"
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="13dp"
+            android:text="님"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/userName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="#fffff3"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="24dp"
-        android:enabled="false"
-        android:text="Stop"
-        android:textSize="12dp"
-        app:layout_constraintStart_toEndOf="@+id/startButton"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="24dp"
-        android:enabled="false"
-        android:text="Start"
-        android:textSize="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <Button
-        android:id="@+id/headsetButton"
-        android:layout_width="82dp"
-        android:layout_height="58dp"
-        android:layout_alignParentStart="true"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="120dp"
-        android:layout_weight="0.36"
-        android:maxHeight="20dp"
-        android:minHeight="20dp"
-        android:text="Headset"
-        android:textSize="12dp"
-        app:layout_constraintStart_toEndOf="@+id/sqText"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/stateText"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:text="--"
-        app:layout_constraintBaseline_toBaselineOf="@+id/stateTitle"
-        app:layout_constraintStart_toEndOf="@+id/stateTitle" />
-
-    <TextView
-        android:id="@+id/stateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="16dp"
-        android:text="SDK State:"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sqTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-    <TextView
-        android:id="@+id/sqText"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="120dp"
-        android:layout_weight="1"
-        android:text="--"
-        app:layout_constraintStart_toEndOf="@+id/sqTitle"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/headsetButton"
+            android:layout_width="82dp"
+            android:layout_height="58dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="120dp"
+            android:layout_weight="0.36"
+            android:maxHeight="20dp"
+            android:minHeight="20dp"
+            android:text="Headset"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/sqText"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/sqTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="120dp"
-        android:text="Signal Quality:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="137dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startButton" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginTop="28dp"
-        android:background="#000000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stateText" />
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:text="Stop"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/startButton"
+            app:layout_constraintTop_toBottomOf="@+id/stateTitle" />
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginTop="28dp"
-        android:background="#000000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopButton" />
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:text="Start"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stateTitle" />
+
+        <TextView
+            android:id="@+id/stateText"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="--"
+            app:layout_constraintBaseline_toBaselineOf="@+id/stateTitle"
+            app:layout_constraintStart_toEndOf="@+id/stateTitle" />
+
+        <TextView
+            android:id="@+id/stateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="16dp"
+            android:text="SDK State:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sqTitle" />
+
+        <TextView
+            android:id="@+id/sqText"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="120dp"
+            android:layout_weight="1"
+            android:text="--"
+            app:layout_constraintStart_toEndOf="@+id/sqTitle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sqTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="120dp"
+            android:text="Signal Quality:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

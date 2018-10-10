@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55">
+        app:layout_constraintVertical_bias="0.57">
 
         <Button
             android:id="@+id/loginlButton"
@@ -41,7 +41,7 @@
 
         <EditText
             android:id="@+id/userNickname"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="50dp"
             android:layout_below="@+id/passwordCheck"
             android:layout_centerHorizontal="true"
@@ -60,7 +60,7 @@
 
         <EditText
             android:id="@+id/passwordCheck"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="50dp"
             android:layout_below="@+id/passwordInput"
             android:layout_centerHorizontal="true"
@@ -80,7 +80,7 @@
 
         <EditText
             android:id="@+id/passwordInput"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="50dp"
             android:layout_below="@+id/emailInput"
             android:layout_centerHorizontal="true"
@@ -101,7 +101,7 @@
 
         <EditText
             android:id="@+id/emailInput"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_marginEnd="8dp"
@@ -115,7 +115,6 @@
             android:textColorHint="#ffffff"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

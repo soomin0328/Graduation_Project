@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,6 +18,12 @@ public class CustomDialog extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+        lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        lpWindow.dimAmount = 0.8f;
+        getWindow().setAttributes(lpWindow);
+
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(R.layout.activity_dialog);
 

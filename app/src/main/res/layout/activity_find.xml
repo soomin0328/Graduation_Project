@@ -23,7 +23,7 @@
 
         <EditText
             android:id="@+id/emailForFind"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_marginEnd="8dp"

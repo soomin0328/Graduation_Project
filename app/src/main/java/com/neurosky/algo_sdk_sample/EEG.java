@@ -65,7 +65,7 @@ public class EEG extends Activity {
 
     private Button headsetButton, startButton, stopButton, logoutButton;
 
-    private TextView stateText, sqText;
+    private TextView stateText, sqText, nameTv;
 
     private NskAlgoSdk nskAlgoSdk;
 
@@ -115,6 +115,9 @@ public class EEG extends Activity {
 
         stateText = (TextView) this.findViewById(R.id.stateText);
         sqText = (TextView) this.findViewById(R.id.sqText);
+        nameTv = (TextView) this.findViewById(R.id.userName);
+
+        nameTv.setText(name);
 
         headsetButton.setOnClickListener(new View.OnClickListener() {
             @Override
