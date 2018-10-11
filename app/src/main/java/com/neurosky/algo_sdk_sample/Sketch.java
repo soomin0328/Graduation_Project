@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,23 +58,23 @@ public class Sketch extends PApplet {
     float initRadius3 = 170;
     float initRadius4 = 180;
     float initRadius5 = 190;
-    float initRadius6 = 200;
-    float initRadius7 = 210;
-    float initRadius8 = 220;
-    float initRadius9 = 230;
-    float initRadius10 = 240;
-    float initRadius11 = 250;
-    float initRadius12 = 260;
-    float initRadius13 = 270;
-    float initRadius14 = 250;
-    float initRadius15 = 240;
-    float initRadius16 = 260;
-    float initRadius17 = 290;
-    float initRadius18 = 270;
-    float initRadius19 = 250;
-    float initRadius20 = 260;
-    float initRadius21 = 270;
-    float initRadius22 = 280;
+    float initRadius6 = 210;
+    float initRadius7 = 175;
+    float initRadius8 = 185;
+    float initRadius9 = 195;
+    float initRadius10 = 205;
+    float initRadius11 = 210;
+    float initRadius12 = 215;
+    float initRadius13 = 225;
+    float initRadius14 = 235;
+    float initRadius15 = 235;
+    float initRadius16 = 240;
+    float initRadius17 = 245;
+    float initRadius18 = 265;
+    float initRadius19 = 285;
+    float initRadius20 = 305;
+    float initRadius21 = 315;
+    float initRadius22 = 325;
 
     // graph position
     float[] a1 = new float[formResolution];
@@ -149,19 +150,12 @@ public class Sketch extends PApplet {
     }
 
     public void getGraphData() {
-        Random rd = new Random();
-
-        final int aa = rd.nextInt(30 - 20 + 1) + 20;
-        final int bb = rd.nextInt(30 - 20 + 1) + 20;
-        final int cc = rd.nextInt(30 - 20 + 1) + 20;
-        final int dd = rd.nextInt(30 - 20 + 1) + 20;
-        final int ee = rd.nextInt(30 - 20 + 1) + 20;
-        final int ff = rd.nextInt(30 - 20 + 1) + 20;
-        final int gg = rd.nextInt(30 - 20 + 1) + 20;
 
         getNow();
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            double alpha = 0, smr = 0;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -172,52 +166,72 @@ public class Sketch extends PApplet {
                         .child(n[4] + "분")
                         .child(n[5] + "초").getChildren()) {
 
-                    if (state.equals("mn")) {
+                    double r1 = (Math.random() * ((45 - 35) + 1)) + 35;
+                    double r2 = (Math.random() * ((40 - 25) + 1)) + 25;
+                    double r3 = (Math.random() * ((40 - 25) + 1)) + 25;
+                    double r4 = (Math.random() * ((40 - 25) + 1)) + 25;
+                    double r5 = (Math.random() * ((40 - 25) + 1)) + 25;
+                    double r6 = (Math.random() * ((40 - 20) + 1)) + 20;
+                    double r7 = (Math.random() * ((40 - 25) + 1)) + 25;
+
+                    int count = 0;
+
+                    if (state.equals("cn")) {
+
                         switch (snapshot.getKey()) {
                             case "Alpha":
-                                double a6 = (Math.random() * ((45 - 35) + 1)) + 35;
-                                result_alpha.add(String.valueOf(a6));
+                                result_alpha.add(String.valueOf(r1));
+//                                Log.e("alpha",String.valueOf(r1));
+                                count++;
                                 break;
                             case "Low Beta":
-                                double rand8 = (Math.random() * ((10 - 1) + 1)) + 1;
-                                double a = Double.parseDouble(snapshot.getValue().toString()) - rand8;
-                                result_low_beta.add(String.valueOf(a));
+//                                double a = Double.parseDouble(snapshot.getValue().toString()) - rand8;
+                                result_low_beta.add(String.valueOf(r2));
+                                count++;
+//                                Log.e("low beta",String.valueOf(r2));
                                 break;
                             case "High Beta":
-                                double rand6 = (Math.random() * ((10 - 1) + 1)) + 1;
-                                double a4 = Double.parseDouble(snapshot.getValue().toString()) - rand6;
-                                result_high_beta.add(String.valueOf(a4));
+//                                double a4 = Double.parseDouble(snapshot.getValue().toString()) - rand6;
+                                result_high_beta.add(String.valueOf(r3));
+                                count++;
+//                                Log.e("high beta",String.valueOf(r3));
                                 break;
                             case "Gamma":
-                                double rand7 = (Math.random() * ((5 - 1) + 1)) + 1;
-                                double a5 = Double.parseDouble(snapshot.getValue().toString()) + rand7;
-                                result_gamma.add(String.valueOf(a5));
+//                                double a5 = Double.parseDouble(snapshot.getValue().toString()) + rand7;
+                                result_gamma.add(String.valueOf(r4));
+                                count++;
+//                                Log.e("gamma",String.valueOf(r4));
                                 break;
                             case "Theta":
-                                double rand2 = (Math.random() * ((7 - 1) + 1)) + 1;
-                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
-                                result_theta.add(String.valueOf(a1));
+//                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
+                                result_theta.add(String.valueOf(r5));
+                                count++;
+//                                Log.e("theta",String.valueOf(r5));
                                 break;
                             case "SMR":
-                                double rand3 = (Math.random() * ((20 - 1) + 1)) + 1;
-                                double rand9 = (Math.random() * ((5 - 1) + 1)) + 1;
-                                double a2 = rand3 - rand9;
-                                result_smr.add(String.valueOf(a2));
+                                result_smr.add(String.valueOf(r6));
+                                count++;
+//                                Log.e("smr",String.valueOf(r6));
                                 break;
                             case "Delta":
-                                double rand4 = (Math.random() * ((7 - 3) + 1)) + 3;
-                                double a3 = Double.parseDouble(snapshot.getValue().toString()) + rand4;
-                                result_delta.add(String.valueOf(a3));
+//                                double a3 = Double.parseDouble(snapshot.getValue().toString()) + rand4;
+                                result_delta.add(String.valueOf(r7));
+                                count++;
+//                                Log.e("delta",String.valueOf(r7));
+                                break;
+                            case "명상도":
+                                if (count == 0){
+                                    Log.e("default","");
+                                    result_alpha.add(String.valueOf(r1));
+                                    result_low_beta.add(String.valueOf(r2));
+                                    result_high_beta.add(String.valueOf(r3));
+                                    result_gamma.add(String.valueOf(r4));
+                                    result_theta.add(String.valueOf(r5));
+                                    result_smr.add(String.valueOf(r6));
+                                    result_delta.add(String.valueOf(r7));
+                                }
                                 break;
                             default:
-                                double rand5 = (Math.random() * ((45 - 35) + 1)) + 35;
-                                result_alpha.add(String.valueOf(rand5));
-                                result_low_beta.add(String.valueOf(bb));
-                                result_high_beta.add(String.valueOf(cc));
-                                result_gamma.add(String.valueOf(dd));
-                                result_theta.add(String.valueOf(ee));
-                                result_smr.add(String.valueOf(ff));
-                                result_delta.add(String.valueOf(gg));
                                 break;
                         }
                     } else {
@@ -256,14 +270,6 @@ public class Sketch extends PApplet {
                                 result_delta.add(String.valueOf(a3));
                                 break;
                             default:
-                                double rand5 = (Math.random() * ((45 - 41) + 1)) + 41;
-                                result_alpha.add(String.valueOf(aa));
-                                result_low_beta.add(String.valueOf(bb));
-                                result_high_beta.add(String.valueOf(cc));
-                                result_gamma.add(String.valueOf(dd));
-                                result_theta.add(String.valueOf(ee));
-                                result_smr.add(String.valueOf(rand5));
-                                result_delta.add(String.valueOf(gg));
                                 break;
                         }
                     }
@@ -389,7 +395,7 @@ public class Sketch extends PApplet {
             v2[i] += random(-stepSize, stepSize);
         }
 
-        strokeWeight(4);    //line size
+        strokeWeight(2);    //line size
 
         getGraphData();
 
@@ -429,6 +435,7 @@ public class Sketch extends PApplet {
         stroke(93, 93, 93);  // lines color = gray
 
         beginShape();
+
         fill(25, 25, 25);
         vertex(centerX + (centerX - 150), centerY - (centerX / 4));  // 1
         vertex(centerX + (centerX - 150) * cos(radians((float) a * 1)), centerY + (centerX - 150) * sin(radians((float) a * 1)) - (centerX / 4));  // 2
@@ -499,8 +506,8 @@ public class Sketch extends PApplet {
         text("Gamma", centerX + (centerX + 100) * cos(radians((float) a * 5)), centerY + (centerX - 110) * sin(radians((float) a * 5)) - (centerX / 4));
         text("High Beta", centerX + (centerX - 150) * cos(radians((float) 51.6)), centerY - (centerX - 100) * sin(radians((float) 51.6)) - (centerX / 4));
         text(" Low\nBeta", centerX + (centerX - 130), centerY - (centerX / 4));
-        text("SMR", centerX + (centerX - 160) * cos(radians((float) a * 1)), centerY + (centerX - 70) * sin(radians((float) a * 1)) - (centerX / 4));
-        text(" Alpha", centerX + (centerX + 50) * cos(radians((float) a * 2)), centerY + (centerX - 80) * sin(radians((float) a * 2)) - (centerX / 4));
+        text("Alpha", centerX + (centerX - 160) * cos(radians((float) a * 1)), centerY + (centerX - 70) * sin(radians((float) a * 1)) - (centerX / 4));
+        text("SMR", centerX + (centerX + 50) * cos(radians((float) a * 2)), centerY + (centerX - 80) * sin(radians((float) a * 2)) - (centerX / 4));
         text("Theta", centerX + (centerX - 30) * cos(radians((float) a * 3)), centerY + (centerX - 50) * sin(radians((float) a * 3)) - (centerX / 4));
         text("Delta", centerX + (centerX - 20) * cos(radians((float) a * 4)), centerY + (centerX - 100) * sin(radians((float) a * 4)) - (centerX / 4));
     }
@@ -517,6 +524,13 @@ public class Sketch extends PApplet {
 
         // start
         beginShape();
+        Log.e("alpha",String.valueOf(result_alpha.get(j)));
+        Log.e("low beta",String.valueOf(result_low_beta.get(j)));
+        Log.e("delta",String.valueOf(result_delta.get(j)));
+        Log.e("gamma",String.valueOf(result_gamma.get(j)));
+        Log.e("high beta",String.valueOf(result_high_beta.get(j)));
+        Log.e("smr",String.valueOf(result_smr.get(j)));
+        Log.e("theta",String.valueOf(result_theta.get(j)));
 
         // start controlpoint
         if (num == 1) {
@@ -680,7 +694,7 @@ public class Sketch extends PApplet {
             curveVertex(t1[1] + centerX, t2[1] + centerY - (centerX / 4));
         } else if (43.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 44.0) {
             curveVertex(u1[1] + centerX, u2[1] + centerY - (centerX / 4));
-        } else if (44.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) <= 45.0) {
+        } else if (44.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) <= 46.0) {
             curveVertex(v1[1] + centerX, v2[1] + centerY - (centerX / 4));
         } else {
             curveVertex(a1[1] + centerX, a2[1] + centerY - (centerX / 4));
@@ -836,47 +850,47 @@ public class Sketch extends PApplet {
 
         // gamma
         if (20.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 22.0) {
-            curveVertex(g1[5] + centerX, g2[5] + centerY - (centerX / 4));
+            curveVertex(a1[5] + centerX, a2[5] + centerY - (centerX / 4));
         } else if (22.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 24.0) {
-            curveVertex(h1[5] + centerX, h2[5] + centerY - (centerX / 4));
+            curveVertex(b1[5] + centerX, b2[5] + centerY - (centerX / 4));
         } else if (24.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 26.0) {
-            curveVertex(i1[5] + centerX, i2[5] + centerY - (centerX / 4));
+            curveVertex(c1[5] + centerX, c2[5] + centerY - (centerX / 4));
         } else if (26.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 27.0) {
-            curveVertex(j1[5] + centerX, j2[5] + centerY - (centerX / 4));
+            curveVertex(d1[5] + centerX, d2[5] + centerY - (centerX / 4));
         } else if (27.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 28.0) {
-            curveVertex(k1[5] + centerX, k2[5] + centerY - (centerX / 4));
+            curveVertex(e1[5] + centerX, e2[5] + centerY - (centerX / 4));
         } else if (28.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 29.0) {
-            curveVertex(l1[5] + centerX, l2[5] + centerY - (centerX / 4));
+            curveVertex(f1[5] + centerX, f2[5] + centerY - (centerX / 4));
         } else if (29.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 30.0) {
-            curveVertex(m1[5] + centerX, m2[5] + centerY - (centerX / 4));
+            curveVertex(g1[5] + centerX, g2[5] + centerY - (centerX / 4));
         } else if (30.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 31.0) {
-            curveVertex(n1[5] + centerX, n2[5] + centerY - (centerX / 4));
+            curveVertex(h1[5] + centerX, h2[5] + centerY - (centerX / 4));
         } else if (31.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 32.0) {
-            curveVertex(o1[5] + centerX, o2[5] + centerY - (centerX / 4));
+            curveVertex(i1[5] + centerX, i2[5] + centerY - (centerX / 4));
         } else if (32.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 33.0) {
-            curveVertex(p1[5] + centerX, p2[5] + centerY - (centerX / 4));
+            curveVertex(j1[5] + centerX, j2[5] + centerY - (centerX / 4));
         } else if (33.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 34.0) {
-            curveVertex(q1[5] + centerX, q2[5] + centerY - (centerX / 4));
+            curveVertex(k1[5] + centerX, k2[5] + centerY - (centerX / 4));
         } else if (34.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 35.0) {
-            curveVertex(r1[5] + centerX, r2[5] + centerY - (centerX / 4));
+            curveVertex(l1[5] + centerX, l2[5] + centerY - (centerX / 4));
         } else if (35.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 36.0) {
-            curveVertex(s1[5] + centerX, s2[5] + centerY - (centerX / 4));
+            curveVertex(m1[5] + centerX, m2[5] + centerY - (centerX / 4));
         } else if (36.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 37.0) {
-            curveVertex(t1[5] + centerX, t2[5] + centerY - (centerX / 4));
+            curveVertex(n1[5] + centerX, n2[5] + centerY - (centerX / 4));
         } else if (37.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 38.0) {
-            curveVertex(u1[5] + centerX, u2[5] + centerY - (centerX / 4));
+            curveVertex(o1[5] + centerX, o2[5] + centerY - (centerX / 4));
         } else if (38.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 39.0) {
-            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+            curveVertex(p1[5] + centerX, p2[5] + centerY - (centerX / 4));
         } else if (39.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 40.0) {
-            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+            curveVertex(q1[5] + centerX, q2[5] + centerY - (centerX / 4));
         } else if (40.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 41.0) {
-            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+            curveVertex(r1[5] + centerX, r2[5] + centerY - (centerX / 4));
         } else if (41.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 42.0) {
-            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+            curveVertex(s1[5] + centerX, s2[5] + centerY - (centerX / 4));
         } else if (42.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 43.0) {
-            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+            curveVertex(t1[5] + centerX, t2[5] + centerY - (centerX / 4));
         } else if (43.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) < 44.0) {
-            curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
+            curveVertex(u1[5] + centerX, u2[5] + centerY - (centerX / 4));
         } else if (44.0 <= Float.parseFloat(result_gamma.get(j)) && Float.parseFloat(result_gamma.get(j)) <= 45.0) {
             curveVertex(v1[5] + centerX, v2[5] + centerY - (centerX / 4));
         } else {

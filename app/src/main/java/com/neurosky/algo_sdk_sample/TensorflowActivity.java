@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -35,7 +37,7 @@ public class TensorflowActivity extends AppCompatActivity {
 
     private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
-    private TextView textViewResult;
+    private TextView textViewResult, stateR;
     private Button btnDetectObject, btnNext;
     private ImageView imageView;
 
@@ -48,6 +50,7 @@ public class TensorflowActivity extends AppCompatActivity {
 
         mContext = this;
 
+        stateR = (TextView)findViewById(R.id.state);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
         textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
@@ -74,7 +77,10 @@ public class TensorflowActivity extends AppCompatActivity {
                     //Classifier
                     if (bitmap != null) {
                         final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-                        textViewResult.setText(results.toString());
+
+                        String state = getState(results.toString());
+
+                        textViewResult.setText(state);
                     } else {
                         Toast.makeText(TensorflowActivity.this, "not null", Toast.LENGTH_LONG).show();
                     }
@@ -137,5 +143,26 @@ public class TensorflowActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private String getState(String s) {
+        String s2 = s.substring(2,3);
+        String s3 = null;
+
+        if (s2.equals("0")){
+            s3 = s.substring(5,19);
+            return s3;
+        }if(s2.equals("1")){
+            if (s.substring(14,15).equals("%")){
+                s3 = s.substring(5,16);
+                stateR.setText("집중 최대 상태입니당^^.");
+            }else {
+                s3 = s.substring(5,17);
+            }
+
+            return s3;
+        }else {
+            return s2;
+        }
     }
 }

@@ -14,17 +14,20 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.neurosky.AlgoSdk.NskAlgoDataType;
 import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoSignalQuality;
@@ -117,9 +120,25 @@ public class EEG extends Activity {
         sqText = (TextView) this.findViewById(R.id.sqText);
         nameTv = (TextView) this.findViewById(R.id.userName);
 
-        nameTv.setText(name);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.child(name).getChildren()) {
+                    if(snapshot.getKey().equals("NICKNAME")){
+                        nameTv.setText(snapshot.getValue().toString());
+                    }
+                }
+            }
 
-        headsetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        headsetButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 int algoTypes = 0;// = NskAlgoType.NSK_ALGO_TYPE_CR.value;
@@ -167,7 +186,9 @@ public class EEG extends Activity {
             }
         });
 
-        startButton.setOnClickListener(new View.OnClickListener() {
+        startButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 if (bRunning == false) {
@@ -184,14 +205,18 @@ public class EEG extends Activity {
             }
         });
 
-        stopButton.setOnClickListener(new View.OnClickListener() {
+        stopButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 nskAlgoSdk.NskAlgoStop();
             }
         });
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
@@ -201,7 +226,9 @@ public class EEG extends Activity {
             }
         });
 
-        nskAlgoSdk.setOnSignalQualityListener(new NskAlgoSdk.OnSignalQualityListener() {
+        nskAlgoSdk.setOnSignalQualityListener(new NskAlgoSdk.OnSignalQualityListener()
+
+        {
             @Override
             public void onSignalQuality(int level) {
                 final int fLevel = level;
@@ -216,7 +243,9 @@ public class EEG extends Activity {
             }
         });
 
-        nskAlgoSdk.setOnStateChangeListener(new NskAlgoSdk.OnStateChangeListener() {
+        nskAlgoSdk.setOnStateChangeListener(new NskAlgoSdk.OnStateChangeListener()
+
+        {
             @Override
             public void onStateChange(int state, int reason) {
                 String stateStr = "";
@@ -288,7 +317,9 @@ public class EEG extends Activity {
             }
         });
 
-        nskAlgoSdk.setOnSignalQualityListener(new NskAlgoSdk.OnSignalQualityListener() {
+        nskAlgoSdk.setOnSignalQualityListener(new NskAlgoSdk.OnSignalQualityListener()
+
+        {
             @Override
             public void onSignalQuality(final int level) {
                 runOnUiThread(new Runnable() {
@@ -301,9 +332,12 @@ public class EEG extends Activity {
             }
         });
 
-        nskAlgoSdk.setOnBPAlgoIndexListener(new NskAlgoSdk.OnBPAlgoIndexListener() {
+        nskAlgoSdk.setOnBPAlgoIndexListener(new NskAlgoSdk.OnBPAlgoIndexListener()
+
+        {
             @Override
-            public void onBPAlgoIndex(final float delta, final float theta, final float alpha, final float beta, final float gamma) {
+            public void onBPAlgoIndex(final float delta, final float theta, final float alpha,
+                                      final float beta, final float gamma) {
 
                 final float fDelta = delta, fTheta = theta, fAlpha = alpha, fBeta = beta, fGamma = gamma;
                 runOnUiThread(new Runnable() {
@@ -390,7 +424,9 @@ public class EEG extends Activity {
             }
         });
 
-        nskAlgoSdk.setOnAttAlgoIndexListener(new NskAlgoSdk.OnAttAlgoIndexListener() {
+        nskAlgoSdk.setOnAttAlgoIndexListener(new NskAlgoSdk.OnAttAlgoIndexListener()
+
+        {
             @Override
             public void onAttAlgoIndex(final int value) {
                 runOnUiThread(new Runnable() {
@@ -412,7 +448,9 @@ public class EEG extends Activity {
             }
         });
 
-        nskAlgoSdk.setOnMedAlgoIndexListener(new NskAlgoSdk.OnMedAlgoIndexListener() {
+        nskAlgoSdk.setOnMedAlgoIndexListener(new NskAlgoSdk.OnMedAlgoIndexListener()
+
+        {
             @Override
             public void onMedAlgoIndex(final int value) {
                 runOnUiThread(new Runnable() {
