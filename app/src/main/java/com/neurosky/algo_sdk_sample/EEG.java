@@ -13,11 +13,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,9 +67,10 @@ public class EEG extends Activity {
     private float output_data[];
     private int output_data_count = 0;
 
-    private Button headsetButton, startButton, stopButton, logoutButton;
+    private Button headsetButton2, startButton, stopButton, logoutButton;
+    private ImageButton headsetButton;
 
-    private TextView stateText, sqText, nameTv;
+    private TextView stateText, sqText, nameTv, nameTv2, emailTv, title1, title2;
 
     private NskAlgoSdk nskAlgoSdk;
 
@@ -81,6 +83,9 @@ public class EEG extends Activity {
     Nomalization nz = new Nomalization();
 
     Random rand = new Random();
+
+    //font
+    String font[] = {"fonts/nanum.ttf", "fonts/MILKYWAY.TTF"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,21 +116,37 @@ public class EEG extends Activity {
             return;
         }
 
-        headsetButton = (Button) this.findViewById(R.id.headsetButton);
+        headsetButton = (ImageButton) this.findViewById(R.id.headsetButton);
+        headsetButton2 = (Button) this.findViewById(R.id.headsetButton2);
         startButton = (Button) this.findViewById(R.id.startButton);
         stopButton = (Button) this.findViewById(R.id.stopButton);
         logoutButton = (Button) this.findViewById(R.id.logoutBtn);
 
+        title1 = (TextView) this.findViewById(R.id.sqTitle);
+        title2 = (TextView) this.findViewById(R.id.stateTitle);
         stateText = (TextView) this.findViewById(R.id.stateText);
         sqText = (TextView) this.findViewById(R.id.sqText);
         nameTv = (TextView) this.findViewById(R.id.userName);
+        nameTv2 = (TextView) this.findViewById(R.id.nim);
+        emailTv = (TextView) this.findViewById(R.id.email);
+
+        title1.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        title2.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        nameTv.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        nameTv2.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        emailTv.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        logoutButton.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        sqText.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
+        stateText.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.child(name).getChildren()) {
-                    if(snapshot.getKey().equals("NICKNAME")){
+                    if (snapshot.getKey().equals("NICKNAME")) {
                         nameTv.setText(snapshot.getValue().toString());
+                    } else if (snapshot.getKey().equals("EMAIL")) {
+                        emailTv.setText(snapshot.getValue().toString());
                     }
                 }
             }
@@ -137,6 +158,56 @@ public class EEG extends Activity {
         });
 
         headsetButton.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+                int algoTypes = 0;// = NskAlgoType.NSK_ALGO_TYPE_CR.value;
+
+                startButton.setEnabled(false);
+                stopButton.setEnabled(false);
+
+                currentSelectedAlgo = NskAlgoType.NSK_ALGO_TYPE_INVALID;
+
+                stateText.setText("");
+                sqText.setText("");
+
+                algoTypes += NskAlgoType.NSK_ALGO_TYPE_MED.value;
+                algoTypes += NskAlgoType.NSK_ALGO_TYPE_BP.value;
+                algoTypes += NskAlgoType.NSK_ALGO_TYPE_ATT.value;
+
+                if (bInited) {
+                    nskAlgoSdk.NskAlgoUninit();
+                    bInited = false;
+                }
+                int ret = nskAlgoSdk.NskAlgoInit(algoTypes, getFilesDir().getAbsolutePath());
+                if (ret == 0) {
+                    bInited = true;
+                }
+
+                output_data_count = 0;
+                output_data = null;
+
+                raw_data = new short[512];
+                raw_data_index = 0;
+
+                headsetButton.setEnabled(false);
+                startButton.setEnabled(false);
+
+                tgStreamReader = new TgStreamReader(mBluetoothAdapter, callback);
+
+                if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
+
+                    // Prepare for connecting
+                    tgStreamReader.stop();
+                    tgStreamReader.close();
+                }
+
+                tgStreamReader.connect();
+            }
+        });
+
+        headsetButton2.setOnClickListener(new View.OnClickListener()
 
         {
             @Override

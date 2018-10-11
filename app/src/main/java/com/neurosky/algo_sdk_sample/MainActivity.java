@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
@@ -72,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                idText.setText("");
+                pwText.setText("");
                 Intent toSignup = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(toSignup);
                 overridePendingTransition(0,0);
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         findPw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                idText.setText("");
+                pwText.setText("");
                 Intent toFind = new Intent(MainActivity.this, FindPw.class);
                 startActivity(toFind);
                 overridePendingTransition(0,0);
@@ -137,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Toast.makeText(getApplicationContext(), "You're already Login!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(MainActivity.this, EEG.class));
             finish();
         }
