@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -78,7 +79,7 @@ public class EEG extends Activity {
     String eeg[] = new String[5];
     String nomal[] = new String[5];
 
-    String name = "";
+    String name = "", putName = "", putEmail = "";
 
     Nomalization nz = new Nomalization();
 
@@ -128,7 +129,7 @@ public class EEG extends Activity {
         sqText = (TextView) this.findViewById(R.id.sqText);
         nameTv = (TextView) this.findViewById(R.id.userName);
         nameTv2 = (TextView) this.findViewById(R.id.nim);
-        emailTv = (TextView) this.findViewById(R.id.email);
+        emailTv = (TextView) this.findViewById(R.id.email2);
 
         title1.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
         title2.setTypeface(Typeface.createFromAsset(getAssets(), font[0]));
@@ -145,8 +146,10 @@ public class EEG extends Activity {
                 for (DataSnapshot snapshot : dataSnapshot.child(name).getChildren()) {
                     if (snapshot.getKey().equals("NICKNAME")) {
                         nameTv.setText(snapshot.getValue().toString());
+                        putName = snapshot.getValue().toString();
                     } else if (snapshot.getKey().equals("EMAIL")) {
                         emailTv.setText(snapshot.getValue().toString());
+                        putEmail = snapshot.getValue().toString();
                     }
                 }
             }
@@ -267,7 +270,10 @@ public class EEG extends Activity {
 
                     //Start drawing the graph.
                     Intent goSelect = new Intent(getApplicationContext(), SelectActivity.class);
+                    goSelect.putExtra("name", putName);
+                    goSelect.putExtra("email", putEmail);
                     startActivity(goSelect);
+                    overridePendingTransition(0, 0);
 
                 } else {
                     nskAlgoSdk.NskAlgoPause();
@@ -291,9 +297,14 @@ public class EEG extends Activity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                startActivity(new Intent(EEG.this, MainActivity.class));
-                finish();
-                Toast.makeText(getApplicationContext(), "Logout Success!", Toast.LENGTH_LONG).show();
+                Intent logout = new Intent(EEG.this, MainActivity.class);
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+                    logout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                } else {
+                    logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                }
+                startActivity(logout);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
         });
 
