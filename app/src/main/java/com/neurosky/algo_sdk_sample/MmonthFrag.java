@@ -2,6 +2,7 @@ package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -63,16 +64,32 @@ public class MmonthFrag extends Fragment {
         int idx = email.indexOf("@");
         name = email.substring(0, idx);
 
+        Typeface tf=Typeface.createFromAsset(getActivity().getAssets(),"fonts/nanum.ttf");
+
         view = inflater.inflate(R.layout.mp_monthfrag, container, false);
         mp_day = view.findViewById(R.id.mp_day);
         mpm_all = view.findViewById(R.id.mpm_all);
+
+        mp_day.setTypeface(tf);
+        mpm_all.setTypeface(tf);
+
+        TextView textView6=view.findViewById(R.id.textView6);
+        textView6.setTypeface(tf);
+        TextView tv=view.findViewById(R.id.tv);
+        tv.setTypeface(tf);
+        TextView textView8=view.findViewById(R.id.textView8);
+        textView8.setTypeface(tf);
 
         Button btnPreviousCalendar = view.findViewById(R.id.mbtn_previous_calendar);
         Button btnNextCalendar = view.findViewById(R.id.mbtn_next_calendar);
         Button goToday = view.findViewById(R.id.mptoday1);
 
+        goToday.setTypeface(tf);
+
         tvCalendarTitle = view.findViewById(R.id.mtv_calendar_title);
         gvCalendar = view.findViewById(R.id.mgv_calendar);
+
+        tvCalendarTitle.setTypeface(tf);
 
         databaseReference.addValueEventListener(valueEventListener);
 

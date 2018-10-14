@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,40 +40,31 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CnActivity extends AppCompatActivity {
+public class CnActivity extends AppCompatActivity { //
     private TextView theDate;
     private TextView aimTime;
     public Calendar cal = Calendar.getInstance();
-
     long now = System.currentTimeMillis();
     Date date = new Date(now);
     SimpleDateFormat HNow = new SimpleDateFormat("HH");
     SimpleDateFormat mNow = new SimpleDateFormat("mm");
     String formatDate4 = HNow.format(date);
     String formatDate5 = mNow.format(date);
-
     final Handler mHandler = new Handler();
-
     private LineChart chart;
-
     int cyear = cal.get(Calendar.YEAR);
     int cmonth = (cal.get(Calendar.MONTH) + 1);
     int cday = cal.get(Calendar.DAY_OF_MONTH);
-
     String newmonth = "", newday = "";
-
     TextView mEllapse, percent;
     Button mBtnStart, mBtnSplit;
-
     FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("USERS");
     private DatabaseReference graphRef = firebaseDatabase.getReference("USERS");
-
     private ValueEventListener valueEventListener;
     private PreferenceManager manager;
     private ArrayList<DataObj> dataList;
-
     //스톱워치의 상태를 위한 상수
     final static int IDLE = 0;
     final static int RUNNING = 1;
@@ -80,19 +73,25 @@ public class CnActivity extends AppCompatActivity {
     long mBaseTime, mPauseTime;
     int hour, min;
     String name = "";
+    long aimT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cn);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/nanum.ttf");
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
         int idx = email.indexOf("@");
         name = email.substring(0, idx);
         theDate = (TextView) findViewById(R.id.nowday);
+        theDate.setTypeface(tf);
         percent = findViewById(R.id.percent);
+        percent.setTypeface(tf);
         aimTime = (TextView) findViewById(R.id.aimtime);
+        aimTime.setTypeface(tf);
+
         // 실수 값 Format
         final DecimalFormat decimalFormat = new DecimalFormat("###,###,##0");
         // preference manager 객체를 등록
@@ -106,21 +105,23 @@ public class CnActivity extends AppCompatActivity {
         manager.clearPreference();
         Intent incomingIntent = getIntent(); //aimtime 클래스에서 얻어옴
         String times = incomingIntent.getStringExtra("data");
-        hour = incomingIntent.getIntExtra("hours", 90); //설정한 목표 시간
-        min = incomingIntent.getIntExtra("mins", 92); //설정한 목표시간 분
+        hour = incomingIntent.getIntExtra("hours", 0); //설정한 목표 시간
+        min = incomingIntent.getIntExtra("mins", 30); //설정한 목표시간 분
         aimTime.setText(times);
-
         //변수 hour min 을 long으로 바꾸서
         long hourn = hour * 1000 * 3600;
         long minn = min * 1000 * 60;
         long aim = hourn + minn; //ms단위인 목표시간
-
+        aimT = aim;
         /**
          * 타이머 변수
          * **/
         mEllapse = (TextView) findViewById(R.id.cellapse);  //초뜨는 텍스트
+        mEllapse.setTypeface(tf);
         mBtnStart = (Button) findViewById(R.id.cbtnstart);
+        mBtnStart.setTypeface(tf);
         mBtnSplit = (Button) findViewById(R.id.cbtnsplit);  //스탑워치 멈추고 달성률뜨게ㅎㅏ는 버튼
+        mBtnSplit.setTypeface(tf);
         String text2 = cyear + "년" + cmonth + "월" + cday + "일 현재상태";
         theDate.setText(text2);
 
@@ -317,7 +318,7 @@ public class CnActivity extends AppCompatActivity {
                         final String[] nowArray = timeNow.format(curTime).split(":");
                         newmonth = newCal(cmonth);
                         newday = newCal(cday);
-
+                        Log.e("Time", nowArray[0] + "시 " + nowArray[1] + "분");
                         databaseReference.child(name)
                                 .child("EEG DATA")
                                 .child(String.valueOf(cyear + "년"))
@@ -361,13 +362,14 @@ public class CnActivity extends AppCompatActivity {
                         sum = (hour_l + min_l) / 100; ///결국 sum값이 사용자가 설정한 목표 시간!!!!!!!!!
                         newmonth = newCal(cmonth);
                         newday = newCal(cday);
+
                         databaseReference.child(name)
                                 .child("EEG DATA")
                                 .child(String.valueOf(cyear + "년"))
                                 .child(String.valueOf(newmonth + "월"))
                                 .child(String.valueOf(newday + "일"))
                                 .child("목표시간").push().setValue(sum * 100);
-
+                        Log.d("value tttt", sum + "이랑" + sum * 100);
                         rtime = getEll2(); //아래에서 집중한 시간 받아온값 sum이랑 빼줄거
                         databaseReference.child(name)
                                 .child("EEG DATA")

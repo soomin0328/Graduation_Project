@@ -2,6 +2,7 @@ package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -70,19 +71,35 @@ public class MonthFrag extends Fragment {
         hours.clear();
 
         view = inflater.inflate(R.layout.cp_monthfrag, container, false);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/nanum.ttf");
         cp_day = view.findViewById(R.id.mp_day); //하루에 집중한 시간
+        cp_day.setTypeface(tf);
         cpm_all = view.findViewById(R.id.mpm_all); //그달 전체 집중시간
+        cpm_all.setTypeface(tf);
         aimPer = view.findViewById(R.id.aimPer); //하루 달성율
+        aimPer.setTypeface(tf);
+        TextView TextView12 = view.findViewById(R.id.textView12);
+        TextView12.setTypeface(tf);
+        TextView TextView6 = view.findViewById(R.id.textView6);
+        TextView6.setTypeface(tf);
+        TextView tv2 = view.findViewById(R.id.tv2);
+        tv2.setTypeface(tf);
+        TextView tv = view.findViewById(R.id.tv);
+        tv.setTypeface(tf);
+        TextView textView8 = view.findViewById(R.id.textView8);
+        textView8.setTypeface(tf);
 
         Button btnPreviousCalendar = view.findViewById(R.id.mbtn_previous_calendar);
         Button btnNextCalendar = view.findViewById(R.id.mbtn_next_calendar);
         Button goToday = view.findViewById(R.id.mptoday1);
-
+        goToday.setTypeface(tf);
         tvCalendarTitle = view.findViewById(R.id.mtv_calendar_title);
+        tvCalendarTitle.setTypeface(tf);
         gvCalendar = view.findViewById(R.id.mgv_calendar);
 
         bar = (ProgressBar) view.findViewById(R.id.progressBar);
         barPercent = view.findViewById(R.id.barPercent);
+        barPercent.setTypeface(tf);
 
         databaseReference.addValueEventListener(valueEventListener);
         databaseReference.addValueEventListener(percentListener);
@@ -168,7 +185,7 @@ public class MonthFrag extends Fragment {
             newday = newCal(Integer.parseInt(i));
 
             for (DataSnapshot snapshot : dataSnapshot.child(name).child("EEG DATA").child(mThisMonthCalendar.get(Calendar.YEAR) + "년")
-                    .child(String.valueOf(newmonth + "월")).child(newday+ "일")
+                    .child(String.valueOf(newmonth + "월")).child(newday + "일")
                     .child("집중시간").getChildren()) {
                 long test = Long.parseLong(snapshot.getValue().toString());
                 conTime += test;

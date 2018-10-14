@@ -3,6 +3,7 @@ package com.neurosky.algo_sdk_sample;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,9 +25,16 @@ public class MpActivity extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mp);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/nanum.ttf");
+
         btnmonth = findViewById(R.id.mbtnMonth);//월별
         btnweek = findViewById(R.id.mbtnweek); //주별
         btnday = findViewById(R.id.mbtnday); //일별
+
+        btnmonth.setTypeface(tf);
+        btnweek.setTypeface(tf);
+        btnday.setTypeface(tf);
 
         btnday.setOnClickListener(this);
         btnweek.setOnClickListener(this);

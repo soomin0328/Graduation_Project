@@ -3,7 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <FrameLayout
         android:id="@+id/cp_frame"
@@ -15,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"
         android:gravity="bottom">
 
         <Button
@@ -25,7 +27,8 @@
             android:background="@drawable/selector"
             android:fadingEdge="horizontal"
             android:padding="12dp"
-            android:text="월별" />
+            android:text="월별"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/btnweek"
@@ -33,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/selector"
-            android:text="주별" />
+            android:text="주별"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/btnday"
@@ -41,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/selector"
-            android:text="일별" />
+            android:text="일별"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 

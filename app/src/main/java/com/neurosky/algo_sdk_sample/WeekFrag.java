@@ -2,6 +2,7 @@ package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -96,22 +97,35 @@ public class WeekFrag extends Fragment {
         hours.clear();
 
         view = inflater.inflate(R.layout.cp_weekfrag, container, false);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/nanum.ttf");
 
-        TextView ws_hour = view.findViewById(R.id.ws_hour);
         cp_week = view.findViewById(R.id.ws_hour);
+        cp_week.setTypeface(tf);
         cp_weekall = view.findViewById(R.id.cweekTime);
+        cp_weekall.setTypeface(tf);
         tvCalendarTitle = view.findViewById(R.id.w_calendar_title);
+        tvCalendarTitle.setTypeface(tf);
         wAimPer = view.findViewById(R.id.wconper);
-
+        wAimPer.setTypeface(tf);
+        TextView textV3 = view.findViewById(R.id.textV3);
+        textV3.setTypeface(tf);
+        TextView tv4 = view.findViewById(R.id.tv4);
+        tv4.setTypeface(tf);
+        TextView wtv1 = view.findViewById(R.id.wtv1);
+        wtv1.setTypeface(tf);
+        TextView textView22 = view.findViewById(R.id.textView);
+        textView22.setTypeface(tf);
+        TextView wtv2 = view.findViewById(R.id.wtv2);
+        wtv2.setTypeface(tf);
         gvCalendar = view.findViewById(R.id.w_gv_calendar);
 
         Button btnPreviousCalendar = view.findViewById(R.id.w_previous_calendar);
         Button btnNextCalendar = view.findViewById(R.id.w_next_calendar);
         Button goToday = view.findViewById(R.id.wcptoday);
-
+        goToday.setTypeface(tf);
         bar = (ProgressBar) view.findViewById(R.id.wprogressBar);
         barPercent = view.findViewById(R.id.wbarPercent);
-
+        barPercent.setTypeface(tf);
         scChart = view.findViewById(R.id.wChart);
         scChart.setDragEnabled(false);
 
@@ -473,7 +487,7 @@ public class WeekFrag extends Fragment {
 
             if (week_Aim2 == 0 || cmigrate == 0) {
                 bar.setProgress(0);
-                barPercent.setText("0");
+                barPercent.setText("0%");
             } else {
                 imValue = ((double) migrate2 / (double) week_Aim2) * 100;
                 //  int a= (int) migrate2;
@@ -482,10 +496,10 @@ public class WeekFrag extends Fragment {
                 bar.setProgress((int) imValue);
 
                 if ((int) imValue > 100) {
-                    barPercent.setText("100");
+                    barPercent.setText("100%");
 
                 } else {
-                    barPercent.setText((int) imValue + "");
+                    barPercent.setText((int) imValue + "%");
 
                 }
 

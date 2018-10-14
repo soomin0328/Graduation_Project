@@ -2,6 +2,7 @@ package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -93,15 +94,24 @@ public class MweekFrag extends Fragment { //명상 주별 과거
         Mhours.clear();
 
         view = inflater.inflate(R.layout.mp_weekfrag, container, false);
-
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/nanum.ttf");
         mp_week = view.findViewById(R.id.mp_week);
+        mp_week.setTypeface(tf);
         mp_weekall = view.findViewById(R.id.mweekT); //주 총시간
+        mp_weekall.setTypeface(tf);
+        TextView textView10 = view.findViewById(R.id.textView10);
+        textView10.setTypeface(tf);
+        TextView textView11 = view.findViewById(R.id.textView11);
+        textView11.setTypeface(tf);
 
         Button btnPreviousCalendar = view.findViewById(R.id.mw_previous_calendar); //과거 명상 주별 이라 mv
         Button btnNextCalendar = view.findViewById(R.id.mw_next_calendar);
         Button goToday = view.findViewById(R.id.mwptoday);  //주별 명상 past
-
+        goToday.setTypeface(tf);
+        TextView text4 = view.findViewById(R.id.textView4);
+        text4.setTypeface(tf);
         tvCalendarTitle = view.findViewById(R.id.mw_calendar_title);
+        tvCalendarTitle.setTypeface(tf);
         gvCalendar = view.findViewById(R.id.mw_gv_calendar);
 
         scChart = view.findViewById(R.id.mwChart);

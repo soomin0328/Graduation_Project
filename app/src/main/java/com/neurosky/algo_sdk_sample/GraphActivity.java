@@ -23,9 +23,13 @@ public class GraphActivity extends AppCompatActivity {
 
     private PApplet sketch;
 
+    int hour, min;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         final FrameLayout frame = new FrameLayout(this);
         frame.setId(CompatUtils.getUniqueViewId());
@@ -43,6 +47,11 @@ public class GraphActivity extends AppCompatActivity {
         final PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
 
+        Intent incomingIntent = getIntent(); //aimtime 클래스에서 얻어옴
+        final String data = incomingIntent.getStringExtra("data");
+        hour = incomingIntent.getIntExtra("hours", 90); //설정한 목표 시간
+        min = incomingIntent.getIntExtra("mins", 92); //설정한 목표시간 분
+
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -56,7 +65,12 @@ public class GraphActivity extends AppCompatActivity {
                     }
                 }
                 Intent goTensorflow = new Intent(getApplicationContext(), TensorflowActivity.class);
-                goTensorflow.putExtra("pick",pick);
+
+                goTensorflow.putExtra("pick", pick);
+                goTensorflow.putExtra("data", data);
+                goTensorflow.putExtra("hours", hour);
+                goTensorflow.putExtra("mins", min);
+
                 startActivity(goTensorflow);
                 finish();
             }

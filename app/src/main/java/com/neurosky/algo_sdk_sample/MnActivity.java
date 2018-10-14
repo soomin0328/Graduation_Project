@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.icu.util.Calendar;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class MnActivity extends AppCompatActivity {
     Button prev, nextbtn; //다음곡
     SeekBar seekbar;
     MediaPlayer music;
-    TextView theDay;
+    TextView theDay, textView11;
     int[] a;
     static int count = 0;
     private LineChart chart2;
@@ -97,6 +98,7 @@ public class MnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mn);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/nanum.ttf");
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
@@ -109,11 +111,16 @@ public class MnActivity extends AppCompatActivity {
         theDay = findViewById(R.id.mntoday);
         String text = myear + "년 " + mmonth + "월 " + mday + "일 명상상태";
         theDay.setText(text);
+        theDay.setTypeface(tf);
         mEllapse = (TextView) findViewById(R.id.ellapse);  //초뜨는 텍스트 00:00:00
+        mEllapse.setTypeface(tf);
         // mSplit = (TextView)findViewById(R.id.split);  //스탑워치 기록 시간표시해주는거
         mBtnStart = (Button) findViewById(R.id.btnstart);
+        mBtnStart.setTypeface(tf);
         mBtnSplit = (Button) findViewById(R.id.btnsplit);  //스탑워치 멈추고 달성률뜨게ㅎㅏ는 버튼
-
+        mBtnSplit.setTypeface(tf);
+        textView11 = findViewById(R.id.mntext);
+        textView11.setTypeface(tf);
         /**그래프소스
          *
          */
@@ -201,7 +208,7 @@ public class MnActivity extends AppCompatActivity {
         nextbtn = (Button) findViewById(R.id.next);
         prev = findViewById(R.id.prev);
 
-        final int[] a = musicSetting(1);
+        final int[] a = musicSetting(3);
         music = MediaPlayer.create(this, a[count]);
         playbtn = (Button) findViewById(R.id.play);
         playbtn.setBackgroundResource(R.drawable.play);
@@ -588,8 +595,16 @@ public class MnActivity extends AppCompatActivity {
             a = new int[]{R.raw.hawool, R.raw.lovepoem, R.raw.reisenberg};
         } else if (value == 2) {
             a = new int[]{R.raw.sugar, R.raw.reisenberg13, R.raw.reisenberg5};
+        } else if (value == 3) {
+            a = new int[]{R.raw.youdream, R.raw.springandcamping, R.raw.sugar};
+        } else if (value == 4) {
+            a = new int[]{R.raw.rararaboom, R.raw.lovepoem, R.raw.reisenberg13};
+        } else if (value == 5) {
+            a = new int[]{R.raw.reisenberg, R.raw.hawool, R.raw.springandcamping};
+        } else if (value == 6) {
+            a = new int[]{R.raw.reisenberg13, R.raw.rararaboom, R.raw.youdream};
         } else {
-            a = a;
+            a = new int[]{R.raw.youdream, R.raw.reisenberg5, R.raw.hawool};
         }
         return a;
     }

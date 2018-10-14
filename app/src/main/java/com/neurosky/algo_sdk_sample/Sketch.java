@@ -38,7 +38,7 @@ public class Sketch extends PApplet {
     private ArrayList<String> result_smr = new ArrayList<>();
     private ArrayList<String> result_high_beta = new ArrayList<>();
 
-    int width, height, count = 0, number = 1, j = 0, num = 1, c = 0;
+    int width, height, count = 0, number = 1, j = 0, num = 20, c = 0;
     int formResolution = 7;
     int stepSize = 1; // random size
     float centerX, centerY;
@@ -180,48 +180,55 @@ public class Sketch extends PApplet {
 
                         switch (snapshot.getKey()) {
                             case "Alpha":
-                                result_alpha.add(String.valueOf(r1));
-//                                Log.e("alpha",String.valueOf(r1));
+                                double a = Double.parseDouble(snapshot.getValue().toString()) + 5;
+                                result_alpha.add(String.valueOf(a));
                                 count++;
                                 break;
                             case "Low Beta":
-//                                double a = Double.parseDouble(snapshot.getValue().toString()) - rand8;
-                                result_low_beta.add(String.valueOf(r2));
+                                double a1 = Double.parseDouble(snapshot.getValue().toString());
+                                result_low_beta.add(String.valueOf(a1));
                                 count++;
-//                                Log.e("low beta",String.valueOf(r2));
                                 break;
                             case "High Beta":
-//                                double a4 = Double.parseDouble(snapshot.getValue().toString()) - rand6;
-                                result_high_beta.add(String.valueOf(r3));
+                                double a2 = Double.parseDouble(snapshot.getValue().toString());
+                                result_high_beta.add(String.valueOf(a2));
                                 count++;
-//                                Log.e("high beta",String.valueOf(r3));
                                 break;
                             case "Gamma":
-//                                double a5 = Double.parseDouble(snapshot.getValue().toString()) + rand7;
-                                result_gamma.add(String.valueOf(r4));
+                                double a3 = Double.parseDouble(snapshot.getValue().toString());
+                                result_gamma.add(String.valueOf(a3));
                                 count++;
-//                                Log.e("gamma",String.valueOf(r4));
                                 break;
                             case "Theta":
-//                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - rand2;
-                                result_theta.add(String.valueOf(r5));
+                                double a4 = Double.parseDouble(snapshot.getValue().toString());
+                                result_theta.add(String.valueOf(a4));
                                 count++;
-//                                Log.e("theta",String.valueOf(r5));
                                 break;
                             case "SMR":
-                                result_smr.add(String.valueOf(r6));
+                                double a5 = Double.parseDouble(snapshot.getValue().toString());
+                                result_smr.add(String.valueOf(a5));
                                 count++;
-//                                Log.e("smr",String.valueOf(r6));
                                 break;
                             case "Delta":
-//                                double a3 = Double.parseDouble(snapshot.getValue().toString()) + rand4;
-                                result_delta.add(String.valueOf(r7));
+                                double a6 = Double.parseDouble(snapshot.getValue().toString());
+                                result_delta.add(String.valueOf(a6));
                                 count++;
-//                                Log.e("delta",String.valueOf(r7));
                                 break;
                             case "명상도":
-                                if (count == 0){
-                                    Log.e("default","");
+                                if (count == 0) {
+                                    Log.e("default", "");
+                                    result_alpha.add(String.valueOf(r1));
+                                    result_low_beta.add(String.valueOf(r2));
+                                    result_high_beta.add(String.valueOf(r3));
+                                    result_gamma.add(String.valueOf(r4));
+                                    result_theta.add(String.valueOf(r5));
+                                    result_smr.add(String.valueOf(r6));
+                                    result_delta.add(String.valueOf(r7));
+                                    count++;
+                                }
+                                break;
+                            case "집중도":
+                                if (count == 0) {
                                     result_alpha.add(String.valueOf(r1));
                                     result_low_beta.add(String.valueOf(r2));
                                     result_high_beta.add(String.valueOf(r3));
@@ -237,37 +244,62 @@ public class Sketch extends PApplet {
                     } else {
                         switch (snapshot.getKey()) {
                             case "Alpha":
-                                double rand10 = (Math.random() * ((7 - 1) + 1)) + 1;
-                                double a6 = Double.parseDouble(snapshot.getValue().toString()) + rand10;
-                                result_alpha.add(String.valueOf(a6));
+                                double a = Double.parseDouble(snapshot.getValue().toString());
+                                result_alpha.add(String.valueOf(a));
+                                count++;
                                 break;
                             case "Low Beta":
-                                double rand1 = (Math.random() * (10 - 1) + 1) + 1;
-                                double a2 = Double.parseDouble(snapshot.getValue().toString()) - rand1;
-                                result_low_beta.add(String.valueOf(a2));
+                                double a1 = Double.parseDouble(snapshot.getValue().toString()) - 5;
+                                result_low_beta.add(String.valueOf(a1));
+                                count++;
                                 break;
                             case "High Beta":
-                                double rand6 = (Math.random() * ((7 - 1) + 1)) + 1;
-                                double a4 = Double.parseDouble(snapshot.getValue().toString()) + rand6;
-                                result_high_beta.add(String.valueOf(a4));
+                                double a2 = Double.parseDouble(snapshot.getValue().toString());
+                                result_high_beta.add(String.valueOf(a2));
+                                count++;
                                 break;
                             case "Gamma":
-                                double rand7 = (Math.random() * ((10 - 5) + 1)) + 5;
-                                double a5 = Double.parseDouble(snapshot.getValue().toString()) - rand7;
-                                result_gamma.add(String.valueOf(a5));
+                                double a3 = Double.parseDouble(snapshot.getValue().toString());
+                                result_gamma.add(String.valueOf(a3));
+                                count++;
                                 break;
                             case "Theta":
-                                double rand2 = (Math.random() * ((10 - 5) + 1)) + 5;
-                                double a1 = Double.parseDouble(snapshot.getValue().toString()) + rand2;
-                                result_theta.add(String.valueOf(a1));
+                                double a4 = Double.parseDouble(snapshot.getValue().toString());
+                                result_theta.add(String.valueOf(a4));
+                                count++;
                                 break;
                             case "SMR":
-                                result_smr.add(snapshot.getValue().toString());
+                                result_smr.add(String.valueOf(r1));
+                                count++;
                                 break;
                             case "Delta":
-                                double rand4 = (Math.random() * ((10 - 5) + 1)) + 5;
-                                double a3 = Double.parseDouble(snapshot.getValue().toString()) - rand4;
-                                result_delta.add(String.valueOf(a3));
+                                double a6 = Double.parseDouble(snapshot.getValue().toString());
+                                result_delta.add(String.valueOf(a6));
+                                count++;
+                                break;
+                            case "명상도":
+                                if (count == 0) {
+                                    Log.e("default", "");
+                                    result_alpha.add(String.valueOf(r6));
+                                    result_low_beta.add(String.valueOf(r2));
+                                    result_high_beta.add(String.valueOf(r3));
+                                    result_gamma.add(String.valueOf(r4));
+                                    result_theta.add(String.valueOf(r5));
+                                    result_smr.add(String.valueOf(r1));
+                                    result_delta.add(String.valueOf(r7));
+                                    count++;
+                                }
+                                break;
+                            case "집중도":
+                                if (count == 0) {
+                                    result_alpha.add(String.valueOf(r6));
+                                    result_low_beta.add(String.valueOf(r2));
+                                    result_high_beta.add(String.valueOf(r3));
+                                    result_gamma.add(String.valueOf(r4));
+                                    result_theta.add(String.valueOf(r5));
+                                    result_smr.add(String.valueOf(r1));
+                                    result_delta.add(String.valueOf(r7));
+                                }
                                 break;
                             default:
                                 break;
@@ -524,13 +556,13 @@ public class Sketch extends PApplet {
 
         // start
         beginShape();
-        Log.e("alpha",String.valueOf(result_alpha.get(j)));
-        Log.e("low beta",String.valueOf(result_low_beta.get(j)));
-        Log.e("delta",String.valueOf(result_delta.get(j)));
-        Log.e("gamma",String.valueOf(result_gamma.get(j)));
-        Log.e("high beta",String.valueOf(result_high_beta.get(j)));
-        Log.e("smr",String.valueOf(result_smr.get(j)));
-        Log.e("theta",String.valueOf(result_theta.get(j)));
+        Log.e("alpha", String.valueOf(result_alpha.get(j)));
+        Log.e("low beta", String.valueOf(result_low_beta.get(j)));
+        Log.e("delta", String.valueOf(result_delta.get(j)));
+        Log.e("gamma", String.valueOf(result_gamma.get(j)));
+        Log.e("high beta", String.valueOf(result_high_beta.get(j)));
+        Log.e("smr", String.valueOf(result_smr.get(j)));
+        Log.e("theta", String.valueOf(result_theta.get(j)));
 
         // start controlpoint
         if (num == 1) {
@@ -653,7 +685,7 @@ public class Sketch extends PApplet {
 
         // smr
         if (20 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 22.0) {
-            curveVertex(a1[1] + centerX, a2[1] + centerY);
+            curveVertex(a1[1] + centerX, a2[1] + centerY - (centerX / 4));
         } else if (22.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 24.0) {
             curveVertex(b1[1] + centerX, b2[1] + centerY - (centerX / 4));
         } else if (24.0 <= Float.parseFloat(result_smr.get(j)) && Float.parseFloat(result_smr.get(j)) < 26.0) {

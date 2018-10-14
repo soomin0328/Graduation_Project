@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +46,8 @@ public class MdayFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+
         final ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -122,12 +125,31 @@ public class MdayFrag extends Fragment {
         });
 
         view = inflater.inflate(R.layout.mp_dayfrag, container, false);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/nanum.ttf");
         Button btnPreviousCalendar = view.findViewById(R.id.md_previous_calendar);
         Button btnNextCalendar = view.findViewById(R.id.md_next_calendar);
         Button goToday = view.findViewById(R.id.mdptoday);
+        goToday.setTypeface(tf);
         tvCalendarTitle = view.findViewById(R.id.md_calendar_title);
+        tvCalendarTitle.setTypeface(tf);
+        //  tvCalendarTitle.setTypeface(Typeface.createFromAsset(this.getAssets(),"nanum.ttf");
         ClickTime = view.findViewById(R.id.ws_hour);
+        ClickTime.setTypeface(tf);
         DTT = view.findViewById(R.id.daytotaltime);
+        DTT.setTypeface(tf);
+
+        TextView textView5 = view.findViewById(R.id.textView5);
+        textView5.setTypeface(tf);
+        TextView textView7 = view.findViewById(R.id.textView7);
+        textView7.setTypeface(tf);
+        TextView textView13 = view.findViewById(R.id.textView13);
+        textView13.setTypeface(tf);
+        TextView tvTime = view.findViewById(R.id.Tv_time);
+        tvTime.setTypeface(tf);
+        TextView tvState = view.findViewById(R.id.Tv_state);
+        tvState.setTypeface(tf);
+
+
         time1List = view.findViewById(R.id.listview_1);
         time2List = view.findViewById(R.id.listview_2);
 

@@ -1,6 +1,7 @@
 package com.neurosky.algo_sdk_sample;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -73,38 +74,11 @@ public class DayFrag extends Fragment {
         dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);//오늘
         calendar.set(Calendar.DATE, dayOfWeek);//1일로 변경
 
-        /*if(dayOfWeek == Calendar.SUNDAY){//현재 달의 1일이 무슨 요일인지 검사
-            Log.d("현재 달 1일 무슨 요일",dayOfWeek+"");
-            dayOfWeek += 7;
-        }*/
+
         thisWeekLastDay = calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
         setCalendarTitle();
         DayInfo day;
 
-        //여기 아래부터
-        calendar.add(Calendar.DATE, -1 * (dayOfWeek - 1)); //현재 달력화면에서 보이는 지난달의 시작일
-        for (int i = 0; i < dayOfWeek - 1; i++) {
-            day = new DayInfo();
-            day.setDate(calendar.getTime());
-            day.setInMonth(true);
-            // arrayListDayInfo.add(day);
-            calendar.add(Calendar.DATE, +1);
-        }
-//여기까지 지우면 오늘기준날짜부터 일주일간격 날짜로 나옴.
-        for (int i = 1; i <= thisWeekLastDay; i++) {
-            day = new DayInfo();
-            day.setDate(calendar.getTime());
-            day.setInMonth(true);
-            arrayListDayInfo.add(day);
-            calendar.add(Calendar.DATE, +1);
-        }
-        /*for(int i=1; i<thisMonthLastDay+1; i++) {
-            day = new DayInfo();
-            day.setDate(calendar.getTime());
-            day.setInMonth(false);
-            arrayListDayInfo.add(day);
-            calendar.add(Calendar.DATE, +1);
-        }*/
         mCalendarAdapter = new WeekCalendarAdapter(arrayListDayInfo, selectedDate);
         // tvSelectedDate.setText(sdf.format(selectedDate));
     }
@@ -124,7 +98,7 @@ public class DayFrag extends Fragment {
         final ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                DTT = view.findViewById(R.id.daytotaltime);
+
                 //집중 시간대 : "시 + 분"
                 ListView listview2 = (ListView) view.findViewById(R.id.listview_2);
                 List<String> list2 = new ArrayList<>();
@@ -258,17 +232,41 @@ public class DayFrag extends Fragment {
             }
         });
         view = inflater.inflate(R.layout.cp_dayfrag, container, false);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/nanum.ttf");
         Button btnPreviousCalendar = view.findViewById(R.id.w_previous_calendar);
         Button btnNextCalendar = view.findViewById(R.id.w_next_calendar);
         Button goToday = view.findViewById(R.id.wcptoday);
+        goToday.setTypeface(tf);
         bar = view.findViewById(R.id.wprogressBar);
         barPercent = view.findViewById(R.id.wbarPercent);
+        barPercent.setTypeface(tf);
         tvCalendarTitle = view.findViewById(R.id.w_calendar_title);
+        tvCalendarTitle.setTypeface(tf);
         ClickHour = view.findViewById(R.id.ws_hour);
+        ClickHour.setTypeface(tf);
         ClickPercent = view.findViewById(R.id.tv_clickpercent);
-
+        ClickHour.setTypeface(tf);
         TextView c_hour = view.findViewById(R.id.ws_hour);
-        final TextView s_hour = view.findViewById(R.id.ws_hour);
+        c_hour.setTypeface(tf);
+        TextView tvTime = view.findViewById(R.id.Tv_time);
+        tvTime.setTypeface(tf);
+        TextView tvState = view.findViewById(R.id.Tv_state);
+        tvState.setTypeface(tf);
+        DTT = view.findViewById(R.id.daytotaltime);
+        DTT.setTypeface(tf);
+        TextView wtv1 = view.findViewById(R.id.wtv1);
+        wtv1.setTypeface(tf);
+        TextView wtv2 = view.findViewById(R.id.wtv2);
+        wtv2.setTypeface(tf);
+        TextView tv4 = view.findViewById(R.id.tv4);
+        tv4.setTypeface(tf);
+        TextView ws_hour = view.findViewById(R.id.ws_hour);
+        ws_hour.setTypeface(tf);
+        TextView textV3 = view.findViewById(R.id.textV3);
+        textV3.setTypeface(tf);
+        TextView textView9 = view.findViewById(R.id.textView9);
+        textView9.setTypeface(tf);
+
 
         goToday.setOnClickListener(new View.OnClickListener() {
             @Override
