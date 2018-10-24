@@ -491,6 +491,9 @@ public class MnActivity extends AppCompatActivity {
                 switch (mStatus) {
                     //IDLE상태이면
                     case IDLE:
+                        music.start();
+                        Thread();
+                        playbtn.setBackgroundResource(R.drawable.stop);
                         //현재 값을 세팅해주고
                         mBaseTime = SystemClock.elapsedRealtime();
                         //핸드러로 메시지를 보낸다

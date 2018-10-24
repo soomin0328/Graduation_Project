@@ -124,7 +124,7 @@ public class TensorflowActivity extends AppCompatActivity {
                                     Log.e("n3", n3);
                                     textViewResult.setText("Alpha" + n3);
                                 }
-                                stateR.setText("명상 상태입니다.");
+                                stateR.setText("명상 상태입555555니다.");
                             }
                             if (n.equals("3")) {
                                 String n3;

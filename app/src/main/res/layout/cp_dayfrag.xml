@@ -17,9 +17,8 @@
         android:id="@+id/w_previous_calendar"
         android:layout_width="33dp"
         android:layout_height="30dp"
-        android:layout_above="@+id/wtv1"
-        android:layout_alignEnd="@+id/tv4"
-        android:layout_marginBottom="-59dp"
+        android:layout_below="@+id/wcptoday"
+        android:layout_toEndOf="@+id/wtv1"
         android:layout_weight="1"
         android:background="@drawable/left"
         android:text="" />
@@ -136,22 +135,10 @@
         android:textColor="#fffff3"
         android:textSize="9sp" />
 
-    <TextView
-        android:id="@+id/tv4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="54dp"
-        android:layout_marginStart="20dp"
-        android:text="목표시간 : "
-        android:textColor="@color/black"
-        android:textSize="18dp" />
-
     <ProgressBar
         android:id="@+id/wprogressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="228dp"
+        android:layout_width="190dp"
         android:layout_height="25dp"
         android:layout_alignBottom="@+id/imageView2"
         android:layout_alignStart="@+id/daytotaltime"
@@ -162,8 +149,8 @@
         android:id="@+id/ws_hour"
         android:layout_width="144dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tv4"
-        android:layout_toEndOf="@+id/w_previous_calendar"
+        android:layout_alignTop="@+id/textView14"
+        android:layout_toEndOf="@+id/textView9"
         android:text="##시간 ##분 ##초"
         android:textColor="@color/black"
         android:textSize="18dp" />
@@ -172,9 +159,9 @@
         android:id="@+id/textV3"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/tv4"
         android:layout_below="@+id/tv4"
         android:layout_marginTop="-54dp"
+        android:layout_toEndOf="@+id/w_calendar_title"
         android:text="달성율 :"
         android:textColor="@color/black"
         android:textSize="18dp" />
@@ -195,9 +182,8 @@
         android:id="@+id/tv_clickpercent"
         android:layout_width="59dp"
         android:layout_height="23dp"
-        android:layout_below="@+id/tv4"
-        android:layout_marginTop="-54dp"
-        android:layout_toEndOf="@+id/w_previous_calendar"
+        android:layout_alignStart="@+id/ws_hour"
+        android:layout_below="@+id/ws_hour"
         android:text="##%"
         android:textColor="@color/black"
         android:textSize="18dp" />
@@ -224,5 +210,26 @@
         android:text="집중"
         android:textColor="#fffff3"
         android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="86dp"
+        android:layout_toEndOf="@+id/w_previous_calendar"
+        android:text="목표 시간:"
+        android:textColor="@color/black"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView14"
+        android:layout_below="@+id/ws_hour"
+        android:text="달성율:"
+        android:textColor="@color/black"
+        android:textSize="18dp"/>
 
 </RelativeLayout>

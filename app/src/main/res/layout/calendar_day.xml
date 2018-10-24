@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/day_cell_ll_background"
     android:layout_width="55dp"
-    android:layout_height="65dp"
+    android:layout_height="63dp"
     android:background="@drawable/bg_rect_border">
 
     <ImageView

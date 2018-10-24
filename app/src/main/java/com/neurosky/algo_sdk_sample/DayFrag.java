@@ -258,12 +258,8 @@ public class DayFrag extends Fragment {
         wtv1.setTypeface(tf);
         TextView wtv2 = view.findViewById(R.id.wtv2);
         wtv2.setTypeface(tf);
-        TextView tv4 = view.findViewById(R.id.tv4);
-        tv4.setTypeface(tf);
         TextView ws_hour = view.findViewById(R.id.ws_hour);
         ws_hour.setTypeface(tf);
-        TextView textV3 = view.findViewById(R.id.textV3);
-        textV3.setTypeface(tf);
         TextView textView9 = view.findViewById(R.id.textView9);
         textView9.setTypeface(tf);
 
