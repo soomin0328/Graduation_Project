@@ -199,11 +199,11 @@
 
     <TextView
         android:id="@+id/mp_week"
-        android:layout_width="wrap_content"
-        android:layout_height="4dp"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/mw_calendar_title"
-        android:layout_marginBottom="98dp"
+        android:layout_marginBottom="84dp"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
