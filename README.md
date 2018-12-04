@@ -13,4 +13,4 @@ An application that manages meditation and concentration using EEG data.
 * DB: Firebase
 
 ### 2. ScreenShot
-![UI](./ui.PNG)
+![UI](screenshot/ui.PNG)
