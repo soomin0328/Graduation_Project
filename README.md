@@ -14,3 +14,6 @@ An application that manages meditation and concentration using EEG data.
 
 ### 2. ScreenShot
 ![UI](screenshot/ui.PNG)
+
+### 3. Demo
+<https://www.youtube.com/watch?v=JB6nh8giAKc&feature=youtu.be>
